@@ -8,11 +8,11 @@ USE eagleEvents;
 /* Create the user table */
 CREATE TABLE user
 (
-  UID INT(5),
+  uid INT(5),
   username VARCHAR(16),
   password VARCHAR(16),
   picture LONGBLOB,
-  CONSTRAINT userPK PRIMARY KEY(UID)
+  CONSTRAINT userPK PRIMARY KEY(uid)
 );
 
 /* Create the club table */
@@ -50,11 +50,11 @@ CREATE TABLE event
   event_id INT(4),
   type VARCHAR(25),
   open BOOLEAN NOT NULL,
-  UID INT(5),
+  uid INT(5),
   club_id INT(4),
   CONSTRAINT eventFK PRIMARY KEY(event_id),
   CONSTRAINT locationFK FOREIGN KEY(location_id) REFERENCES location(location_id),
-  CONSTRAINT userFK FOREIGN KEY(UID) REFERENCES user(UID),
+  CONSTRAINT userFK FOREIGN KEY(uid) REFERENCES user(uid),
   CONSTRAINT clubFK FOREIGN KEY(club_id) REFERENCES club(club_id)
 );
 
@@ -65,9 +65,9 @@ CREATE TABLE student
   lname VARCHAR(30) NOT NULL,
   year VARCHAR(16) NOT NULL,
   email VARCHAR(30) NOT NULL,
-  UID INT(5),
+  uid INT(5),
   picture LONGBLOB,
-  CONSTRAINT userFK FOREIGN KEY(UID) REFERENCES user(UID)
+  CONSTRAINT userFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
 
 /* Create the attendance table */
@@ -84,9 +84,9 @@ CREATE TABLE attendance
 CREATE TABLE clubMember
 (
   club_id INT(4),
-  UID INT(5),
+  uid INT(5),
   owner BOOLEAN,
-  CONSTRAINT clubMemberPK PRIMARY KEY (club_id, UID),
+  CONSTRAINT clubMemberPK PRIMARY KEY (club_id, uid),
   CONSTRAINT clubFK FOREIGN KEY(club_id) REFERENCES club(club_id),
-  CONSTRAINT userFK FOREIGN KEY(UID) REFERENCES user(UID)
+  CONSTRAINT userFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
