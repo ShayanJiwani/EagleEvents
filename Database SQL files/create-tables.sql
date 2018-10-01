@@ -67,7 +67,7 @@ CREATE TABLE student
   email VARCHAR(30) NOT NULL,
   uid INT(5),
   picture LONGBLOB,
-  CONSTRAINT userFK FOREIGN KEY(uid) REFERENCES user(uid)
+  CONSTRAINT userStudentFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
 
 /* Create the attendance table */
@@ -76,8 +76,8 @@ CREATE TABLE attendance
   event_id INT(4),
   club_id INT(4),
   CONSTRAINT clubEventsPK PRIMARY KEY (event_id, club_id),
-  CONSTRAINT clubFK FOREIGN KEY(club_id) REFERENCES club(club_id),
-  CONSTRAINT eventFK FOREIGN KEY(event_id) REFERENCES event(event_id)
+  CONSTRAINT clubAttendFK FOREIGN KEY(club_id) REFERENCES club(club_id),
+  CONSTRAINT eventAttendFK FOREIGN KEY(event_id) REFERENCES event(event_id)
 );
 
 /* Create the clubMember table */
@@ -87,6 +87,6 @@ CREATE TABLE clubMember
   uid INT(5),
   owner BOOLEAN,
   CONSTRAINT clubMemberPK PRIMARY KEY (club_id, uid),
-  CONSTRAINT clubFK FOREIGN KEY(club_id) REFERENCES club(club_id),
-  CONSTRAINT userFK FOREIGN KEY(uid) REFERENCES user(uid)
+  CONSTRAINT clubIDFK FOREIGN KEY(club_id) REFERENCES club(club_id),
+  CONSTRAINT userIdFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
