@@ -22,7 +22,7 @@ CREATE TABLE club
   logo LONGBLOB,
   cdescription VARCHAR(1000),
   club_id INT(4),
-  category VARCHAR(16),
+  category VARCHAR(30),
   CONSTRAINT clubPK PRIMARY KEY (club_id)
 );
 
