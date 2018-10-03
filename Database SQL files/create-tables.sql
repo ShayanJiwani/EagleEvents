@@ -74,10 +74,10 @@ CREATE TABLE student
 CREATE TABLE attendance
 (
   event_id INT(4),
-  club_id INT(4),
-  CONSTRAINT clubEventsPK PRIMARY KEY (event_id, club_id),
-  CONSTRAINT clubAttendFK FOREIGN KEY(club_id) REFERENCES club(club_id),
-  CONSTRAINT eventAttendFK FOREIGN KEY(event_id) REFERENCES event(event_id)
+  uid INT(5),
+  CONSTRAINT clubEventsPK PRIMARY KEY (event_id, uid),
+  CONSTRAINT eventAttendFK FOREIGN KEY(event_id) REFERENCES event(event_id),
+  CONSTRAINT userAttendFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
 
 /* Create the clubMember table */
