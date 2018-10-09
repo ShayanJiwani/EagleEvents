@@ -291,18 +291,26 @@ desired effect
         <li class="active">Here</li>
       </ol>
     </section>
-<!--
+
     <!- - Main content - ->
     <section class="content container-fluid">
 
       <!- -
-        | Your Page Content Here |
+        | Your Page Content Here | Chris Lew
         - ->
-
-        <img src = "BackgroundMainPage.png" align = "middle">
+      <div id = "map"></div>
+        <script>
+          function initMap(){
+            var options = {
+              zoom:15,
+              center:{lat: 33.7925,lng:-84.3240}
+            }
+            var map = new
+            google.maps.Map(document.getElementById('map'),options);
+          }
 
     </section>
--->
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -409,4 +417,8 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. -->
 </body>
+  
+  <script async defer
+     src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDbbe_X5CHSDXRL5u2dCJrX0-p9PgBmzwA&callback=initMap">
+  </script>
 </html>
