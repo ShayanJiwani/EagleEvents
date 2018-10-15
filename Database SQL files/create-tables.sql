@@ -9,7 +9,7 @@ USE eagleEvents;
 CREATE TABLE user
 (
   uid INT(5),
-  username VARCHAR(16),
+  username VARCHAR(16) NOT NULL UNIQUE,
   password VARCHAR(16),
   picture LONGBLOB,
   CONSTRAINT userPK PRIMARY KEY(uid)
