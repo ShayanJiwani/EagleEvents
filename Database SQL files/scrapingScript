@@ -1,0 +1,16 @@
+import mysql.connector
+
+eedb = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    passwd = ""
+)
+
+cursor = eedb.cursor()
+
+sql = "INSERT INTO location () VALUES (%s, %s)"
+val = ("", "")
+cursor.execute(sql, val)
+
+eedb.commit()
+print(mycursor.rowcount, "record inserted.")
