@@ -1,25 +1,8 @@
 <?php
-/* This is the EagleEventsMainPage put into PHP*/
-
-$conn = mysqli_connect("localhost","root",
-"Eagle123", "eagleEvents");
-
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
-
-$username = $_POST['username'];
-$password = $_POST['password'];
-
-$queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
-if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit(1);
-}
-
-$userID = mysqli_fetch_assoc($result);
-$userID =
+session_start();
+$userID = $_SESSION['uid'];
+$fname = $_SESSION['fname'];
+$lname = $_SESSION['lname'];
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -30,7 +13,7 @@ print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
 print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <title>Eagle Events | Homepage</title>\n";
+print "  <title>Eagle Events | Your Events</title>\n";
 print "  <!-- Tell the browser to be responsive to screen width -->\n";
 print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
 print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
@@ -91,7 +74,7 @@ print "\n";
 print "    <!-- Logo -->\n";
 print "    <a href=\"index2.html\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
-print "      <span class=\"logo-mini\"><b>E</b>LE</span>\n";
+print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
 print "      <span class=\"logo-lg\"><b>Eagle</b>Events</span>\n";
 print "    </a>\n";
@@ -208,7 +191,7 @@ print "            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdow
 print "              <!-- The user image in the navbar-->\n";
 print "              <img src=\"Images/profile.jpeg\" class=\"user-image\" alt=\"User Image\">\n";
 print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";
-print "              <span class=\"hidden-xs\">Shayan Jiwani</span>\n";
+print "              <span class=\"hidden-xs\">$fname $lname</span>\n";
 print "            </a>\n";
 print "            <ul class=\"dropdown-menu\">\n";
 print "              <!-- The user image in the menu -->\n";
@@ -216,7 +199,7 @@ print "              <li class=\"user-header\">\n";
 print "                <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
 print "\n";
 print "                <p>\n";
-print "                  Shayan Jiwani - Software Engineer\n";
+print "                  $fname $lname - Software Engineer\n";
 print "                  <small>Member since Sep 2018</small>\n";
 print "                </p>\n";
 print "              </li>\n";
@@ -266,7 +249,7 @@ print "        <div class=\"pull-left image\">\n";
 print "          <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
 print "        </div>\n";
 print "        <div class=\"pull-left info\">\n";
-print "          <p>Shayan Jiwani</p>\n";
+print "          <p>$fname $lname</p>\n";
 print "          <!-- Status -->\n";
 print "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> Online</a>\n";
 print "        </div>\n";
@@ -288,9 +271,10 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li class=\"active\"><a href=\"#\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"#\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"#\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"AddEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -313,8 +297,8 @@ print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
 print "    <section class=\"content-header\">\n";
 print "      <h1>\n";
-print "        Home\n";
-print "        <small>View Events Here!</small>\n";
+print "        Your Events\n";
+print "        <small>Events you are interested in or that are recommended for you</small>\n";
 print "      </h1>\n";
 print "    </section>\n";
 print "\n";
@@ -324,17 +308,9 @@ print "\n";
 print "      <!--\n";
 print "        | Your Page Content Here | Chris Lew\n";
 print "        -->\n";
-print "      <div id = \"map\"></div>\n";
-print "      <script>\n";
-print "        function initMap(){\n";
-print "          var options = {\n";
-print "              zoom:16,\n";
-print "              center:{lat: 33.7925,lng:-84.3240}\n";
-print "            }\n";
-print "            var map = new\n";
-print "            google.maps.Map(document.getElementById('map'),options);\n";
-print "          }\n";
-print "      </script>\n";
+print "\n";
+print "\n";
+print "\n";
 print "\n";
 print "    </section>\n";
 print "\n";

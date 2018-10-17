@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Eagle Events | Homepage</title>
+  <title>Eagle Events | Your Events</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -68,7 +68,7 @@ desired effect
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>E</b>LE</span>
+      <span class="logo-mini"><b>E</b>E</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Eagle</b>Events</span>
     </a>
@@ -265,9 +265,9 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="EagleEventsMainPage.html"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
+        <li><a href="EagleEventsMainPage.html"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
         <li><a href="YourEvents.html"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
-        <li><a href="YourClubs.html"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
         <li><a href="AddAnEvent.html"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Emory University</span>
@@ -291,8 +291,8 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Home
-        <small>View Events Here!</small>
+        Your Organizations
+        <small>Organizations you are a part of </small>
       </h1>
     </section>
 
@@ -302,59 +302,9 @@ desired effect
       <!--
         | Your Page Content Here | Chris Lew
         -->
-      <div id = "map"></div>
-      <script>
-        function initMap(){
-            var options = {
-              zoom:16,
-              center:{lat: 33.7925,lng:-84.3240}
-            };
-            var map = new
-            google.maps.Map(document.getElementById('map'),options);
-            var noPoi = [
-            {
-                featureType: "poi",
-                stylers: [
-                    { visibility: "off" }
-                ]
-            }
-            ];
 
-            map.setOptions({ styles: noPoi });
-            var marker = new google.maps.Marker({
-                map: map,
-                position:{lat: 33.7925,lng:-84.3240},
-                title:'Emory'
-            });
-            infoWindow = new google.maps.InfoWindow;
-          if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Your.');
-            infoWindow.open(map);
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }
-      </script>
 
     </section>
 
