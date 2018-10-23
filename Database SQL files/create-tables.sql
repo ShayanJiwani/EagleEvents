@@ -10,8 +10,7 @@ CREATE TABLE user
 (
   uid INT(5),
   username VARCHAR(16) NOT NULL UNIQUE,
-  password VARCHAR(16),
-  picture LONGBLOB,
+  password VARCHAR(16) NOT NULL,
   CONSTRAINT userPK PRIMARY KEY(uid)
 );
 
@@ -20,20 +19,20 @@ CREATE TABLE club
 (
   cname VARCHAR(80) NOT NULL,
   logo LONGBLOB,
-  cdescription VARCHAR(1000),
+  cdescription VARCHAR(1000) NOT NULL,
   club_id INT(4),
-  category VARCHAR(30),
+  category VARCHAR(30) NOT NULL,
   CONSTRAINT clubPK PRIMARY KEY (club_id)
 );
 
 /* Create the location table */
 CREATE TABLE location
 (
-  building VARCHAR(30),
-  room VARCHAR(30),
-  campus VARCHAR(16),
-  longitude DECIMAL(9,6),
-  latitude DECIMAL(9,6),
+  building VARCHAR(30), NOT NULL
+  room VARCHAR(30) NOT NULL,
+  campus VARCHAR(16) NOT NULL,
+  longitude DECIMAL(9,6) NOT NULL,
+  latitude DECIMAL(9,6) NOT NULL,
   location_id INT(4),
   CONSTRAINT locationPK PRIMARY KEY (location_id)
 );

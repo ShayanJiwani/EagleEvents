@@ -345,6 +345,19 @@ print "\n";
 print "      <!--\n";
 print "        | Your Page Content Here | Chris Lew\n";
 print "        -->\n";
+/*
+print "      <div id = \"map\"></div>\n";
+print "      <script>\n";
+print "        function initMap(){\n";
+print "          var options = {\n";
+print "              zoom:16,\n";
+print "              center:{lat: 33.7925,lng:-84.3240}\n";
+print "            }\n";
+print "            var map = new\n";
+print "            google.maps.Map(document.getElementById('map'),options);\n";
+print "          }\n";
+print "      </script>\n";
+*/
 print "      <div id = \"map\"></div>\n";
 print "      <script>\n";
 print "        function initMap(){\n";
@@ -354,6 +367,7 @@ print "              center:{lat: 33.7925,lng:-84.3240}\n";
 print "            };\n";
 print "            var map = new\n";
 print "            google.maps.Map(document.getElementById('map'),options);\n";
+print "          }\n";
 print "            var noPoi = [\n";
 print "            {\n";
 print "                featureType: \"poi\",\n";
@@ -370,13 +384,14 @@ print "                position:{lat: 33.7925,lng:-84.3240},\n";
 print "                title:'Emory'\n";
 print "            });\n";
 print "            infoWindow = new google.maps.InfoWindow;\n";
-print "          if (navigator.geolocation) {\n";
+/*print "          if (navigator.geolocation) {\n";
 print "          navigator.geolocation.getCurrentPosition(function(position) {\n";
 print "            var pos = {\n";
 print "              lat: position.coords.latitude,\n";
 print "              lng: position.coords.longitude\n";
 print "            };\n";
-print "\n";
+print "\n";*/
+/*
 print "            infoWindow.setPosition(pos);\n";
 print "            infoWindow.setContent('Your.');\n";
 print "            infoWindow.open(map);\n";
@@ -396,7 +411,7 @@ print "        infoWindow.setContent(browserHasGeolocation ?\n";
 print "                              'Error: The Geolocation service failed.' :\n";
 print "                              'Error: Your browser doesn't support geolocation.');\n";
 print "        infoWindow.open(map);\n";
-print "      }\n";
+print "      }\n";*/
 print "      </script>\n";
 print "\n";
 print "    </section>\n";
