@@ -1,8 +1,27 @@
 <?php
 session_start();
-$userID = $_SESSION['uid'];
+$uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+
+ if (mysqli_connect_errno()){
+   printf("Connect failed: %s\n", mysqli_connect_error());
+   exit(1);
+ }
+
+ $queryEvents = "SELECT ename AS Name, edescription AS Description,
+       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
+       FROM attendance a, event e, location l, club c
+       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
+       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
+
+ if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+ }
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -282,8 +301,8 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"#\">All Clubs</a></li>\n";
-print "            <li><a href=\"#\">All Events</a></li>\n";
+print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -295,12 +314,14 @@ print "\n";
 print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
+/*
 print "    <section class=\"content-header\">\n";
 print "      <h1>\n";
 print "        Your Events\n";
 print "        <small>Events you are interested in or that are recommended for you</small>\n";
 print "      </h1>\n";
 print "    </section>\n";
+*/
 print "\n";
 print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
@@ -310,6 +331,52 @@ print "        | Your Page Content Here | Chris Lew\n";
 print "        -->\n";
 print "\n";
 print "\n";
+print "                    <!-- TABLE: LATEST ORDERS -->\n";
+print "          <div class=\"box box-info\">\n";
+print "            <div class=\"box-header with-border\">\n";
+print "              <h3 class=\"box-title\">Your Events</h3>\n";
+print "\n";
+print "              <div class=\"box-tools pull-right\">\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
+print "                </button>\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n";
+print "              </div>\n";
+print "            </div>\n";
+print "            <!-- /.box-header -->\n";
+print "            <div class=\"box-body\">\n";
+print "              <div class=\"table-responsive\">\n";
+print "                <table class=\"table no-margin\">\n";
+$header = false;
+while ($row = mysqli_fetch_assoc($result)){
+  if (!$header) {
+     $header = true;
+     print("<thead><tr>\n");
+     foreach ($row as $key => $value) {
+        print "<th>" . $key . "</th>";
+     }
+     print("</tr></thead><tbody>\n");
+  }
+  print("<tr>\n");
+  foreach ($row as $key => $value) {
+     print ("<td>" . $value . "</td>");
+  }
+  print ("</tr>\n");
+}
+print "                  </tbody>\n";
+print "                </table>\n";
+print "              </div>\n";
+print "              <!-- /.table-responsive -->\n";
+print "            </div>\n";
+print "            <!-- /.box-body -->\n";
+print "            <div class=\"box-footer clearfix\">\n";
+print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
+print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
+print "            </div>\n";
+print "            <!-- /.box-footer -->\n";
+print "          </div>\n";
+print "          <!-- /.box -->\n";
+print "        </div>\n";
+print "        <!-- /.col -->";
 print "\n";
 print "\n";
 print "    </section>\n";
@@ -421,5 +488,8 @@ print "</script>\n";
 print "</body>\n";
 print "\n";
 print "</html>\n";
+
+//mysqli_free_result($result);
+mysqli_close($conn);
 
 ?>

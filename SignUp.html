@@ -61,7 +61,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>E</b>LE</span>
       <!-- logo for regular state and mobile devices -->
@@ -69,10 +69,8 @@ desired effect
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation"> 
+    <nav class="navbar navbar-static-top" role="navigation">
   </header>
-
-
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -82,10 +80,6 @@ desired effect
         Welcome to Eagle Events! Please sign up below.
         <small>Get notified about Emory events!</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-      </ol>
     </section>
 
     <!-- Main content -->
@@ -97,7 +91,7 @@ desired effect
 
         <div class="container">
      <h3>
-   
+
      </h5>
         <form action = "login.html" method = "POST">
           <br><br>
@@ -122,6 +116,50 @@ desired effect
             </div>
           </div>
           <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="email">Email</label>
+              <input type="text" name = "email" class="form-control" placeholder="Email" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="fname">First Name</label>
+              <input type="text" name = "fname" class="form-control" placeholder="First Name" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="lname">Last Name</label>
+              <input type="text" name = "lname" class="form-control" placeholder="Last Name" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+              <label class="custom-control-label" for="year">Year</label><br>
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="Freshman" name="year" required>
+                <label class="custom-control-label" for="Freshman">Freshman</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="Sophomore" name="year" required>
+                <label class="custom-control-label" for="Sophomore">Sophomore</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="Junior" name="year" required>
+                <label class="custom-control-label" for="Junior">Junior</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="Senior" name="year" required>
+                <label class="custom-control-label" for="Senior">Senior</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="Graduate" name="year" required>
+                <label class="custom-control-label" for="Graduate">Graduate</label>
+              </div>
+          <br><br>
           <button type = "submit" class = "btn btn-primary"> Submit </button>
         </form>
      </h5>
@@ -135,15 +173,9 @@ desired effect
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Anything you want
-    </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2018 <a href="#">EagleEvents</a>.</strong> All rights reserved.
   </footer>
-
-
-
 
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed

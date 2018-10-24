@@ -319,8 +319,8 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"#\">All Clubs</a></li>\n";
-print "            <li><a href=\"#\">All Events</a></li>\n";
+print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -524,5 +524,5 @@ print "</body>\n";
 print "\n";
 print "</html>";
 
-
+mysqli_close($conn);
 ?>

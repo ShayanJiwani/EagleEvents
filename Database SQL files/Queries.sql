@@ -3,7 +3,7 @@ SELECT ename AS Name, edescription AS Description,
 DATE_FORMAT(e.edate, "%b %e, %Y") AS Day, TIME_FORMAT(e.startTime, "%l:%i %p") AS Starts,
 TIME_FORMAT(e.endTime, "%l:%i %p") AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
 FROM attendance a, event e, location l, club c
-WHERE a.uid = 1002
+WHERE a.uid = '$uid'
 AND a.event_id = e.event_id
 AND l.location_id = e.location_id
 AND c.club_id = e.club_id
@@ -12,7 +12,7 @@ ORDER BY edate ASC, startTime ASC;
 /* Show all clubs a user is a part of */
 SELECT cname AS Name, cdescription AS Description, category AS Category
 FROM club c, clubMember m
-WHERE m.uid = 1002
+WHERE m.uid = 'uid'
 AND m.club_id = c.club_id
 ORDER BY cname ASC;
 

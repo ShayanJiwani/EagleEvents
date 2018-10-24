@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Eagle Events | Your Events</title>
+  <title>Eagle Events | Homepage</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -68,7 +68,7 @@ desired effect
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>E</b>E</span>
+      <span class="logo-mini"><b>E</b>LE</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Eagle</b>Events</span>
     </a>
@@ -265,8 +265,7 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="EagleEventsMainPage.html"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
-        <li class="active"><a href="YourEvents.html"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
+        <li class="YourEvents.html"><a href="#"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
         <li><a href="YourClubs.html"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
         <li><a href="AddAnEvent.html"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
         <li class="treeview">
@@ -291,8 +290,8 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Your Events
-        <small>Events you are interested in or that are recommended for you</small>
+        Home
+        <small>View Events Here!</small>
       </h1>
     </section>
 
@@ -302,102 +301,153 @@ desired effect
       <!--
         | Your Page Content Here | Chris Lew
         -->
-        
-                    <!-- TABLE: LATEST ORDERS -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Latest Orders</h3>
+      <div id = "map"></div>
+      <script>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Item</th>
-                    <th>Status</th>
-                    <th>Popularity</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-info">Processing</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-              <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-            </div>
-            <!-- /.box-footer -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
+
+          //exchange this part of the code to database in order to actually connect to the real data
+          //just replace eventmap.
+          //test data
+        var eventmap = {
+            emorygaming:{
+                center:{lat: 33.792385,lng:-84.323252},
+                location: 'Cox Hall',
+                name: 'EmoryGaming',
+                dcpt: '<small>No game No life</small>'
+            },
+            emoryPartying:{
+                center:{lat: 33.790823,lng:-84.325964},
+                location: 'White Hall',
+                name: 'EmoryPartying',
+                dcpt: 'No drink No life'
+            },
+            emorySporting:{
+                center:{lat: 33.793276,lng:-84.325941},
+                location: 'Emory Woodruff physical education center',
+                name: 'EmoryPartying',
+                dcpt: 'No blood No life'
+            },
+            emoryReading:{
+                center:{lat: 33.791297,lng:-84.323573},
+                location: 'Candler Library',
+                name: 'EmoryPartying',
+                dcpt: 'No books No life'
+            },
+            emoryEating:{
+                center:{lat: 33.794055,lng:-84.325117},
+                location: 'McDonough Field',
+                name: 'EmoryEating',
+                dcpt: 'No food No life'
+            }
+        };
+
+        function initMap(){
+            var options = {
+              zoom:16,
+              center:{lat: 33.7925,lng:-84.3240}
+            };
+            var map = new google.maps.Map(document.getElementById('map'),options);
+            var noPoi = [{
+                featureType: "poi",
+                stylers: [{
+                    visibility: "off"
+                }]
+            }];
+
+            map.setOptions({ styles: noPoi });
+            var marker = new google.maps.Marker({
+                map: map,
+                position:{lat: 33.7925,lng:-84.3240},
+                title:'Emory Campas'
+            });
+
+            for (var event in eventmap){
+                addMarker(eventmap[event]);
+            }
+            function addMarker(event){
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: event.center
+                });
+                if(event.dcpt){
+                    var infoWindow = new google.maps.InfoWindow({
+                      content: {location:event.location, name:event.name}
+                      //content: event.name
+                      //content: event.dcpt
+                    });
+                    marker.addListener('click', function(){
+                        infoWindow.open(map, marker);
+                    });
+                }
+            }
+
+            var infoWindow = new google.maps.InfoWindow;
+            var currentLocation = new google.maps.Marker()
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+
+                    //customizing the dot
+                    var innerMarker = new google.maps.Marker({
+                        position: pos,
+                        icon:{
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: '#00BFFF',
+                            fillOpacity: 0.8,
+                            strokeColor:'white',
+                            StrokeWeight:0,
+                            strokeOpacity: 1
+                        },
+                        map: map
+                    });
+                    var outtermarker = new google.maps.Marker({
+                        position: pos,
+                        icon:{
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 100,
+                            fillColor: '#00BFFF',
+                            fillOpacity: 0.3,
+                            strokeColor:'blue',
+                            StrokeWeight:0,
+                            strokeOpacity: 0
+                        },
+                        map: map
+                    });
+                    /* this one does not increase and decrease according to zoom value
+                    var myCircle = new google.maps.Marker({
+                        strokeColor:'#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight:2,
+                        fillColor:'#FF0000',
+                        fillOpacity:0.35,
+                        map: map,
+                        center: pos,
+                        radius: 1
+                    });
+                    */
+
+                    map.setCenter(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+      </script>
 
     </section>
 

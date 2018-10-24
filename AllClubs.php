@@ -1,8 +1,24 @@
 <?php
 session_start();
-$userID = $_SESSION['uid'];
+$uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+
+ if (mysqli_connect_errno()){
+   printf("Connect failed: %s\n", mysqli_connect_error());
+   exit(1);
+ }
+
+ $queryClubs = "SELECT cname AS Name, cdescription AS Description, category AS Category
+        FROM club ORDER BY cname ASC;";
+
+ if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+ }
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -274,7 +290,7 @@ print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
 print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"AddEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"AddEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -282,7 +298,7 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
+print "            <li class=\"active\"><a href=\"AllClubs.php\">All Clubs</a></li>\n";
 print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
@@ -295,12 +311,14 @@ print "\n";
 print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
+/*
 print "    <section class=\"content-header\">\n";
 print "      <h1>\n";
-print "        Create an Event\n";
-print "        <small>Use the form below to post an event!</small>\n";
+print "        Your Organizations\n";
+print "        <small>Organizations you are a part of </small>\n";
 print "      </h1>\n";
 print "    </section>\n";
+*/
 print "\n";
 print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
@@ -310,6 +328,54 @@ print "        | Your Page Content Here | Chris Lew\n";
 print "        -->\n";
 print "\n";
 print "\n";
+print "                    <!-- TABLE: LATEST ORDERS -->\n";
+print "          <div class=\"box box-info\">\n";
+print "            <div class=\"box-header with-border\">\n";
+print "              <h3 class=\"box-title\">All Organizations</h3>\n";
+print "\n";
+print "              <div class=\"box-tools pull-right\">\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
+print "                </button>\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n";
+print "              </div>\n";
+print "            </div>\n";
+print "            <!-- /.box-header -->\n";
+print "            <div class=\"box-body\">\n";
+print "              <div class=\"table-responsive\">\n";
+print "                <table class=\"table no-margin\">\n";
+$header = false;
+while ($row = mysqli_fetch_assoc($result)){
+  if (!$header) {
+     $header = true;
+     print("<thead><tr>\n");
+     foreach ($row as $key => $value) {
+        print "<th>" . $key . "</th>";
+     }
+     print("</tr></thead><tbody>\n");
+  }
+  print("<tr>\n");
+  foreach ($row as $key => $value) {
+     print ("<td>" . $value . "</td>");
+  }
+  print ("</tr>\n");
+}
+print "                  </tbody>\n";
+print "                </table>\n";
+print "              </div>\n";
+print "              <!-- /.table-responsive -->\n";
+print "            </div>\n";
+print "            <!-- /.box-body -->\n";
+/*
+print "            <div class=\"box-footer clearfix\">\n";
+print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Clubs</a>\n";
+print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Clubs</a>\n";
+print "            </div>\n";
+*/
+print "            <!-- /.box-footer -->\n";
+print "          </div>\n";
+print "          <!-- /.box -->\n";
+print "        </div>\n";
+print "        <!-- /.col -->";
 print "\n";
 print "\n";
 print "    </section>\n";
