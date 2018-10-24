@@ -1,44 +1,4 @@
 <?php
-/* This is the EagleEventsMainPage put into PHP*/
-session_start();
-$conn = mysqli_connect("localhost","root",
-"Eagle123", "eagleEvents");
-
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
-if ($_SESSION['uid'] != NULL) {
-  $userID = $_SESSION['uid'];
-  $fname = $_SESSION['fname'];
-  $lname = $_SESSION['lname'];
-}
-else {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-
-  $queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
-  if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
-
-  $userID = mysqli_fetch_assoc($result);
-  $userID = $userID["uid"];
-
-  $queryInfo = "SELECT fname, lname FROM student WHERE uid = '$userID'";
-  if ( ! ( $result2 = mysqli_query($conn, $queryInfo)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
-  $name = mysqli_fetch_assoc($result2);
-  $fname = $name['fname'];
-  $lname = $name['lname'];
-}
-
-$_SESSION['uid'] = $userID;
-$_SESSION['fname'] = $fname;
-$_SESSION['lname'] = $lname;
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -227,8 +187,7 @@ print "            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdow
 print "              <!-- The user image in the navbar-->\n";
 print "              <img src=\"Images/profile.jpeg\" class=\"user-image\" alt=\"User Image\">\n";
 print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";
-/* put in user information*/
-print "              <span class=\"hidden-xs\">$fname $lname</span>\n";
+print "              <span class=\"hidden-xs\">Shayan Jiwani</span>\n";
 print "            </a>\n";
 print "            <ul class=\"dropdown-menu\">\n";
 print "              <!-- The user image in the menu -->\n";
@@ -236,7 +195,7 @@ print "              <li class=\"user-header\">\n";
 print "                <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
 print "\n";
 print "                <p>\n";
-print "                  $fname $lname - Software Engineer\n";
+print "                  Shayan Jiwani - Software Engineer\n";
 print "                  <small>Member since Sep 2018</small>\n";
 print "                </p>\n";
 print "              </li>\n";
@@ -286,7 +245,7 @@ print "        <div class=\"pull-left image\">\n";
 print "          <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
 print "        </div>\n";
 print "        <div class=\"pull-left info\">\n";
-print "          <p>$fname $lname</p>\n";
+print "          <p>Shayan Jiwani</p>\n";
 print "          <!-- Status -->\n";
 print "          <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> Online</a>\n";
 print "        </div>\n";
@@ -308,10 +267,9 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li class=\"active\"><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"AddEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li class=\"YourEvents.html\"><a href=\"#\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.html\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"AddAnEvent.html\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -319,8 +277,8 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
-print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
+print "            <li><a href=\"#\">All Clubs</a></li>\n";
+print "            <li><a href=\"#\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -330,7 +288,7 @@ print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
 print "\n";
 print "  <!-- Content Wrapper. Contains page content -->\n";
-print "<div class=\"content-wrapper\">\n";
+print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
 print "    <section class=\"content-header\">\n";
 print "      <h1>\n";
@@ -525,9 +483,9 @@ print "\n";
 print "    </section>\n";
 print "\n";
 print "    <!-- /.content -->\n";
-print "  </div>";
+print "  </div>\n";
 
-
+print "  <!-- /.content-wrapper -->\n";
 print "\n";
 print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
@@ -633,5 +591,4 @@ print "</body>\n";
 print "\n";
 print "</html>";
 
-mysqli_close($conn);
 ?>
