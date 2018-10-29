@@ -35,3 +35,5 @@ SELECT MAX('$uid') FROM user;
 $newUserId = maxOfUserID + 1
 INSERT INTO user VALUES('$newUserId', '$username', '$password');
 INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '$picture');
+
+INSERT INTO user VALUES(1006, "testerman", "pass");

@@ -1,5 +1,49 @@
 <?php
+
+/*
+If it is a success, display a link to the login page
+
+If it fails, say what the problem was (username taken, or whatever).
+Link back to sign up page.
+
+Ideally display problems on Sign-up page after clicking submit.
+*/
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+$email = $_POST['email'];
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
+$year = $_POST['year'];
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+printf("$username \n $password \n $email \n $fname \n $lname \n $year");
+ if (mysqli_connect_errno()){
+   printf("Connect failed: %s\n", mysqli_connect_error());
+   exit(1);
+ }
+
+ $query = "SELECT MAX(uid) AS max FROM user;";
+ if ( ! ( $result = mysqli_query($conn, $query)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+ }
+ $newUserId = mysqli_fetch_assoc($result);
+ $newUserId = $newUserId['max'] + 1;
+/*
+ $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
+ if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
+   print("<h4> Error1. Signup Failed. </h4>\n");
+   exit(1);
+ }
+ $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId');";
+ if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
+   print("<h4> Error2. Signup Failed. </h4>\n");
+   exit(1);
+ }
+*/
 print "<!DOCTYPE html>\n";
+/*
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
 print "scratch. This page gets rid of all links and provides the needed markup only.\n";
@@ -62,7 +106,7 @@ print "  <!-- Main Header -->\n";
 print "  <header class=\"main-header\">\n";
 print "\n";
 print "    <!-- Logo -->\n";
-print "    <a href=\"#\" class=\"logo\">\n";
+print "    <a href=\"index2.html\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
 print "      <span class=\"logo-mini\"><b>E</b>LE</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
@@ -70,16 +114,17 @@ print "      <span class=\"logo-lg\"><b>Eagle</b>Events</span>\n";
 print "    </a>\n";
 print "\n";
 print "    <!-- Header Navbar -->\n";
-print "    <nav class=\"navbar navbar-static-top\" role=\"navigation\">\n";
+print "    <nav class=\"navbar navbar-static-top\" role=\"navigation\"> \n";
 print "  </header>\n";
+print "\n";
+print "\n";
 print "\n";
 print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
 print "    <section class=\"content-header\">\n";
 print "      <h1>\n";
-print "        Welcome to Eagle Events! Please sign up below.\n";
-print "        <small>Get notified about Emory events!</small>\n";
+print "        Account Created. Welcome to Eagle Events!\n";
 print "      </h1>\n";
 print "    </section>\n";
 print "\n";
@@ -92,76 +137,11 @@ print "        -------------------------->\n";
 print "\n";
 print "        <div class=\"container\">\n";
 print "     <h3>\n";
-print "\n";
+print "   \n";
 print "     </h5>\n";
-print "        <form action = \"SuccessPage.php\" method = \"POST\">\n";
+print "        <form action = \"login.html\" method = \"POST\">\n";
 print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"username\">Username</label>\n";
-print "              <input type=\"text\" name = \"username\" class=\"form-control\" placeholder=\"Username\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"password\">Password</label>\n";
-print "              <input type=\"PASSWORD\" name = \"password\" class=\"form-control\" placeholder=\"Password\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"password2\">Re-enter Password</label>\n";
-print "              <input type=\"PASSWORD\" name = \"password2\" class=\"form-control\" placeholder=\"Password\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"email\">Email</label>\n";
-print "              <input type=\"text\" name = \"email\" class=\"form-control\" placeholder=\"Email\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"fname\">First Name</label>\n";
-print "              <input type=\"text\" name = \"fname\" class=\"form-control\" placeholder=\"First Name\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "            <div class=\"col\">\n";
-print "              <label for=\"lname\">Last Name</label>\n";
-print "              <input type=\"text\" name = \"lname\" class=\"form-control\" placeholder=\"Last Name\" required>\n";
-print "            </div>\n";
-print "          </div>\n";
-print "          <br><br>\n";
-print "          <div class=\"form-row\">\n";
-print "              <label class=\"custom-control-label\" for=\"year\">Year</label><br>\n";
-print "              <div class=\"custom-control custom-radio\">\n";
-print "                <input type=\"radio\" class=\"custom-control-input\" id=\"Freshman\" name=\"year\" required>\n";
-print "                <label class=\"custom-control-label\" for=\"Freshman\">Freshman</label>\n";
-print "              </div>\n";
-print "              <div class=\"custom-control custom-radio\">\n";
-print "                <input type=\"radio\" class=\"custom-control-input\" id=\"Sophomore\" name=\"year\" required>\n";
-print "                <label class=\"custom-control-label\" for=\"Sophomore\">Sophomore</label>\n";
-print "              </div>\n";
-print "              <div class=\"custom-control custom-radio\">\n";
-print "                <input type=\"radio\" class=\"custom-control-input\" id=\"Junior\" name=\"year\" required>\n";
-print "                <label class=\"custom-control-label\" for=\"Junior\">Junior</label>\n";
-print "              </div>\n";
-print "              <div class=\"custom-control custom-radio\">\n";
-print "                <input type=\"radio\" class=\"custom-control-input\" id=\"Senior\" name=\"year\" required>\n";
-print "                <label class=\"custom-control-label\" for=\"Senior\">Senior</label>\n";
-print "              </div>\n";
-print "              <div class=\"custom-control custom-radio\">\n";
-print "                <input type=\"radio\" class=\"custom-control-input\" id=\"Graduate\" name=\"year\" required>\n";
-print "                <label class=\"custom-control-label\" for=\"Graduate\">Graduate</label>\n";
-print "              </div>\n";
-print "          <br><br>\n";
-print "          <button type = \"submit\" class = \"btn btn-primary\"> Submit </button>\n";
+print "          <button type = \"Submit\" class = \"btn btn-primary\"> Click here to log in! </button>\n";
 print "        </form>\n";
 print "     </h5>\n";
 print "   </div>\n";
@@ -174,9 +154,15 @@ print "\n";
 print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
 print "    <!-- To the right -->\n";
+print "    <div class=\"pull-right hidden-xs\">\n";
+print "      Anything you want\n";
+print "    </div>\n";
 print "    <!-- Default to the left -->\n";
-print "    <strong>Copyright © 2018 <a href=\"#\">EagleEvents</a>.</strong> All rights reserved.\n";
+print "    <strong>Copyright © 2016 <a href=\"#\">Company</a>.</strong> All rights reserved.\n";
 print "  </footer>\n";
+print "\n";
+print "\n";
+print "\n";
 print "\n";
 print "  <!-- /.control-sidebar -->\n";
 print "  <!-- Add the sidebar's background. This div must be placed\n";
@@ -196,5 +182,7 @@ print "<!-- Optionally, you can add Slimscroll and FastClick plugins.\n";
 print "     Both of these plugins are recommended to enhance the\n";
 print "     user experience. -->\n";
 print "</body>\n";
-print "</html>\n";
+*/
+print "</html>";
+
 ?>
