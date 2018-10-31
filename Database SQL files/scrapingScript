@@ -1,0 +1,39 @@
+#import mysql.connector
+import feedparser
+import re
+
+rssFeedURL = "https://www.trumba.com/calendars/emory-events.rss?filter1=_171448_&filterfield1=20515"
+d = feedparser.parse(rssFeedURL)
+
+for x in range(10):
+    print d.entries[x].title
+    print d.entries[x].category
+    descrip = d.entries[x].description
+    start = 0
+    end = descrip.find('<br />', start)
+    print descrip[start:end]
+
+    timeStr = re.findall(r'(\d{1}&|\d{1}:\d{2})', descrip)
+    try:
+        for x in range(len(timeStr)):
+            timeStr[x] = re.sub(r'&','', timeStr[x])
+        print "Start time: " + timeStr[0]
+        print "End time: " + timeStr[1]
+    except:
+        print "Times not available"
+    print "\n"
+
+# eedb = mysql.connector.connect(
+#     host = "localhost",
+#     user = "root",
+#     passwd = ""
+# )
+#
+# cursor = eedb.cursor()
+#
+# sql = "INSERT INTO location () VALUES (%s, %s)"
+# val = ("", "")
+# cursor.execute(sql, val)
+#
+# eedb.commit()
+# print(mycursor.rowcount, "record inserted.")

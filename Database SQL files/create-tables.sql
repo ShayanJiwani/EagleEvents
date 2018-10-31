@@ -31,8 +31,8 @@ CREATE TABLE location
   building VARCHAR(30), NOT NULL
   room VARCHAR(30) NOT NULL,
   campus VARCHAR(16) NOT NULL,
-  longitude DECIMAL(9,6) NOT NULL,
   latitude DECIMAL(9,6) NOT NULL,
+  longitude DECIMAL(9,6) NOT NULL,
   location_id INT(4),
   CONSTRAINT locationPK PRIMARY KEY (location_id)
 );
