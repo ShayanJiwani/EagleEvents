@@ -34,13 +34,11 @@ else {
   $name = mysqli_fetch_assoc($result2);
   $fname = $name['fname'];
   $lname = $name['lname'];
+
+  $_SESSION['uid'] = $uid;
+  $_SESSION['fname'] = $fname;
+  $_SESSION['lname'] = $lname;
 }
-
-$_SESSION['uid'] = $uid;
-$_SESSION['fname'] = $fname;
-$_SESSION['lname'] = $lname;
-
-
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club

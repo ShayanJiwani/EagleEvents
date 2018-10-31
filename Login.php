@@ -1,4 +1,7 @@
 <?php
+session_start();
+$_SESSION = array();
+session_destroy();
 print "<!DOCTYPE html>\n";
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
@@ -109,14 +112,25 @@ print "              <input type=\"PASSWORD\" name = \"password\" class=\"form-c
 print "            </div>\n";
 print "          </div>\n";
 print "          <br><br><br>\n";
-print "          <button type = \"submit\" class = \"btn btn-primary\"> Submit </button>\n";
+print "          <button type = \"submit\" class = \"btn btn-primary\"> Submit </button> \n";
 print "        </form>\n";
-print "     </h5>\n";
+print "    \n";
+print "\n";
+print "        <form action = \"SignUp.php\" method = \"POST\">\n";
+print "            <br><br>\n";
+print "            <div class=\"form-row\">\n";
+print "            <div class=\"col\">\n";
+print "          <button type = \"submit\" class = \"btn btn-primary\"> Sign Up for an Account </button>\n";
+print "        </div>\n";
+print "      </div>\n";
+print "        </form>\n";
+print "\n";
+print "         </h5>\n";
 print "   </div>\n";
 print "\n";
 print "    </section>\n";
 print "    <!-- /.content -->\n";
-print "  </div>\n";
+print "  </div>";
 print "  <!-- /.content-wrapper -->\n";
 print "\n";
 print "  <!-- Main Footer -->\n";

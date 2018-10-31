@@ -138,7 +138,7 @@ print "        <div class=\"container\">\n";
 print "     <h3>\n";
 print "   \n";
 print "     </h5>\n";
-print "        <form action = \"login.html\" method = \"POST\">\n";
+print "        <form action = \"Login.php\" method = \"POST\">\n";
 print "          <br><br>\n";
 print "          <button type = \"Submit\" class = \"btn btn-primary\"> Click here to log in! </button>\n";
 print "        </form>\n";
