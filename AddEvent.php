@@ -224,7 +224,7 @@ print "                <div class=\"pull-left\">\n";
 print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profile</a>\n";
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
-print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
+print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
 print "                </div>\n";
 print "              </li>\n";
 print "            </ul>\n";

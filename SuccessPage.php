@@ -17,7 +17,6 @@ $lname = $_POST['lname'];
 $year = $_POST['year'];
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
-printf("$username \n $password \n $email \n $fname \n $lname \n $year");
  if (mysqli_connect_errno()){
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
@@ -30,20 +29,20 @@ printf("$username \n $password \n $email \n $fname \n $lname \n $year");
  }
  $newUserId = mysqli_fetch_assoc($result);
  $newUserId = $newUserId['max'] + 1;
-/*
- $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
+
+ $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password', '');";
  if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
    print("<h4> Error1. Signup Failed. </h4>\n");
    exit(1);
  }
- $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId');";
+
+ $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '');";
  if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
    print("<h4> Error2. Signup Failed. </h4>\n");
    exit(1);
  }
-*/
 print "<!DOCTYPE html>\n";
-/*
+
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
 print "scratch. This page gets rid of all links and provides the needed markup only.\n";
@@ -182,7 +181,6 @@ print "<!-- Optionally, you can add Slimscroll and FastClick plugins.\n";
 print "     Both of these plugins are recommended to enhance the\n";
 print "     user experience. -->\n";
 print "</body>\n";
-*/
 print "</html>";
 
 ?>
