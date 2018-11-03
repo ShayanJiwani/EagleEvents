@@ -351,26 +351,28 @@ print "      </h1>\n";
 print "    </section>\n";
 print "\n";
 // gets header so we can skip it
-/*
-$row = mysqli_fetch_assoc($resultEvent);
+//$row = mysqli_fetch_assoc($resultEvent);
 // define array of markers
+/*
 $markers = array();
 $count = 0;
 // each object of array is a json object
 while ($row = mysqli_fetch_assoc($resultEvent)) {
-  printf($resultEvent['Name'] . "    " . $resultEvent['Description'];)
-  $jsonEvent->name = $resultEvent['Name'];
-  $jsonEvent->description = $resultEvent['Description'];
-  $jsonEvent->day = $resultEvent['Day'];
-  $jsonEvent->starts = $resultEvent['Starts'];
-  $jsonEvent->ends = $resultEvent['Ends'];
-  $jsonEvent->building = $resultEvent['Building'];
-  $jsonEvent->room = $resultEvent['Room'];
-  $jsonEvent->club = $resultEvent['Club'];
-  $markers[count] = $jsonEvent;
+  //printf($row['Name'] . " \n\n\n");
+  $jsonEvent = array();
+  $jsonEvent['name'] = $row['Name'];
+  $jsonEvent['description'] = $row['Description'];
+  $jsonEvent['day'] = $row['Day'];
+  $jsonEvent['starts'] = $row['Starts'];
+  $jsonEvent['ends'] = $row['Ends'];
+  $jsonEvent['building'] = $row['Building'];
+  $jsonEvent['room'] = $row['Room'];
+  $jsonEvent['club'] = $row['Club'];
+  $markers[$count] = $jsonEvent;
   $count++;
 }
-$myJson = json_encode($markers);*/
+$myJson = json_encode($markers);
+printf("<pre>%s</pre>", $myJson);*/
 ?>
 <!-- Main content -->
 <section class="content container-fluid">
@@ -379,13 +381,13 @@ $myJson = json_encode($markers);*/
     | Your Page Content Here | Chris Lew
     -->
   <div id = "map"></div>
-  <script>
 
+    <script>
       //exchange this part of the code to database in order to actually connect to the real data
       //just replace eventmap.
       //test data
     //window.alert(markerObjects);
-    var markerObjects = "<?php echo $myJson ?>";
+    var markerObjects = "<?php echo json_encode($markers) ?>";
     //window.alert(JSON.stringify(markerObjects));
     var eventmap = {
         emorygaming:{
@@ -546,7 +548,6 @@ $myJson = json_encode($markers);*/
     }
 
   }
-
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
