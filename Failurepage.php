@@ -93,13 +93,17 @@ desired effect
 
         <div class="container">
      <h3>
-
-     </h5>
-        <form action = "SignUp.html" method = "POST">
-          <br><br>
-          <button type = "Submit" class = "btn btn-primary"> Failure. INSERT SPECIFIC ERROR HERE Click here to try again. </button>
-        </form>
-     </h5>
+<?php
+     $errorMsg = S_POST['errorCode'];
+     print "<h5>\n";
+     print "Failure.<br>\n"
+     print "$errorMsg";
+     print "  <form action = "SignUp.html" method = "POST">";
+     print "    <br><br>";
+     print "    <button type = "Submit" class = "btn btn-primary"> Click here to try again. </button>";
+     print "  </form>";
+     print "</h5>";
+?>
    </div>
 
     </section>
