@@ -28,7 +28,7 @@ CREATE TABLE club
 /* Create the location table */
 CREATE TABLE location
 (
-  building VARCHAR(30), NOT NULL
+  building VARCHAR(30) NOT NULL,
   room VARCHAR(30) NOT NULL,
   campus VARCHAR(16) NOT NULL,
   latitude DECIMAL(9,6) NOT NULL,
