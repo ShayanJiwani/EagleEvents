@@ -460,7 +460,7 @@ printf("<pre>%s</pre>", $myJson);*/
         var marker = new google.maps.Marker({
             map: map,
             position:{lat: 33.7925,lng:-84.3240},
-            title:'Emory Campas'
+            title:'Emory Campus'
         });
         for (var event in eventmap){
             addMarker(eventmap[event]);

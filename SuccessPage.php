@@ -11,6 +11,7 @@ Ideally display problems on Sign-up page after clicking submit.
 
 $username = $_POST['username'];
 $password = $_POST['password'];
+$password2 = $_POST['password2'];
 $email = $_POST['email'];
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
@@ -20,6 +21,33 @@ $conn = mysqli_connect("localhost","root",
  if (mysqli_connect_errno()){
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
+ }
+
+ $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
+ if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
+   print "<form action = \"Failurepage.html\" method = \"POST\">\n";
+   print "  <br><br>\n";
+   print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
+   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+   print "</form>\n";
+   print "<script type="text/javascript">";
+   print "document.getElementById('SuccessPage').submit();";
+   print "</script>";
+ }
+ if($password != $password2){
+   print "<form action = \"Failurepage.html\" method = \"POST\">\n";
+   print "  <br><br>\n";
+   print "  <input type = "hidden" name = "errorCode" value = "Passwords do not match.">";
+   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+   print "</form>\n";
+   print "<script type="text/javascript">\n";
+   print "document.getElementById('SuccessPage').submit();\n";
+   print "</script>";
+ }
+
+ $queryCheckPW = "SELECT uid FROM user WHERE username = $username";
+ if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
+
  }
 
  $query = "SELECT MAX(uid) AS max FROM user;";
