@@ -94,7 +94,7 @@ desired effect
         <div class="container">
      <h3>
 <?php
-     $errorMsg = S_POST['errorCode'];
+     $errorMsg = $_POST['errorCode'];
      print "<h5>\n";
      print "Failure.<br>\n"
      print "$errorMsg";

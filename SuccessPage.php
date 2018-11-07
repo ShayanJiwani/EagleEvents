@@ -1,76 +1,5 @@
 <?php
-
-/*
-If it is a success, display a link to the login page
-
-If it fails, say what the problem was (username taken, or whatever).
-Link back to sign up page.
-
-Ideally display problems on Sign-up page after clicking submit.
-*/
-
-$username = $_POST['username'];
-$password = $_POST['password'];
-$password2 = $_POST['password2'];
-$email = $_POST['email'];
-$fname = $_POST['fname'];
-$lname = $_POST['lname'];
-$year = $_POST['year'];
-$conn = mysqli_connect("localhost","root",
-"Eagle123", "eagleEvents");
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
-
- $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
- if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
-   print "<form action = \"Failurepage.html\" method = \"POST\">\n";
-   print "  <br><br>\n";
-   print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
-   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-   print "</form>\n";
-   print "<script type="text/javascript">";
-   print "document.getElementById('SuccessPage').submit();";
-   print "</script>";
- }
- if($password != $password2){
-   print "<form action = \"Failurepage.html\" method = \"POST\">\n";
-   print "  <br><br>\n";
-   print "  <input type = "hidden" name = "errorCode" value = "Passwords do not match.">";
-   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-   print "</form>\n";
-   print "<script type="text/javascript">\n";
-   print "document.getElementById('SuccessPage').submit();\n";
-   print "</script>";
- }
-
- $queryCheckPW = "SELECT uid FROM user WHERE username = $username";
- if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
-
- }
-
- $query = "SELECT MAX(uid) AS max FROM user;";
- if ( ! ( $result = mysqli_query($conn, $query)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
- }
- $newUserId = mysqli_fetch_assoc($result);
- $newUserId = $newUserId['max'] + 1;
-
- $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password', '');";
- if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
-   print("<h4> Error1. Signup Failed. </h4>\n");
-   exit(1);
- }
-
- $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '');";
- if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
-   print("<h4> Error2. Signup Failed. </h4>\n");
-   exit(1);
- }
 print "<!DOCTYPE html>\n";
-
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
 print "scratch. This page gets rid of all links and provides the needed markup only.\n";
@@ -150,9 +79,85 @@ print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
 print "    <section class=\"content-header\">\n";
-print "      <h1>\n";
-print "        Account Created. Welcome to Eagle Events!\n";
-print "      </h1>\n";
+/*
+If it is a success, display a link to the login page
+
+If it fails, say what the problem was (username taken, or whatever).
+Link back to sign up page.
+
+Ideally display problems on Sign-up page after clicking submit.
+*/
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+$password2 = $_POST['password2'];
+$email = $_POST['email'];
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
+$year = $_POST['year'];
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+ if (mysqli_connect_errno()){
+   printf("Connect failed: %s\n", mysqli_connect_error());
+   exit(1);
+ }
+
+ $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
+ if(!($result = mysqli_query($conn, $queryCheckUN))) {
+   //print "<br><h1>username exists</h1><br>";
+   print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+   print "  <br><br>\n";
+   print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
+   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+   print "</form>\n";
+   print "<script type="text/javascript">";
+   print "document.getElementById('SuccessPage').submit();";
+   print "</script>";
+ }
+ else if($password != $password2){
+   //print "<br><h1>passwords don't match</h1><br>";
+   print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+   print "  <br><br>\n";
+   print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
+   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+   print "</form>\n";
+   print "<script type="text/javascript">\n";
+   print "document.getElementById('SuccessPage').submit();\n";
+   print "</script>";
+ }
+ else {
+   $query = "SELECT MAX(uid) AS max FROM user;";
+   if ( ! ( $result = mysqli_query($conn, $query)) ) {
+     printf("Error: %s\n", mysqli_error($conn));
+     exit(1);
+   }
+   $newUserId = mysqli_fetch_assoc($result);
+   $newUserId = $newUserId['max'] + 1;
+
+   $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password', '');";
+   if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
+     print("<h4> Error1. Signup Failed. </h4>\n");
+     exit(1);
+   }
+
+   $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '');";
+   if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
+     print("<h4> Error2. Signup Failed. </h4>\n");
+     exit(1);
+   }
+   print "      <h1>\n";
+   print "        Account Created. Welcome to Eagle Events!\n";
+   print "      </h1>\n";
+ }
+/*
+ $queryCheckPW = "SELECT uid FROM user WHERE username = $username";
+ if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
+
+ }
+*/
+//print "      <h1>\n";
+//print "        Account Created. Welcome to Eagle Events!\n";
+//print "      </h1>\n";
 print "    </section>\n";
 print "\n";
 print "    <!-- Main content -->\n";

@@ -69,7 +69,7 @@ desired effect
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation"> 
+    <nav class="navbar navbar-static-top" role="navigation">
   </header>
 
 
@@ -97,11 +97,17 @@ desired effect
 
         <div class="container">
      <h3>
-   
+
      </h5>
         <form action = "login.html" method = "POST">
           <br><br>
           <button type = "Submit" class = "btn btn-primary"> Sucess. Click here to log on. </button>
+        </form>
+
+        <form action = "Failurepage.html" method = "POST">
+        <br><br>
+          <input type = "hidden" name = "errorCode" value = "Username is taken.">
+          <button type = "Submit" class = "btn btn-primary"> Submit </button>
         </form>
      </h5>
    </div>
