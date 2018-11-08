@@ -39,10 +39,10 @@ INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 
 INSERT INTO user VALUES(1006, "testerman", "pass");
 
 
-/* Add a club to a student's list of clubs, i.e., add student info to clubMember table*/
+/* Add a club to a student's list of clubs, i.e., add student info to clubMember table */
 
 INSERT INTO clubMember VALUES('$club_id','$uid', 0);
 
-/* Add a club to a student's list of clubs, i.e., add student info to clubMember table*/
+/* Add an event to a student's list of events, i.e., add student info to event table */
 
 INSERT INTO attendance VALUES('$event_id','$uid');

@@ -104,26 +104,26 @@ $conn = mysqli_connect("localhost","root",
 
  $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
  if(!($result = mysqli_query($conn, $queryCheckUN))) {
-   //print "<br><h1>username exists</h1><br>";
-   print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+   print "<br><h1>username exists</h1><br>";
+   /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
    print "  <br><br>\n";
    print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
    print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
    print "</form>\n";
    print "<script type="text/javascript">";
    print "document.getElementById('SuccessPage').submit();";
-   print "</script>";
+   print "</script>";*/
  }
  else if($password != $password2){
-   //print "<br><h1>passwords don't match</h1><br>";
-   print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+   print "<br><h1>passwords don't match</h1><br>";
+   /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
    print "  <br><br>\n";
    print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
    print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
    print "</form>\n";
    print "<script type="text/javascript">\n";
    print "document.getElementById('SuccessPage').submit();\n";
-   print "</script>";
+   print "</script>";*/
  }
  else {
    $query = "SELECT MAX(uid) AS max FROM user;";
