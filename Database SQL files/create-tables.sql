@@ -29,10 +29,10 @@ CREATE TABLE club
 CREATE TABLE location
 (
   building VARCHAR(30) NOT NULL,
-  room VARCHAR(30) NOT NULL,
   campus VARCHAR(16) NOT NULL,
   latitude DECIMAL(9,6) NOT NULL,
   longitude DECIMAL(9,6) NOT NULL,
+  radius DECIMAL(9,6) NOT NULL,
   location_id INT(4),
   CONSTRAINT locationPK PRIMARY KEY (location_id)
 );
@@ -46,6 +46,7 @@ CREATE TABLE event
   startTime time NOT NULL,
   endTime time NOT NULL,
   location_id INT(4),
+  room VARCHAR(30),
   event_id INT(4),
   type VARCHAR(25),
   open BOOLEAN NOT NULL,
