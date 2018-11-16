@@ -1,13 +1,13 @@
-White Hall,205,main,33.790810,-84.326006,100
-White Hall,206,main,33.790810,-84.326006,101
-White Hall,207,main,33.790810,-84.326006,102
-White Hall,208,main,33.790810,-84.326006,103
-MSC,lobby,main,33.790198, -84.326446,104
-MSC,301,main,33.790198, -84.326446,105
-Cox Hall,Ballroom,main,33.792369, -84.323249,106
-Raoul,lobby,main,33.794892, -84.324113,107
-Outdoors,Cox Bridge,main,33.792105, -84.323538,108
-Outdoors,Asbury Circle,main,33.792680, -84.324158,109
-Outdoors,Quad,main,33.790763, -84.324416,110
-Outdoors,Freshman Quad,main,33.794636, -84.323088,111
-SAAC,312,clairmont,33.796686, -84.308701,112
+White Hall,205,main,-84.326006,33.790810,100
+White Hall,206,main,-84.326006,33.790810,101
+White Hall,207,main,-84.326006,33.790810,102
+White Hall,208,main,-84.326006,33.790810,103
+MSC,lobby,main,-84.326446,33.790198,104
+MSC,301,main,-84.326446,33.790198,105
+Cox Hall,Ballroom,main, -84.323249,33.792369,106
+Raoul,lobby,main, -84.324113,33.794892,107
+Outdoors,Cox Bridge,main, -84.323538,33.792105,108
+Outdoors,Asbury Circle,main, -84.324158,33.792680,109
+Outdoors,Quad,main, -84.324416,33.790763,110
+Outdoors,Freshman Quad,main, -84.323088,33.794636,111
+SAAC,312,clairmont, -84.308701,33.796686,112

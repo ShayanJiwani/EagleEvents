@@ -469,10 +469,20 @@ $myJson = json_encode($markers);
         }];
 
         map.setOptions({ styles: noPoi });
-        var marker = new google.maps.Marker({
+
+        var homeMarker = new google.maps.Marker({
             map: map,
             position:{lat: 33.7925,lng:-84.3240},
-            title:'Emory Campus'
+            title:'Emory University'
+        });
+        var homeInfoWindow = new google.maps.InfoWindow({
+            content: homeMarker.title + "<br/>" +
+                     "Welcome to your Campus Map!"
+        });
+        homeMarker.addListener('click', function(){
+            if(lastWindow){ lastWindow.close()};
+            homeInfoWindow.open(map, homeMarker);
+            lastWindow = homeInfoWindow;
         });
         /*
         for (var event in eventmap){
@@ -483,7 +493,6 @@ $myJson = json_encode($markers);
                 map: map,
                 position: {lat: event.lat,lng: event.lng}
             });
-            window.alert(marker.position);
             if(event.dcpt){
                 var infoWindow = new google.maps.InfoWindow({
                     content: event.club +
@@ -493,7 +502,6 @@ $myJson = json_encode($markers);
                             "<br/>" + event.start + " - " + event.end +
                             "<br/>" + event.location
                 });
-                window.alert(infoWindow.content);
                 marker.addListener('click', function(){
                     if(lastWindow){ lastWindow.close()};
                     infoWindow.open(map, marker);
@@ -501,20 +509,16 @@ $myJson = json_encode($markers);
                 });
             }
         }*/
-
-
+        //window.alert(JSON.stringify(markerObjects, null, 2));
         for (var event in markerObjects){
             addMarker(markerObjects[event]);
-            //window.alert(JSON.stringify(markerObjects[event], null, 2));
         }
-
         function addMarker(event){
-          window.alert(JSON.stringify(event, null, 2));
             var marker = new google.maps.Marker({
                 map: map,
                 position: {lat: event.lat,lng: event.lng}
             });
-            window.alert(marker.position);
+            //window.alert(marker.position);
             if(event.description){
                 var infoWindow = new google.maps.InfoWindow({
                     content: event.club +
@@ -524,7 +528,6 @@ $myJson = json_encode($markers);
                             "<br/>" + event.starts + " - " + event.ends +
                             "<br/>" + event.building + "<br/>" + event.room
                 });
-                window.alert(JSON.stringify(infoWindow.content, null, 2));
                 marker.addListener('click', function(){
                     if(lastWindow){ lastWindow.close()};
                     infoWindow.open(map, marker);
@@ -532,7 +535,6 @@ $myJson = json_encode($markers);
                 });
             }
         }
-
         var infoWindow = new google.maps.InfoWindow;
         var currentLocation = new google.maps.Marker()
         if (navigator.geolocation) {

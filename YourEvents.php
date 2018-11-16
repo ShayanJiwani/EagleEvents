@@ -11,7 +11,24 @@ $conn = mysqli_connect("localhost","root",
    exit(1);
  }
 
- $queryEvents = "SELECT ename AS Name, edescription AS Description,
+ if ($_POST != NULL) {
+   foreach($_POST as $key => $val) {
+     $queryGet = "SELECT * FROM attendance WHERE event_id = '$val' AND uid = '$uid';";
+     if ( ! ( $result = mysqli_query($conn, $queryGet)) ) {
+       printf("Error1: %s\n", mysqli_error($conn));
+       exit(1);
+     }
+     if (mysqli_num_rows($result) == 0) {
+       $queryInsert = "INSERT INTO attendance VALUES('$val','$uid');";
+       if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
+         printf("Error2: %s\n", mysqli_error($conn));
+         exit(1);
+       }
+     }
+   }
+ }
+
+ $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
        DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
        TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
        FROM attendance a, event e, location l, club c
@@ -352,14 +369,20 @@ while ($row = mysqli_fetch_assoc($result)){
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-        print "<th>" . $key . "</th>";
+       if ($key != 'event_id') {
+         print "<th>" . $key . "</th>";
+       }
      }
+     print "<th>Checkbox</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-     print ("<td>" . $value . "</td>");
+    if ($key != 'event_id') {
+      print ("<td>" . $value . "</td>");
+    }
   }
+  print ("<td><input type=\"checkbox\" name=\"add\" value=" . $row['event_id'] . "></td>");
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
@@ -370,7 +393,7 @@ print "            </div>\n";
 print "            <!-- /.box-body -->\n";
 print "            <div class=\"box-footer clearfix\">\n";
 print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
-print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
+print "              <a href=\"AllEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
 print "            </div>\n";
 print "            <!-- /.box-footer -->\n";
 print "          </div>\n";

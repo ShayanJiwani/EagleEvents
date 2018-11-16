@@ -103,7 +103,7 @@ $conn = mysqli_connect("localhost","root",
  }
 
  $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
- if(!($result = mysqli_query($conn, $queryCheckUN))) {
+ if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
    print "<br><h1>username exists</h1><br>";
    /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
    print "  <br><br>\n";

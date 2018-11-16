@@ -12,7 +12,7 @@ $conn = mysqli_connect("localhost","root",
    exit(1);
  }
 
- $queryClubs = "SELECT cname AS Name, cdescription AS Description, category AS Category
+ $queryClubs = "SELECT club_id, cname AS Name, cdescription AS Description, category AS Category
         FROM club ORDER BY cname ASC;";
 
  if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
@@ -344,19 +344,28 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
+print "<form action = \"YourClubs.php\" method = \"POST\">";
+$counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-        print "<th>" . $key . "</th>";
+       if ($key != 'club_id') {
+         print "<th>" . $key . "</th>";
+       }
      }
+     print "<th>Checkbox</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-     print ("<td>" . $value . "</td>");
+    if ($key != 'club_id') {
+      print ("<td>" . $value . "</td>");
+    }
   }
+  print ("<td><input type=\"checkbox\" name=\"cid$counter\"  value=" . $row['club_id'] . "></td>");
+  $counter++;
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
@@ -365,12 +374,11 @@ print "              </div>\n";
 print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "            <!-- /.box-body -->\n";
-/*
 print "            <div class=\"box-footer clearfix\">\n";
-print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Clubs</a>\n";
-print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Clubs</a>\n";
-print "            </div>\n";
-*/
+//print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
+//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">Add Selected Events</a>\n";
+print "   <input type=\"submit\" value=\"Add Clubs\" class=\"btn btn-sm btn-default btn-flat pull-right\">";
+print "</form>";
 print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";
