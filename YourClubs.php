@@ -19,17 +19,28 @@ $conn = mysqli_connect("localhost","root",
        printf("Error1: %s\n", mysqli_error($conn));
        exit(1);
      }
-     if (mysqli_num_rows($result) == 0) {
-       $queryInsert = "INSERT INTO clubMember VALUES('$val','$uid', 0);";
-       if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
-         printf("Error2: %s\n", mysqli_error($conn));
-         exit(1);
+     if (strpos($key, "ycid") === 0) {
+       if (mysqli_num_rows($result) != 0) {
+         $queryRemove = "DELETE FROM clubMember WHERE club_id = '$val' AND uid = '$uid';";
+         if ( ! ( $result2 = mysqli_query($conn, $queryRemove)) ) {
+           printf("Error2: %s\n", mysqli_error($conn));
+           exit(1);
+         }
+       }
+     }
+     else {
+       if (mysqli_num_rows($result) == 0) {
+         $queryInsert = "INSERT INTO clubMember VALUES('$val','$uid', 0);";
+         if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
+           printf("Error2: %s\n", mysqli_error($conn));
+           exit(1);
+         }
        }
      }
    }
  }
 
- $queryClubs = "SELECT cname AS Name, cdescription AS Description, category AS Category
+ $queryClubs = "SELECT c.club_id, cname AS Name, cdescription AS Description, category AS Category
     FROM club c, clubMember m WHERE m.uid = '$uid' AND m.club_id = c.club_id ORDER BY cname ASC;";
 
  if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
@@ -361,6 +372,8 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
+print "<form action = \"YourClubs.php\" method = \"POST\">";
+$counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
@@ -379,7 +392,8 @@ while ($row = mysqli_fetch_assoc($result)){
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"add\" value=" . $row['club_id'] . "></td>");
+  print ("<td><input type=\"checkbox\" name=\"ycid$counter\" value=" . $row['club_id'] . "></td>");
+  $counter++;
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
@@ -389,7 +403,8 @@ print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "            <!-- /.box-body -->\n";
 print "            <div class=\"box-footer clearfix\">\n";
-print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Clubs</a>\n";
+print "   <input type=\"submit\" value=\"Remove Clubs\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
+print "</form>";
 print "              <a href=\"AllClubs.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Clubs</a>\n";
 print "            </div>\n";
 print "            <!-- /.box-footer -->\n";

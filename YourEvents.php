@@ -13,16 +13,28 @@ $conn = mysqli_connect("localhost","root",
 
  if ($_POST != NULL) {
    foreach($_POST as $key => $val) {
+     // check if its in the database
      $queryGet = "SELECT * FROM attendance WHERE event_id = '$val' AND uid = '$uid';";
      if ( ! ( $result = mysqli_query($conn, $queryGet)) ) {
        printf("Error1: %s\n", mysqli_error($conn));
        exit(1);
      }
-     if (mysqli_num_rows($result) == 0) {
-       $queryInsert = "INSERT INTO attendance VALUES('$val','$uid');";
-       if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
-         printf("Error2: %s\n", mysqli_error($conn));
-         exit(1);
+     if (strpos($key, "yeid") === 0) {
+       if (mysqli_num_rows($result) != 0) {
+         $queryRemove = "DELETE FROM attendance where event_id = '$val' AND uid = '$uid';";
+         if ( ! ( $result2 = mysqli_query($conn, $queryRemove)) ) {
+           printf("Error2: %s\n", mysqli_error($conn));
+           exit(1);
+         }
+       }
+     }
+     else {
+       if (mysqli_num_rows($result) == 0) {
+         $queryInsert = "INSERT INTO attendance VALUES('$val','$uid');";
+         if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
+           printf("Error2: %s\n", mysqli_error($conn));
+           exit(1);
+         }
        }
      }
    }
@@ -364,6 +376,8 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
+print "<form action = \"YourEvents.php\" method = \"POST\">";
+$counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
@@ -382,7 +396,8 @@ while ($row = mysqli_fetch_assoc($result)){
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"add\" value=" . $row['event_id'] . "></td>");
+  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  $counter++;
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
@@ -392,7 +407,9 @@ print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "            <!-- /.box-body -->\n";
 print "            <div class=\"box-footer clearfix\">\n";
-print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
+//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
+print "   <input type=\"submit\" value=\"Remove Events\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
+print "</form>";
 print "              <a href=\"AllEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
 print "            </div>\n";
 print "            <!-- /.box-footer -->\n";
