@@ -517,14 +517,14 @@ $myJson = json_encode($markers);
         function getLat(event){
           var min = event.radius * -1;
           var max = event.radius;
-          var newLat = Math.random() * (max - min) + min;
-          return newLat;
+          var delta = Math.random() * (max - min) + min;
+          return event.lat + delta;
         }
         function getLong(event){
           var min = event.radius * -1;
           var max = event.radius;
-          var newLong = Math.random() * (max - min) + min;
-          return newLong;
+          var delta = Math.random() * (max - min) + min;
+          return event.long + delta;
         }
         function addMarker(event){
             var marker = new google.maps.Marker({
