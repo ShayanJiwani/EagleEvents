@@ -11,6 +11,7 @@ if ($_POST != NULL) {
   }
   $username = $_POST['username'];
   $password = $_POST['password'];
+  $errString = "";
 
   $queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
   if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
@@ -19,10 +20,11 @@ if ($_POST != NULL) {
   }
   if (mysqli_num_rows($result) == 0) {
     // write errors
-    print "user does not exist";
+    $errString = "*Username or password incorrect. Please try again.";
   }
   else {
-    print "user DOES exist";
+    // add redirect here. POST array contains username + password
+    print("<p>user DOES exist</p>");
   }
   mysqli_close($conn);
 }
@@ -120,8 +122,11 @@ print "        <div class=\"container\">\n";
 print "     <h3>\n";
 print "\n";
 print "     </h5>\n";
-print "        <form action = \"HomePage.php\" method = \"POST\">\n";
-print "          <br><br>\n";
+if ($errString != "") {
+  printf("<p style=\"color:red;\">". $errString ."</p>\n");
+}
+print "        <form action = \"Login.php\" method = \"POST\">\n";
+print "          <br>\n";
 print "          <div class=\"form-row\">\n";
 print "            <div class=\"col\">\n";
 print "              <label for=\"username\">Username</label>\n";
