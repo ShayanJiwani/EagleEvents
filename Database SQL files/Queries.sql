@@ -53,3 +53,56 @@ DELETE FROM clubMember WHERE club_id = '$club_id' AND uid = '$uid';
 /* Delete From event table */
 
 DELETE FROM attendance where event_id = '$event_id' AND uid = '$uid';
+
+/* Get count of each event category for a user */
+
+SELECT COUNT(*) as Count, e.type AS Type
+FROM attendance a, event e
+WHERE a.uid = 1008
+AND a.event_id = e.event_id
+GROUP BY e.type
+ORDER BY Count;
+
+/* Get count of each club category for a user */
+/* Do LIMIT 1 to get max or min, based on orderby DESC or ASC
+PICK A RANDOM CLUB NOT IN THE USERS LIST FOR SUGGESTIONS TAB
+EACH TIME THEY REFRESH THERE IS A DIFFERENT SUGGESTION */
+
+SELECT COUNT(*) as Count, c.category AS Category
+FROM club c
+RIGHT OUTER JOIN clubMember m
+ON m.club_id = c.club_id
+WHERE m.uid = 1009
+GROUP BY c.category
+ORDER BY Count DESC;
+
+
+SELECT c.club_id, category, uid FROM clubMember m
+LEFT JOIN club c
+ON m.club_id = c.club_id
+WHERE m.uid = 1009
+UNION
+SELECT c.club_id, category
+FROM club c, clubMember m
+WHERE m.uid = 1009
+AND m.club_id != c.club_id;
+
+/* get club categories that a person has in their list */
+SELECT category
+FROM club c, clubMember m
+WHERE m.uid = 1009
+AND m.club_id = c.club_id
+GROUP BY category;
+
+/* This gets all club categories that are not in the user's list of clubs
+use this to show people random clubs from this list. For example: our
+"discover" clubs will select a random club from each of these categories
+*/
+SELECT cl.category
+FROM club cl
+WHERE cl.category NOT IN (SELECT category
+               FROM club c, clubMember m
+               WHERE m.uid = 1009
+               AND m.club_id = c.club_id
+               GROUP BY category)
+GROUP BY cl.category;
