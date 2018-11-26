@@ -34,16 +34,15 @@ else {
   $name = mysqli_fetch_assoc($result2);
   $fname = $name['fname'];
   $lname = $name['lname'];
+
+  $_SESSION['uid'] = $uid;
+  $_SESSION['fname'] = $fname;
+  $_SESSION['lname'] = $lname;
 }
-
-$_SESSION['uid'] = $uid;
-$_SESSION['fname'] = $fname;
-$_SESSION['lname'] = $lname;
-
-
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
+      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club,
+      longitude AS Longitude, latitude AS Latitude
       FROM attendance a, event e, location l, club c
       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
@@ -353,26 +352,29 @@ print "      </h1>\n";
 print "    </section>\n";
 print "\n";
 // gets header so we can skip it
-/*
-$row = mysqli_fetch_assoc($resultEvent);
+//$row = mysqli_fetch_assoc($resultEvent);
 // define array of markers
 $markers = array();
 $count = 0;
 // each object of array is a json object
 while ($row = mysqli_fetch_assoc($resultEvent)) {
-  printf($resultEvent['Name'] . "    " . $resultEvent['Description'];)
-  $jsonEvent->name = $resultEvent['Name'];
-  $jsonEvent->description = $resultEvent['Description'];
-  $jsonEvent->day = $resultEvent['Day'];
-  $jsonEvent->starts = $resultEvent['Starts'];
-  $jsonEvent->ends = $resultEvent['Ends'];
-  $jsonEvent->building = $resultEvent['Building'];
-  $jsonEvent->room = $resultEvent['Room'];
-  $jsonEvent->club = $resultEvent['Club'];
-  $markers[count] = $jsonEvent;
+  //printf($row['Name'] . " \n\n\n");
+  $jsonEvent = array();
+  $jsonEvent['name'] = $row['Name'];
+  $jsonEvent['description'] = $row['Description'];
+  $jsonEvent['day'] = $row['Day'];
+  $jsonEvent['starts'] = $row['Starts'];
+  $jsonEvent['ends'] = $row['Ends'];
+  $jsonEvent['building'] = $row['Building'];
+  $jsonEvent['lat'] = $row['Latitude'];
+  $jsonEvent['lng'] = $row['Longitude'];
+  $jsonEvent['room'] = $row['Room'];
+  $jsonEvent['club'] = $row['Club'];
+  $markers[$count] = $jsonEvent;
   $count++;
 }
-$myJson = json_encode($markers);*/
+$myJson = json_encode($markers);
+//printf("<pre>%s</pre>", $myJson);
 ?>
 <!-- Main content -->
 <section class="content container-fluid">
@@ -381,17 +383,23 @@ $myJson = json_encode($markers);*/
     | Your Page Content Here | Chris Lew
     -->
   <div id = "map"></div>
-  <script>
 
+    <script>
       //exchange this part of the code to database in order to actually connect to the real data
       //just replace eventmap.
       //test data
     //window.alert(markerObjects);
-    var markerObjects = "<?php echo $myJson ?>";
-    //window.alert(JSON.stringify(markerObjects));
+    var markerObjects = <?php echo json_encode($markers, JSON_NUMERIC_CHECK) ?>;
+    /*for (var event in markerObjects) {
+      window.alert(JSON.stringify(markerObjects[event], null, 2));
+    }*/
+    //var obj = markerObjects[0];
+    //window.alert(JSON.stringify(obj, null, 2));
+
     var eventmap = {
         emorygaming:{
-            center:{lat: 33.792385,lng:-84.323252},
+            lat: 33.792385,
+            lng:-84.323252,
             location: 'Cox Hall',
             club: 'EmoryGaming',
             dcpt: '<small>No game No life</small>',
@@ -401,7 +409,8 @@ $myJson = json_encode($markers);*/
             end: '9:00 pm'
         },
         emoryPartying:{
-            center:{lat: 33.790823,lng:-84.325964},
+            lat: 33.790823,
+            lng:-84.325964,
             location: 'White Hall',
             club: 'EmoryPartying',
             dcpt: 'No drink No life',
@@ -411,7 +420,8 @@ $myJson = json_encode($markers);*/
             end: '2:00 am'
         },
         emorySporting:{
-            center:{lat: 33.793276,lng:-84.325941},
+            lat: 33.793276,
+            lng:-84.325941,
             location: 'Emory Woodruff physical education center',
             club: 'EmoryPartying',
             dcpt: 'No blood No life',
@@ -421,7 +431,8 @@ $myJson = json_encode($markers);*/
             end: '7:00 pm'
         },
         emoryReading:{
-            center:{lat: 33.791297,lng:-84.323573},
+            lat: 33.791297,
+            lng:-84.323573,
             location: 'Candler Library',
             club: 'EmoryPartying',
             dcpt: 'No books No life',
@@ -431,7 +442,8 @@ $myJson = json_encode($markers);*/
             end: '6:00 pm'
         },
         emoryEating:{
-            center:{lat: 33.794055,lng:-84.325117},
+            lat: 33.794055,
+            lng:-84.325117,
             location: 'McDonough Field',
             club: 'EmoryEating',
             dcpt: 'No food No life',
@@ -457,18 +469,29 @@ $myJson = json_encode($markers);*/
         }];
 
         map.setOptions({ styles: noPoi });
-        var marker = new google.maps.Marker({
+
+        var homeMarker = new google.maps.Marker({
             map: map,
             position:{lat: 33.7925,lng:-84.3240},
-            title:'Emory Campus'
+            title:'Emory University'
         });
+        var homeInfoWindow = new google.maps.InfoWindow({
+            content: homeMarker.title + "<br/>" +
+                     "Welcome to your Campus Map!"
+        });
+        homeMarker.addListener('click', function(){
+            if(lastWindow){ lastWindow.close()};
+            homeInfoWindow.open(map, homeMarker);
+            lastWindow = homeInfoWindow;
+        });
+        /*
         for (var event in eventmap){
             addMarker(eventmap[event]);
         }
         function addMarker(event){
             var marker = new google.maps.Marker({
                 map: map,
-                position: event.center
+                position: {lat: event.lat,lng: event.lng}
             });
             if(event.dcpt){
                 var infoWindow = new google.maps.InfoWindow({
@@ -485,8 +508,33 @@ $myJson = json_encode($markers);*/
                     lastWindow = infoWindow;
                 });
             }
+        }*/
+        //window.alert(JSON.stringify(markerObjects, null, 2));
+        for (var event in markerObjects){
+            addMarker(markerObjects[event]);
         }
-
+        function addMarker(event){
+            var marker = new google.maps.Marker({
+                map: map,
+                position: {lat: event.lat,lng: event.lng}
+            });
+            //window.alert(marker.position);
+            if(event.description){
+                var infoWindow = new google.maps.InfoWindow({
+                    content: event.club +
+                            "<br/>" + event.name +
+                            "<br/>" + event.description +
+                            "<br/>" + event.day +
+                            "<br/>" + event.starts + " - " + event.ends +
+                            "<br/>" + event.building + "<br/>" + event.room
+                });
+                marker.addListener('click', function(){
+                    if(lastWindow){ lastWindow.close()};
+                    infoWindow.open(map, marker);
+                    lastWindow = infoWindow;
+                });
+            }
+        }
         var infoWindow = new google.maps.InfoWindow;
         var currentLocation = new google.maps.Marker()
         if (navigator.geolocation) {
@@ -548,7 +596,6 @@ $myJson = json_encode($markers);*/
     }
 
   }
-
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
@@ -562,7 +609,6 @@ $myJson = json_encode($markers);*/
 
 <!-- /.content -->
 </div>
-
 <?php
 print "\n";
 print "  <!-- Main Footer -->\n";

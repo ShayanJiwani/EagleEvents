@@ -34,16 +34,15 @@ else {
   $name = mysqli_fetch_assoc($result2);
   $fname = $name['fname'];
   $lname = $name['lname'];
+
+  $_SESSION['uid'] = $uid;
+  $_SESSION['fname'] = $fname;
+  $_SESSION['lname'] = $lname;
 }
-
-$_SESSION['uid'] = $uid;
-$_SESSION['fname'] = $fname;
-$_SESSION['lname'] = $lname;
-
-
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
+      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club,
+      longitude AS Longitude, latitude AS Latitude
       FROM attendance a, event e, location l, club c
       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
@@ -52,9 +51,8 @@ if ( ! ( $resultEvent = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);
 }
-printf(" num rows == " . mysqli_num_rows($resultEvent) . " <br>");
-print "<!DOCTYPE html>\n";
 
+print "<!DOCTYPE html>\n";
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
 print "scratch. This page gets rid of all links and provides the needed markup only.\n";
@@ -240,7 +238,7 @@ print "            <!-- Menu Toggle Button -->\n";
 print "            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n";
 print "              <!-- The user image in the navbar-->\n";
 print "              <img src=\"Images/profile.jpeg\" class=\"user-image\" alt=\"User Image\">\n";
-print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";*/
+print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";
 /* put in user information*/
 print "              <span class=\"hidden-xs\">$fname $lname</span>\n";
 print "            </a>\n";
@@ -276,7 +274,7 @@ print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profil
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
-print "                </div>";
+print "                </div>\n";
 print "              </li>\n";
 print "            </ul>\n";
 print "          </li>\n";
@@ -354,27 +352,312 @@ print "      </h1>\n";
 print "    </section>\n";
 print "\n";
 // gets header so we can skip it
-/*
-$row = mysqli_fetch_assoc($resultEvent);
+//$row = mysqli_fetch_assoc($resultEvent);
 // define array of markers
 $markers = array();
 $count = 0;
 // each object of array is a json object
 while ($row = mysqli_fetch_assoc($resultEvent)) {
-  printf($resultEvent['Name'] . "    " . $resultEvent['Description'];)
-  $jsonEvent->name = $resultEvent['Name'];
-  $jsonEvent->description = $resultEvent['Description'];
-  $jsonEvent->day = $resultEvent['Day'];
-  $jsonEvent->starts = $resultEvent['Starts'];
-  $jsonEvent->ends = $resultEvent['Ends'];
-  $jsonEvent->building = $resultEvent['Building'];
-  $jsonEvent->room = $resultEvent['Room'];
-  $jsonEvent->club = $resultEvent['Club'];
-  $markers[count] = $jsonEvent;
+  //printf($row['Name'] . " \n\n\n");
+  $jsonEvent = array();
+  $jsonEvent['name'] = $row['Name'];
+  $jsonEvent['description'] = $row['Description'];
+  $jsonEvent['day'] = $row['Day'];
+  $jsonEvent['starts'] = $row['Starts'];
+  $jsonEvent['ends'] = $row['Ends'];
+  $jsonEvent['building'] = $row['Building'];
+  $jsonEvent['room'] = $row['Room'];
+  $jsonEvent['club'] = $row['Club'];
+  $jsonEvent['latitude'] = $row['Room'];
+  $jsonEvent['longitude'] = $row['Club'];
+  $markers[$count] = $jsonEvent;
   $count++;
 }
-$myJson = json_encode($markers);*/
+$myJson = json_encode($markers);
+//printf("<pre>%s</pre>", $myJson);
+?>
+<!-- Main content -->
+<section class="content container-fluid">
 
+  <!--
+    | Your Page Content Here | Chris Lew
+    -->
+  <div id = "map"></div>
+
+    <script>
+      //exchange this part of the code to database in order to actually connect to the real data
+      //just replace eventmap.
+      //test data
+    var markerObjects = "<?php echo json_encode($markers) ?>";
+    window.alert(JSON.stringify(markerObjects));
+    /*
+    var eventMap;
+    for (var key in markerObjects) {
+      var obj = markerObjects[key];
+      eventMap.key = obj;
+    }
+    */
+    /*
+    var eventmap = {
+        emorygaming:{
+            center:{lat: 33.792385,lng:-84.323252},
+            location: 'Cox Hall',
+            club: 'EmoryGaming',
+            dcpt: '<small>No game No life</small>',
+            name: 'Fall Tournament',
+            date: '10/24/2018',
+            start: '7:00 pm',
+            end: '9:00 pm'
+        },
+        emoryPartying:{
+            center:{lat: 33.790823,lng:-84.325964},
+            location: 'White Hall',
+            club: 'EmoryPartying',
+            dcpt: 'No drink No life',
+            name: 'Halloween Party',
+            date: '10/24/2018',
+            start: '11:00 pm',
+            end: '2:00 am'
+        },
+        emorySporting:{
+            center:{lat: 33.793276,lng:-84.325941},
+            location: 'Emory Woodruff physical education center',
+            club: 'EmoryPartying',
+            dcpt: 'No blood No life',
+            name: 'basketball game',
+            date: '10/24/2018',
+            start: '5:00 pm',
+            end: '7:00 pm'
+        },
+        emoryReading:{
+            center:{lat: 33.791297,lng:-84.323573},
+            location: 'Candler Library',
+            club: 'EmoryPartying',
+            dcpt: 'No books No life',
+            name: 'fall Poetry Contest',
+            date: '10/24/2018',
+            start: '5:00 pm',
+            end: '6:00 pm'
+        },
+        emoryEating:{
+            center:{lat: 33.794055,lng:-84.325117},
+            location: 'McDonough Field',
+            club: 'EmoryEating',
+            dcpt: 'No food No life',
+            name: 'Chinese ThanksGivings',
+            date: '10/24/2018',
+            start: '5:00 pm',
+            end: '8:00 pm'
+        }
+    };*/
+    lastWindow = null
+
+    function initMap(){
+        var options = {
+          zoom:16,
+          center:{lat: 33.7925,lng:-84.3240}
+        };
+        var map = new google.maps.Map(document.getElementById('map'),options);
+        var noPoi = [{
+            featureType: "poi",
+            stylers: [{
+                visibility: "off"
+            }]
+        }];
+
+        map.setOptions({ styles: noPoi });
+        var marker = new google.maps.Marker({
+            map: map,
+            position:{lat: 33.7925,lng:-84.3240},
+            title:'Emory Campus'
+        });
+        // change eventMap to markerObjects
+        for (var event in markerObjects){
+            addMarker(markerObjects[event]);
+        }
+        function addMarker(event){
+            var marker = new google.maps.Marker({
+                map: map,
+                position: {event.latitude, event.longitude}
+            });
+            if(event.description){
+                var infoWindow = new google.maps.InfoWindow({
+                    content: event.club +
+                            "<br/>" + event.name +
+                            "<br/>" + event.description +
+                            "<br/>" + event.day +
+                            "<br/>" + event.starts + " - " + event.ends +
+                            "<br/>" + event.building + "<br/>" + event.room
+                });
+                marker.addListener('click', function(){
+                    if(lastWindow){ lastWindow.close()};
+                    infoWindow.open(map, marker);
+                    lastWindow = infoWindow;
+                });
+            }
+        }
+
+        var infoWindow = new google.maps.InfoWindow;
+        var currentLocation = new google.maps.Marker()
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+                };
+
+                //customizing the dot
+                var innerMarker = new google.maps.Marker({
+                    clickable: false,
+                    position: pos,
+                    icon:{
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 8,
+                        fillColor: '#00BFFF',
+                        fillOpacity: 0.8,
+                        strokeColor:'white',
+                        StrokeWeight:0,
+                        strokeOpacity: 1
+                    },
+                    map: map
+                });
+                var outtermarker = new google.maps.Marker({
+                    clickable: false,
+                    position: pos,
+                    icon:{
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 100,
+                        fillColor: '#00BFFF',
+                        fillOpacity: 0.3,
+                        strokeColor:'blue',
+                        StrokeWeight:0,
+                        strokeOpacity: 0
+                    },
+                    map: map
+                });
+                /* this one does not increase and decrease according to zoom value
+                var myCircle = new google.maps.Marker({
+                    strokeColor:'#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight:2,
+                    fillColor:'#FF0000',
+                    fillOpacity:0.35,
+                    map: map,
+                    center: pos,
+                    radius: 1
+                });*/
+
+
+                map.setCenter(pos);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+
+  }
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+  </script>
+</section>
+
+<!-- /.content -->
+</div>
+
+<?php
+print "\n";
+print "  <!-- Main Footer -->\n";
+print "  <footer class=\"main-footer\">\n";
+print "    <!-- Default to the left -->\n";
+print "    <strong>Copyright © 2018 <a href=\"#\">EagleEvents</a>.</strong> All rights reserved.\n";
+print "  </footer>\n";
+print "\n";
+print "  <!-- Control Sidebar -->\n";
+print "  <aside class=\"control-sidebar control-sidebar-dark\">\n";
+print "    <!-- Create the tabs -->\n";
+print "    <ul class=\"nav nav-tabs nav-justified control-sidebar-tabs\">\n";
+print "      <li class=\"active\"><a href=\"#control-sidebar-home-tab\" data-toggle=\"tab\"><i class=\"fa fa-home\"></i></a></li>\n";
+print "      <li><a href=\"#control-sidebar-settings-tab\" data-toggle=\"tab\"><i class=\"fa fa-gears\"></i></a></li>\n";
+print "    </ul>\n";
+print "    <!-- Tab panes -->\n";
+print "    <div class=\"tab-content\">\n";
+print "      <!-- Home tab content -->\n";
+print "      <div class=\"tab-pane active\" id=\"control-sidebar-home-tab\">\n";
+print "        <h3 class=\"control-sidebar-heading\">Recent Activity</h3>\n";
+print "        <ul class=\"control-sidebar-menu\">\n";
+print "          <li>\n";
+print "            <a href=\"javascript:;\">\n";
+print "              <i class=\"menu-icon fa fa-birthday-cake bg-red\"></i>\n";
+print "\n";
+print "              <div class=\"menu-info\">\n";
+print "                <h4 class=\"control-sidebar-subheading\">Langdon's Birthday</h4>\n";
+print "\n";
+print "                <p>Will be 23 on April 24th</p>\n";
+print "              </div>\n";
+print "            </a>\n";
+print "          </li>\n";
+print "        </ul>\n";
+print "        <!-- /.control-sidebar-menu -->\n";
+print "\n";
+print "        <h3 class=\"control-sidebar-heading\">Tasks Progress</h3>\n";
+print "        <ul class=\"control-sidebar-menu\">\n";
+print "          <li>\n";
+print "            <a href=\"javascript:;\">\n";
+print "              <h4 class=\"control-sidebar-subheading\">\n";
+print "                Custom Template Design\n";
+print "                <span class=\"pull-right-container\">\n";
+print "                    <span class=\"label label-danger pull-right\">70%</span>\n";
+print "                  </span>\n";
+print "              </h4>\n";
+print "\n";
+print "              <div class=\"progress progress-xxs\">\n";
+print "                <div class=\"progress-bar progress-bar-danger\" style=\"width: 70%\"></div>\n";
+print "              </div>\n";
+print "            </a>\n";
+print "          </li>\n";
+print "        </ul>\n";
+print "        <!-- /.control-sidebar-menu -->\n";
+print "\n";
+print "      </div>\n";
+print "      <!-- /.tab-pane -->\n";
+print "      <!-- Stats tab content -->\n";
+print "      <div class=\"tab-pane\" id=\"control-sidebar-stats-tab\">Stats Tab Content</div>\n";
+print "      <!-- /.tab-pane -->\n";
+print "      <!-- Settings tab content -->\n";
+print "      <div class=\"tab-pane\" id=\"control-sidebar-settings-tab\">\n";
+print "        <form method=\"post\">\n";
+print "          <h3 class=\"control-sidebar-heading\">General Settings</h3>\n";
+print "\n";
+print "          <div class=\"form-group\">\n";
+print "            <label class=\"control-sidebar-subheading\">\n";
+print "              Report panel usage\n";
+print "              <input type=\"checkbox\" class=\"pull-right\" checked>\n";
+print "            </label>\n";
+print "\n";
+print "            <p>\n";
+print "              Some information about this general settings option\n";
+print "            </p>\n";
+print "          </div>\n";
+print "          <!-- /.form-group -->\n";
+print "        </form>\n";
+print "      </div>\n";
+print "      <!-- /.tab-pane -->\n";
+print "    </div>\n";
+print "  </aside>\n";
+print "  <!-- /.control-sidebar -->\n";
+print "  <!-- Add the sidebar's background. This div must be placed\n";
+print "  immediately after the control sidebar -->\n";
+print "  <div class=\"control-sidebar-bg\"></div>\n";
+print "</div>\n";
+print "<!-- ./wrapper -->\n";
+print "\n";
 print "<!-- REQUIRED JS SCRIPTS -->\n";
 print "\n";
 print "<!-- jQuery 3 -->\n";

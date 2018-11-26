@@ -37,3 +37,19 @@ INSERT INTO user VALUES('$newUserId', '$username', '$password');
 INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '$picture');
 
 INSERT INTO user VALUES(1006, "testerman", "pass");
+
+/* Add a club to a student's list of clubs, i.e., add student info to clubMember table */
+
+INSERT INTO clubMember VALUES('$club_id','$uid', 0);
+
+/* Add an event to a student's list of events, i.e., add student info to event table */
+
+INSERT INTO attendance VALUES('$event_id','$uid');
+
+/* Delete from clubMember table */
+
+DELETE FROM clubMember WHERE club_id = '$club_id' AND uid = '$uid';
+
+/* Delete From event table */
+
+DELETE FROM attendance where event_id = '$event_id' AND uid = '$uid';

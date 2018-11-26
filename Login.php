@@ -1,4 +1,31 @@
 <?php
+session_start();
+$_SESSION = array();
+session_destroy();
+if ($_POST != NULL) {
+  $conn = mysqli_connect("localhost","root",
+  "Eagle123", "eagleEvents");
+  if (mysqli_connect_errno()){
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit(1);
+  }
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+
+  $queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
+  if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+  }
+  if (mysqli_num_rows($result) == 0) {
+    // write errors
+    print "user does not exist";
+  }
+  else {
+    print "user DOES exist";
+  }
+  mysqli_close($conn);
+}
 print "<!DOCTYPE html>\n";
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
@@ -109,14 +136,25 @@ print "              <input type=\"PASSWORD\" name = \"password\" class=\"form-c
 print "            </div>\n";
 print "          </div>\n";
 print "          <br><br><br>\n";
-print "          <button type = \"submit\" class = \"btn btn-primary\"> Submit </button>\n";
+print "          <button type = \"submit\" class = \"btn btn-primary\"> Submit </button> \n";
 print "        </form>\n";
-print "     </h5>\n";
+print "    \n";
+print "\n";
+print "        <form action = \"SignUp.php\" method = \"POST\">\n";
+print "            <br><br>\n";
+print "            <div class=\"form-row\">\n";
+print "            <div class=\"col\">\n";
+print "          <button type = \"submit\" class = \"btn btn-primary\"> Sign Up for an Account </button>\n";
+print "        </div>\n";
+print "      </div>\n";
+print "        </form>\n";
+print "\n";
+print "         </h5>\n";
 print "   </div>\n";
 print "\n";
 print "    </section>\n";
 print "    <!-- /.content -->\n";
-print "  </div>\n";
+print "  </div>";
 print "  <!-- /.content-wrapper -->\n";
 print "\n";
 print "  <!-- Main Footer -->\n";
@@ -144,20 +182,5 @@ print "     Both of these plugins are recommended to enhance the\n";
 print "     user experience. -->\n";
 print "</body>\n";
 print "</html>";
-/*
-  $conn = mysqli_connect("localhost","root",
-  "Eagle123", "eagleEvents");
-   if (mysqli_connect_errno()){
-     printf("Connect failed: %s\n", mysqli_connect_error());
-     exit(1);
-   }
-  $query = "SELECT * FROM event";
-  if ( ! ( $result = mysqli_query($conn, $query)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
-  print($result);
-  mysqli_close($conn);
-  */
 
 ?>
