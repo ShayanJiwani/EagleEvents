@@ -32,7 +32,7 @@ CREATE TABLE location
   campus VARCHAR(16) NOT NULL,
   latitude DECIMAL(9,6) NOT NULL,
   longitude DECIMAL(9,6) NOT NULL,
-  radius DECIMAL(9,6) NOT NULL,
+  radius DECIMAL(9,6) DEFAULT 0.00012,
   location_id INT(4),
   CONSTRAINT locationPK PRIMARY KEY (location_id)
 );

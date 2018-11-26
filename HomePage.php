@@ -368,6 +368,7 @@ while ($row = mysqli_fetch_assoc($resultEvent)) {
   $jsonEvent['building'] = $row['Building'];
   $jsonEvent['lat'] = $row['Latitude'];
   $jsonEvent['lng'] = $row['Longitude'];
+  $jsonEvent['radius'] = $row['Radius'];
   $jsonEvent['room'] = $row['Room'];
   $jsonEvent['club'] = $row['Club'];
   $markers[$count] = $jsonEvent;
@@ -513,10 +514,22 @@ $myJson = json_encode($markers);
         for (var event in markerObjects){
             addMarker(markerObjects[event]);
         }
+        function getLat(event){
+          var min = event.radius * -1;
+          var max = event.radius;
+          var newLat = Math.random() * (max - min) + min;
+          return newLat;
+        }
+        function getLong(event){
+          var min = event.radius * -1;
+          var max = event.radius;
+          var newLong = Math.random() * (max - min) + min;
+          return newLong;
+        }
         function addMarker(event){
             var marker = new google.maps.Marker({
                 map: map,
-                position: {lat: event.lat,lng: event.lng}
+                position: {lat: getLat(),lng: getLong()}
             });
             //window.alert(marker.position);
             if(event.description){
