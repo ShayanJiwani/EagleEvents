@@ -395,7 +395,7 @@ $myJson = json_encode($markers);
     }*/
     //var obj = markerObjects[0];
     //window.alert(JSON.stringify(obj, null, 2));
-
+    /*
     var eventmap = {
         emorygaming:{
             lat: 33.792385,
@@ -452,7 +452,7 @@ $myJson = json_encode($markers);
             start: '5:00 pm',
             end: '8:00 pm'
         }
-    };
+    };*/
     lastWindow = null
 
     function initMap(){

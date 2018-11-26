@@ -72,7 +72,7 @@
          print("<tr>\n");     # Start row of HTML table
          foreach ($row as $key => $value) {
            if ($key == 'Starts') {
-             $x = strtotime($value);
+             $x = strtotime($value); 
              print("its " . $value . ", and time is " . $time . " and its " . $x);
              print("<br> in here boi <br>");
            }
