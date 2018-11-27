@@ -102,30 +102,57 @@ $conn = mysqli_connect("localhost","root",
    exit(1);
  }
 
- $queryCheckUN = "SELECT uid FROM user WHERE username = $username";
- if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
-   print "<br><h1>username exists</h1><br>";
-   /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
-   print "  <br><br>\n";
-   print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
-   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-   print "</form>\n";
-   print "<script type="text/javascript">";
-   print "document.getElementById('SuccessPage').submit();";
-   print "</script>";*/
- }
- else if($password != $password2){
-   print "<br><h1>passwords don't match</h1><br>";
-   /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
-   print "  <br><br>\n";
-   print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
-   print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-   print "</form>\n";
-   print "<script type="text/javascript">\n";
-   print "document.getElementById('SuccessPage').submit();\n";
-   print "</script>";*/
- }
- else {
+// Check is username already exists
+$queryCheckUN = "SELECT uid FROM user WHERE username = $username";
+if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
+  print "<br><h1>Username already exists</h1><br>";
+  /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+  print "  <br><br>\n";
+  print "  <input type = "hidden" name = "errorCode" value = "Username is taken.">";
+  print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+  print "</form>\n";
+  print "<script type="text/javascript">";
+  print "document.getElementById('SuccessPage').submit();";
+  print "</script>";*/
+}
+// Check if username is the correct length
+else if(strlen($username) < 5 || strlen($username) > 16) {
+  print "<br><h1>Username does not meet length requirements</h1><br>"
+}
+// Check if email is Emory official
+else if(preg_match("@emory.edu", $email)) {
+  print "<br><h1>Username does not meet length requirements</h1><br>"
+}
+// Check if password is at least 8 characters
+else if(strlen(password) > 7){
+  print "<br><h1>Inputed password does not meet length requirement</h1><br>";
+}
+// Check if password has lower and uppercase letters
+else if(preg_match("/[a-zA-Z]+/", $password)){
+  print "<br><h1>Inputed password does not have uppercase and/or lowercase letters</h1><br>";
+}
+// Check if password has at least one special character
+else if(preg_match("/[^a-zA-Z0-9]/", $password)){
+  print "<br><h1>Inputed password does not have a special character</h1><br>";
+}
+// Check if password has at least one number
+else if(preg_match("/\d+/", $password)){
+  print "<br><h1>Inputed password does not have a number</h1><br>";
+}
+// Check if inputed passwords match
+else if($password != $password2){
+  print "<br><h1>Inputed passwords don't match</h1><br>";
+  /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
+  print "  <br><br>\n";
+  print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
+  print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
+  print "</form>\n";
+  print "<script type="text/javascript">\n";
+  print "document.getElementById('SuccessPage').submit();\n";
+  print "</script>";*/
+}
+// No issues - create user account in database
+else {
    $query = "SELECT MAX(uid) AS max FROM user;";
    if ( ! ( $result = mysqli_query($conn, $query)) ) {
      printf("Error: %s\n", mysqli_error($conn));
@@ -148,16 +175,8 @@ $conn = mysqli_connect("localhost","root",
    print "      <h1>\n";
    print "        Account Created. Welcome to Eagle Events!\n";
    print "      </h1>\n";
- }
-/*
- $queryCheckPW = "SELECT uid FROM user WHERE username = $username";
- if( ! ( $result = mysqli_query($conn, $queryCheckUN))) {
+}
 
- }
-*/
-//print "      <h1>\n";
-//print "        Account Created. Welcome to Eagle Events!\n";
-//print "      </h1>\n";
 print "    </section>\n";
 print "\n";
 print "    <!-- Main content -->\n";
