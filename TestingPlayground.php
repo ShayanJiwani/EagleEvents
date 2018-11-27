@@ -10,11 +10,18 @@
      <body>
      <!-- use the div container -->
      <div class="container">
-     <h1>
-        Class Statistics
-     </h1>
      <P>
       <?php
+
+      $my_time = '19:30:00';
+      $seconds2add = -3600;
+
+      $new_time= strtotime($my_time);
+      $new_time+=$seconds2add;
+
+      echo date('h:i:s',$new_time);
+
+      /*
       $conn = mysqli_connect("localhost","root",
       "Eagle123", "eagleEvents");
 
@@ -40,7 +47,7 @@
        //print("date is " . $date . " and time is " . $time . "\n");
        $queryEvents = "SELECT ename AS Name, edescription AS Description,
              e.edate AS Day, e.startTime AS Starts,
-             e.endTime AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club
+             e.endTime AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
              FROM attendance a, event e, location l, club c
              WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
              AND c.club_id = e.club_id
@@ -72,8 +79,8 @@
          print("<tr>\n");     # Start row of HTML table
          foreach ($row as $key => $value) {
            if ($key == 'Starts') {
-             $x = strtotime($value); 
-             print("its " . $value . ", and time is " . $time . " and its " . $x);
+             $x = strtotime($value) - 3600;
+             print("its " . $value . ", and time is " . $time . " and its " . date('h:i:s',$x));
              print("<br> in here boi <br>");
            }
             print ("<td>" . $value . "</td>"); # One item in row
@@ -85,7 +92,7 @@
 
        mysqli_free_result($result);
        mysqli_free_result($result2);
-       mysqli_close($conn);
+       mysqli_close($conn);*/
     ?>
     <P>
   </body>

@@ -41,7 +41,7 @@ else {
 }
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, l.room AS Room,c.cname AS Club,
+      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
       longitude AS Longitude, latitude AS Latitude
       FROM attendance a, event e, location l, club c
       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
@@ -520,16 +520,16 @@ $myJson = json_encode($markers);
           var delta = Math.random() * (max - min) + min;
           return event.lat + delta;
         }
-        function getLong(event){
+        function getLng(event){
           var min = event.radius * -1;
           var max = event.radius;
           var delta = Math.random() * (max - min) + min;
-          return event.long + delta;
+          return event.lng + delta;
         }
         function addMarker(event){
             var marker = new google.maps.Marker({
                 map: map,
-                position: {lat: getLat(),lng: getLong()}
+                position: {lat: getLat(event),lng: getLng(event)}
             });
             //window.alert(marker.position);
             if(event.description){
