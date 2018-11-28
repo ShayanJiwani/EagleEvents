@@ -85,7 +85,7 @@ desired effect
     <!-- Main content -->
     <section class="content container-fluid">
 
-      <!--------------------------
+      <!--
         | Your Page Content Here |
         -------------------------->
 
@@ -93,7 +93,7 @@ desired effect
      <h3>
 
      </h5>
-        <form action = "Successpage.html" method = "POST">
+        <form action = "SuccessPage.php" method = "POST">
           <br><br>
           <div class="form-row">
             <div class="col">

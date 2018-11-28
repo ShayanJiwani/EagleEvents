@@ -1,84 +1,82 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eagle Events | Sign Up</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect. -->
+  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <!-- Main Header -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>E</b>LE</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Eagle</b>Events</span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+  </header>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+
 <?php
-print "<!DOCTYPE html>\n";
-print "<!--\n";
-print "This is a starter template page. Use this page to start your new project from\n";
-print "scratch. This page gets rid of all links and provides the needed markup only.\n";
-print "-->\n";
-print "<html>\n";
-print "<head>\n";
-print "  <meta charset=\"utf-8\">\n";
-print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
-print "  <title>Eagle Events | Sign Up</title>\n";
-print "  <!-- Tell the browser to be responsive to screen width -->\n";
-print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
-print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
-print "  <!-- Font Awesome -->\n";
-print "  <link rel=\"stylesheet\" href=\"bower_components/font-awesome/css/font-awesome.min.css\">\n";
-print "  <!-- Ionicons -->\n";
-print "  <link rel=\"stylesheet\" href=\"bower_components/Ionicons/css/ionicons.min.css\">\n";
-print "  <!-- Theme style -->\n";
-print "  <link rel=\"stylesheet\" href=\"dist/css/AdminLTE.min.css\">\n";
-print "  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter\n";
-print "        page. However, you can choose any other skin. Make sure you\n";
-print "        apply the skin class to the body tag so the changes take effect. -->\n";
-print "  <link rel=\"stylesheet\" href=\"dist/css/skins/skin-blue.min.css\">\n";
-print "\n";
-print "  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n";
-print "  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n";
-print "  <!--[if lt IE 9]>\n";
-print "  <script src=\"https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>\n";
-print "  <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n";
-print "  <![endif]-->\n";
-print "\n";
-print "  <!-- Google Font -->\n";
-print "  <link rel=\"stylesheet\"\n";
-print "        href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic\">\n";
-print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
-print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
-print "<div class=\"wrapper\">\n";
-print "\n";
-print "  <!-- Main Header -->\n";
-print "  <header class=\"main-header\">\n";
-print "\n";
-print "    <!-- Logo -->\n";
-print "    <a href=\"index2.html\" class=\"logo\">\n";
-print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
-print "      <span class=\"logo-mini\"><b>E</b>LE</span>\n";
-print "      <!-- logo for regular state and mobile devices -->\n";
-print "      <span class=\"logo-lg\"><b>Eagle</b>Events</span>\n";
-print "    </a>\n";
-print "\n";
-print "    <!-- Header Navbar -->\n";
-print "    <nav class=\"navbar navbar-static-top\" role=\"navigation\"> \n";
-print "  </header>\n";
-print "\n";
-print "\n";
-print "\n";
-print "  <!-- Content Wrapper. Contains page content -->\n";
-print "  <div class=\"content-wrapper\">\n";
-print "    <!-- Content Header (Page header) -->\n";
-print "    <section class=\"content-header\">\n";
 /*
 If it is a success, display a link to the login page
 
@@ -87,7 +85,6 @@ Link back to sign up page.
 
 Ideally display problems on Sign-up page after clicking submit.
 */
-
 $username = $_POST['username'];
 $password = $_POST['password'];
 $password2 = $_POST['password2'];
@@ -111,76 +108,76 @@ if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
 else if(strlen($username) < 5 || strlen($username) > 16) {
     ?>
     <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Username must be 6 characters");
   </script>
 
     <?php
 }
 // Check if email is Emory official
-else if(preg_match("@emory.edu", $email)) {
+else if(!(preg_match("/@emory.edu/", $email) )) {
   ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Use Emory Email");
   </script>
   <?php
 
 }
 // Check if password is at least 8 characters
-else if(strlen(password) > 7){
+else if(strlen($password) < 8){
   ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Password must be 8 characters");
   </script>
   <?php
 
 }
+else if(strlen($password) > 16) {
+  ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/SignUp.php'
+      alert("Password cannot exceed 16 characters");
+  </script>
+  <?php
+}
 // Check if password has lower and uppercase letters
-else if(preg_match("/[a-zA-Z]+/", $password)){
+else if(!(preg_match("/[a-zA-Z]+/", $password))){
    ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Password must include lower and uppercase letters");
   </script>
   <?php
 }
 // Check if password has at least one special character
-else if(preg_match("/[^a-zA-Z0-9]/", $password)){
+else if(!(preg_match("/[^a-zA-Z0-9]/", $password))){
  ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Password must include a special character");
   </script>
   <?php
 }
 // Check if password has at least one number
-else if(preg_match("/\d+/", $password)){
+else if(!(preg_match("/\d+/", $password))){
   ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Password must include a number");
   </script>
   <?php
 }
 // Check if inputed passwords match
-else if($password != $password2){
+else if(!strcmp($password,$password2)){
   print "<br><h1>Inputed passwords don't match</h1><br>";
   ?>
      <script type = "text/javascript">
-      window.location.pathname = '/HomePage.php'
+      window.location.pathname = '/SignUp.php'
       alert("Passwords must match");
   </script>
   <?php
-  /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
-  print "  <br><br>\n";
-  print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
-  print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-  print "</form>\n";
-  print "<script type="text/javascript">\n";
-  print "document.getElementById('SuccessPage').submit();\n";
-  print "</script>";*/
 }
 // No issues - create user account in database
 else {
@@ -192,7 +189,7 @@ else {
    $newUserId = mysqli_fetch_assoc($result);
    $newUserId = $newUserId['max'] + 1;
 
-   $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password', '');";
+   $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
    if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
      print("<h4> Error1. Signup Failed. </h4>\n");
      exit(1);
@@ -207,63 +204,57 @@ else {
    print "        Account Created. Welcome to Eagle Events!\n";
    print "      </h1>\n";
 }
-
-print "    </section>\n";
-print "\n";
-print "    <!-- Main content -->\n";
-print "    <section class=\"content container-fluid\">\n";
-print "\n";
-print "      <!--------------------------\n";
-print "        | Your Page Content Here |\n";
-print "        -------------------------->\n";
-print "\n";
-print "        <div class=\"container\">\n";
-print "     <h3>\n";
-print "   \n";
-print "     </h5>\n";
-print "        <form action = \"Login.php\" method = \"POST\">\n";
-print "          <br><br>\n";
-print "          <button type = \"Submit\" class = \"btn btn-primary\"> Click here to log in! </button>\n";
-print "        </form>\n";
-print "     </h5>\n";
-print "   </div>\n";
-print "\n";
-print "    </section>\n";
-print "    <!-- /.content -->\n";
-print "  </div>\n";
-print "  <!-- /.content-wrapper -->\n";
-print "\n";
-print "  <!-- Main Footer -->\n";
-print "  <footer class=\"main-footer\">\n";
-print "    <!-- To the right -->\n";
-print "    <div class=\"pull-right hidden-xs\">\n";
-print "      Anything you want\n";
-print "    </div>\n";
-print "    <!-- Default to the left -->\n";
-print "    <strong>Copyright © 2016 <a href=\"#\">Company</a>.</strong> All rights reserved.\n";
-print "  </footer>\n";
-print "\n";
-print "\n";
-print "\n";
-print "\n";
-print "  <!-- /.control-sidebar -->\n";
-print "  <!-- Add the sidebar's background. This div must be placed\n";
-print "  immediately after the control sidebar -->\n";
-print "<!-- ./wrapper -->\n";
-print "\n";
-print "<!-- REQUIRED JS SCRIPTS -->\n";
-print "\n";
-print "<!-- jQuery 3 -->\n";
-print "<script src=\"bower_components/jquery/dist/jquery.min.js\"></script>\n";
-print "<!-- Bootstrap 3.3.7 -->\n";
-print "<script src=\"bower_components/bootstrap/dist/js/bootstrap.min.js\"></script>\n";
-print "<!-- AdminLTE App -->\n";
-print "<script src=\"dist/js/adminlte.min.js\"></script>\n";
-print "\n";
-print "<!-- Optionally, you can add Slimscroll and FastClick plugins.\n";
-print "     Both of these plugins are recommended to enhance the\n";
-print "     user experience. -->\n";
-print "</body>\n";
-print "</html>";
-
 ?>
+</section>
+
+<!-- Main content -->
+<section class="content container-fluid">
+
+  <!--
+    | Your Page Content Here |
+    -------------------------->
+
+    <div class="container">
+ <h3>
+
+ </h5>
+    <form action = "Login.php" method = "POST">
+      <br><br>
+      <button type = "Submit" class = "btn btn-primary"> Click here to log in! </button>
+    </form>
+ </h5>
+</div>
+
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+<!-- To the right -->
+<div class="pull-right hidden-xs">
+  Anything you want
+</div>
+<!-- Default to the left -->
+<strong>Copyright © 2016 <a href="#">Company</a>.</strong> All rights reserved.
+</footer>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+immediately after the control sidebar -->
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+ Both of these plugins are recommended to enhance the
+ user experience. -->
+</body>
+</html>;

@@ -360,74 +360,10 @@ $myJson = json_encode($markers);
   <div id = "map"></div>
 
     <script>
-      //exchange this part of the code to database in order to actually connect to the real data
-      //just replace eventmap.
-      //test data
-    //window.alert(markerObjects);
+    //exchange this part of the code to database in order to actually connect to the real data
+    //just replace eventmap.
+    //test data
     var markerObjects = <?php echo json_encode($markers, JSON_NUMERIC_CHECK) ?>;
-    /*for (var event in markerObjects) {
-      window.alert(JSON.stringify(markerObjects[event], null, 2));
-    }*/
-    //var obj = markerObjects[0];
-    //window.alert(JSON.stringify(obj, null, 2));
-    /*
-    var eventmap = {
-        emorygaming:{
-            lat: 33.792385,
-            lng:-84.323252,
-            location: 'Cox Hall',
-            club: 'EmoryGaming',
-            dcpt: '<small>No game No life</small>',
-            name: 'Fall Tournament',
-            date: '10/24/2018',
-            start: '7:00 pm',
-            end: '9:00 pm'
-        },
-        emoryPartying:{
-            lat: 33.790823,
-            lng:-84.325964,
-            location: 'White Hall',
-            club: 'EmoryPartying',
-            dcpt: 'No drink No life',
-            name: 'Halloween Party',
-            date: '10/24/2018',
-            start: '11:00 pm',
-            end: '2:00 am'
-        },
-        emorySporting:{
-            lat: 33.793276,
-            lng:-84.325941,
-            location: 'Emory Woodruff physical education center',
-            club: 'EmoryPartying',
-            dcpt: 'No blood No life',
-            name: 'basketball game',
-            date: '10/24/2018',
-            start: '5:00 pm',
-            end: '7:00 pm'
-        },
-        emoryReading:{
-            lat: 33.791297,
-            lng:-84.323573,
-            location: 'Candler Library',
-            club: 'EmoryPartying',
-            dcpt: 'No books No life',
-            name: 'fall Poetry Contest',
-            date: '10/24/2018',
-            start: '5:00 pm',
-            end: '6:00 pm'
-        },
-        emoryEating:{
-            lat: 33.794055,
-            lng:-84.325117,
-            location: 'McDonough Field',
-            club: 'EmoryEating',
-            dcpt: 'No food No life',
-            name: 'Chinese ThanksGivings',
-            date: '10/24/2018',
-            start: '5:00 pm',
-            end: '8:00 pm'
-        }
-    };*/
     lastWindow = null
 
     function initMap(){
@@ -459,32 +395,6 @@ $myJson = json_encode($markers);
             homeInfoWindow.open(map, homeMarker);
             lastWindow = homeInfoWindow;
         });
-        /*
-        for (var event in eventmap){
-            addMarker(eventmap[event]);
-        }
-        function addMarker(event){
-            var marker = new google.maps.Marker({
-                map: map,
-                position: {lat: event.lat,lng: event.lng}
-            });
-            if(event.dcpt){
-                var infoWindow = new google.maps.InfoWindow({
-                    content: event.club +
-                            "<br/>" + event.name +
-                            "<br/>" + event.dcpt +
-                            "<br/>" + event.date +
-                            "<br/>" + event.start + " - " + event.end +
-                            "<br/>" + event.location
-                });
-                marker.addListener('click', function(){
-                    if(lastWindow){ lastWindow.close()};
-                    infoWindow.open(map, marker);
-                    lastWindow = infoWindow;
-                });
-            }
-        }*/
-        //window.alert(JSON.stringify(markerObjects, null, 2));
         for (var event in markerObjects){
             addMarker(markerObjects[event]);
         }
