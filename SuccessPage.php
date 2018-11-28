@@ -117,31 +117,69 @@ if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
 }
 // Check if username is the correct length
 else if(strlen($username) < 5 || strlen($username) > 16) {
-  print "<br><h1>Username does not meet length requirements</h1><br>"
+    ?>
+    <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Username must be 6 characters");
+  </script>
+
+    <?php
 }
 // Check if email is Emory official
 else if(preg_match("@emory.edu", $email)) {
-  print "<br><h1>Username does not meet length requirements</h1><br>"
+  ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Use Emory Email");
+  </script>
+  <?php
+
 }
 // Check if password is at least 8 characters
 else if(strlen(password) > 7){
-  print "<br><h1>Inputed password does not meet length requirement</h1><br>";
+  ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Password must be 8 characters");
+  </script>
+  <?php
+
 }
 // Check if password has lower and uppercase letters
 else if(preg_match("/[a-zA-Z]+/", $password)){
-  print "<br><h1>Inputed password does not have uppercase and/or lowercase letters</h1><br>";
+   ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Password must include lower and uppercase letters");
+  </script>
+  <?php
 }
 // Check if password has at least one special character
 else if(preg_match("/[^a-zA-Z0-9]/", $password)){
-  print "<br><h1>Inputed password does not have a special character</h1><br>";
+ ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Password must include a special character");
+  </script>
+  <?php
 }
 // Check if password has at least one number
 else if(preg_match("/\d+/", $password)){
-  print "<br><h1>Inputed password does not have a number</h1><br>";
+  ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Password must include a number");
+  </script>
+  <?php
 }
 // Check if inputed passwords match
 else if($password != $password2){
-  print "<br><h1>Inputed passwords don't match</h1><br>";
+  ?>
+     <script type = "text/javascript">
+      window.location.pathname = '/HomePage.php'
+      alert("Passwords must match");
+  </script>
+  <?php
   /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
   print "  <br><br>\n";
   print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
