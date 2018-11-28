@@ -4,41 +4,15 @@ session_start();
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
-if ($_SESSION['uid'] != NULL) {
-  $uid = $_SESSION['uid'];
-  $fname = $_SESSION['fname'];
-  $lname = $_SESSION['lname'];
+if (mysqli_connect_errno()){
+ printf("Connect failed: %s\n", mysqli_connect_error());
+ exit(1);
 }
-else {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
 
-  $queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
-  if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
+$uid = $_SESSION['uid'];
+$fname = $_SESSION['fname'];
+$lname = $_SESSION['lname'];
 
-  $uid = mysqli_fetch_assoc($result);
-  $uid = $uid["uid"];
-
-  $queryInfo = "SELECT fname, lname FROM student WHERE uid = '$uid'";
-  if ( ! ( $result2 = mysqli_query($conn, $queryInfo)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
-  $name = mysqli_fetch_assoc($result2);
-  $fname = $name['fname'];
-  $lname = $name['lname'];
-
-  $_SESSION['uid'] = $uid;
-  $_SESSION['fname'] = $fname;
-  $_SESSION['lname'] = $lname;
-}
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
