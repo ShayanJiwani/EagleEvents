@@ -173,14 +173,6 @@ else if($password != $password2){
       alert("Passwords must match");
   </script>
   <?php
-  /*print "<form action = \"Failurepage.php\" method = \"POST\">\n";
-  print "  <br><br>\n";
-  print "  <input type = "hidden" name = "errorCode" value = "Passwords \do not match.">";
-  print "  <button type = \"Submit\" class = \"btn btn-primary\"> Submit </button>\n";
-  print "</form>\n";
-  print "<script type="text/javascript">\n";
-  print "document.getElementById('SuccessPage').submit();\n";
-  print "</script>";*/
 }
 // No issues - create user account in database
 else {
