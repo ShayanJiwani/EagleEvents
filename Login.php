@@ -23,7 +23,21 @@ if ($_POST != NULL) {
     $errString = "*Username or password incorrect. Please try again.";
   }
   else {
+    /*$uid = mysqli_fetch_assoc($result);
+    session.start();
+
+    $_SESSION["uid"] = $uid;
+    $_SESSION["username"] 
+    */
+    ?>
     // add redirect here. POST array contains username + password
+    <script type = "text/javascript">
+      <form action = "/EagleEventsMainPage.html" method="POST">
+      
+    </form>
+  </script>
+
+    <?php
     print("<p>user DOES exist</p>");
   }
   mysqli_close($conn);
