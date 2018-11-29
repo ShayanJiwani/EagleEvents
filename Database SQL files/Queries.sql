@@ -105,7 +105,9 @@ WHERE cl.category NOT IN (SELECT category
                WHERE m.uid = 1009
                AND m.club_id = c.club_id
                GROUP BY category)
-GROUP BY cl.category;
+GROUP BY cl.category
+ORDER BY RAND()
+LIMIT 1;
 
 /* Get all students interested in this event */
 
