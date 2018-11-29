@@ -287,107 +287,63 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-
-
- <div class="content-wrapper">
+  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add an Event
-        <small>Select a Club to Add an Event</small>
+        Create an Event
+        <small>Use the form below to post an event!</small>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-
-      <!--
-        | Your Page Content Here | Chris Lew
-        -->
-        
-                    <!-- TABLE: LATEST ORDERS -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Latest Orders</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
+          <form action = "/YourEvents.html" method = "POST" name= "search-theme-form">
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="event-name">Event Name</label>
+              <input type="text" name = "event-name" class="form-control" placeholder="event-name" required>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>Club Name</th>
-                    <th>         </th>
-                    <th>         </th>
-                    <th>Add Event</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-
-                  <tr>
-                    <td>Club One</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Two</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Three</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Four</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Five</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Six</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  <tr>
-                    <td>Club Seven</td>
-                    <td></td>
-                    <td></td>
-                    <td><input type="radio" name="add" value="Event"></td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Add Event</a>
-              <!--<a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>-->
-            </div>
-            <!-- /.box-footer -->
           </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="description">Description</label>
+              <input type="text" name = "description" class="form-control" placeholder="Description" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="event-date">Event Date</label>
+              <input type="text" name = "event-date" class = "form-control" placeholder="Date" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="start-time">Start Time</label>
+              <input type="text" name = "start-time" class="form-control" placeholder="Start" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="end-time">End Time</label>
+              <input type="text" name = "end-time" class="form-control" placeholder="End" required>
+            </div>
+          </div>
+          <br><br>
+          <div class="form-row">
+            <div class="col">
+              <label for="end-time">Location</label>
+              <input type="text" name = "end-time" class="form-control" placeholder="End" required>
+            </div>
+          </div>
+          <br><br>
+          <button type = "submit" class = "btn btn-primary"> Submit </button>
+        </form>
     </section>
 
     <!-- /.content -->
@@ -459,7 +415,7 @@ desired effect
           <div class="form-group">
             <label class="control-sidebar-subheading">
               Report panel usage
-              <input type="radio" class="pull-right" checked>
+              <input type="checkbox" class="pull-right" checked>
             </label>
 
             <p>
