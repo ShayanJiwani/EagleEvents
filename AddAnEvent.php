@@ -3,54 +3,27 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
+if (mysqli_connect_errno()){
+ printf("Connect failed: %s\n", mysqli_connect_error());
+ exit(1);
+}
 
- if ($_POST != NULL) {
-   foreach($_POST as $key => $val) {
-     // check if its in the database
-     $queryGet = "SELECT * FROM attendance WHERE event_id = '$val' AND uid = '$uid';";
-     if ( ! ( $result = mysqli_query($conn, $queryGet)) ) {
-       printf("Error1: %s\n", mysqli_error($conn));
-       exit(1);
-     }
-     if (strpos($key, "yeid") === 0) {
-       if (mysqli_num_rows($result) != 0) {
-         $queryRemove = "DELETE FROM attendance where event_id = '$val' AND uid = '$uid';";
-         if ( ! ( $result2 = mysqli_query($conn, $queryRemove)) ) {
-           printf("Error2: %s\n", mysqli_error($conn));
-           exit(1);
-         }
-       }
-     }
-     else {
-       if (mysqli_num_rows($result) == 0) {
-         $queryInsert = "INSERT INTO attendance VALUES('$val','$uid');";
-         if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
-           printf("Error2: %s\n", mysqli_error($conn));
-           exit(1);
-         }
-       }
-     }
-   }
- }
+if ($_POST != NULL) {
 
- $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
-       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
-       FROM attendance a, event e, location l, club c
-       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
-       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
+}
 
- if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
- }
+$queryClubs = "SELECT c.club_id, cname AS Club FROM club c, clubMember m
+          WHERE m.uid = '$uid' AND owner = 1 AND m.club_id = c.club_id
+          ORDER BY cname ASC;";
+
+if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -320,8 +293,8 @@ print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
@@ -335,36 +308,14 @@ print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
-print "      <!-- /.sidebar-menu -->\n";
 print "    </section>\n";
-print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
 print "\n";
-print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
-print "    <!-- Content Header (Page header) -->\n";
-/*
-print "    <section class=\"content-header\">\n";
-print "      <h1>\n";
-print "        Your Events\n";
-print "        <small>Events you are interested in or that are recommended for you</small>\n";
-print "      </h1>\n";
-print "    </section>\n";
-*/
-print "\n";
-print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
-print "\n";
-print "      <!--\n";
-print "        | Your Page Content Here | Chris Lew\n";
-print "        -->\n";
-print "\n";
-print "\n";
-print "                    <!-- TABLE: LATEST ORDERS -->\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
-print "              <h3 class=\"box-title\">Your Events</h3>\n";
-print "\n";
+print "              <h3 class=\"box-title\">Your Organizations</h3>\n";
 print "              <div class=\"box-tools pull-right\">\n";
 print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
 print "                </button>\n";
@@ -376,62 +327,43 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
-print "<form action = \"YourEvents.php\" method = \"POST\">";
-$counter = 0;
+print "<form action = \"AddAnEvent2.php\" method = \"POST\">";
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-       if ($key != 'event_id') {
+       if ($key != 'club_id') {
          print "<th>" . $key . "</th>";
        }
      }
-     print "<th>Checkbox</th>";
+     print "<th>Create Event</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-    if ($key != 'event_id') {
+    if ($key != 'club_id') {
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
-  $counter++;
+  print ("<td><input type=\"radio\" name=\"cid\" value=" . $row['club_id'] . "></td>");
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
 print "                </table>\n";
 print "              </div>\n";
-print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
-print "            <!-- /.box-body -->\n";
 print "            <div class=\"box-footer clearfix\">\n";
-//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
-print "   <input type=\"submit\" value=\"Remove Events\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
-print "</form>";
-print "              <a href=\"AllEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
+print "   <input type=\"submit\" value=\"Add Event\" class=\"btn btn-sm btn-info btn-flat pull-right\">";
+print "</form>\n";
 print "            </div>\n";
-print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
-print "          <!-- /.box -->\n";
 print "        </div>\n";
-print "        <!-- /.col -->";
-print "\n";
-print "\n";
 print "    </section>\n";
-print "\n";
-print "    <!-- /.content -->\n";
 print "  </div>\n";
-print "  <!-- /.content-wrapper -->\n";
-print "\n";
-print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
-print "    <!-- Default to the left -->\n";
 print "    <strong>Copyright © 2018 <a href=\"#\">EagleEvents</a>.</strong> All rights reserved.\n";
 print "  </footer>\n";
-print "\n";
-print "  <!-- Control Sidebar -->\n";
 print "  <aside class=\"control-sidebar control-sidebar-dark\">\n";
 print "    <!-- Create the tabs -->\n";
 print "    <ul class=\"nav nav-tabs nav-justified control-sidebar-tabs\">\n";
@@ -475,8 +407,6 @@ print "              </div>\n";
 print "            </a>\n";
 print "          </li>\n";
 print "        </ul>\n";
-print "        <!-- /.control-sidebar-menu -->\n";
-print "\n";
 print "      </div>\n";
 print "      <!-- /.tab-pane -->\n";
 print "      <!-- Stats tab content -->\n";
@@ -486,7 +416,6 @@ print "      <!-- Settings tab content -->\n";
 print "      <div class=\"tab-pane\" id=\"control-sidebar-settings-tab\">\n";
 print "        <form method=\"post\">\n";
 print "          <h3 class=\"control-sidebar-heading\">General Settings</h3>\n";
-print "\n";
 print "          <div class=\"form-group\">\n";
 print "            <label class=\"control-sidebar-subheading\">\n";
 print "              Report panel usage\n";
@@ -528,8 +457,5 @@ print "</script>\n";
 print "</body>\n";
 print "\n";
 print "</html>\n";
-
-//mysqli_free_result($result);
-mysqli_close($conn);
 
 ?>

@@ -1,3 +1,41 @@
+<?php
+session_start();
+$uid = $_SESSION['uid'];
+$fname = $_SESSION['fname'];
+$lname = $_SESSION['lname'];
+
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+
+if (mysqli_connect_errno()){
+ printf("Connect failed: %s\n", mysqli_connect_error());
+ exit(1);
+}
+if ($_POST['cid']) {
+  $clubID = $_POST['cid'];
+  $clubName = "SELECT cname FROM club WHERE club_id = '$clubID';";
+  if ( ! ( $result = mysqli_query($conn, $clubName)) ) {
+   printf("Error1: %s\n", mysqli_error($conn));
+   exit(1);
+  }
+  $clubName = mysqli_fetch_assoc($result);
+  $clubName = $clubName['cname'];
+  // get all event types for drop-down menu
+  $queryAllEventTypes = "SELECT type FROM event GROUP BY type;";
+  if ( ! ( $result = mysqli_query($conn, $queryAllEventTypes)) ) {
+   printf("Error2: %s\n", mysqli_error($conn));
+   exit(1);
+  }
+
+  // get all buildings for drop-down menu
+  $queryAllBuildings = "SELECT building FROM location GROUP BY building;";
+  if ( ! ( $result2 = mysqli_query($conn, $queryAllBuildings)) ) {
+   printf("Error2: %s\n", mysqli_error($conn));
+   exit(1);
+  }
+}
+?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -185,7 +223,7 @@ desired effect
               <!-- The user image in the navbar-->
               <img src="Images/profile.jpeg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Shayan Jiwani</span>
+              <span class="hidden-xs"><?php echo ($fname . " " . $lname)?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -193,7 +231,7 @@ desired effect
                 <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
 
                 <p>
-                  Shayan Jiwani - Software Engineer
+                  <?php echo ($fname . " " . $lname)?> - Software Engineer
                   <small>Member since Sep 2018</small>
                 </p>
               </li>
@@ -218,7 +256,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="Login.php" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -243,7 +281,7 @@ desired effect
           <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Shayan Jiwani</p>
+          <p><?php echo ($fname . " " . $lname)?></p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -265,10 +303,10 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="EagleEventsMainPage.html"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
-        <li><a href="YourEvents.html"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
-        <li><a href="YourClubs.html"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
-        <li class="active"><a href="AddAnEvent.html"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
+        <li><a href="HomePage.php"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
+        <li><a href="YourEvents.php"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
+        <li><a href="YourClubs.php"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
+        <li class="active"><a href="AddAnEvent.php"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Emory University</span>
             <span class="pull-right-container">
@@ -276,8 +314,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">All Clubs</a></li>
-            <li><a href="#">All Events</a></li>
+            <li><a href="AllClubs.php">All Clubs</a></li>
+            <li><a href="AllEvents.php">All Events</a></li>
           </ul>
         </li>
       </ul>
@@ -298,12 +336,12 @@ desired effect
 
     <!-- Main content -->
     <section class="content container-fluid">
-          <form action = "/YourEvents.html" method = "POST" name= "search-theme-form">
+          <form action = "AddAnEvent.php" method = "POST" name= "search-theme-form">
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="cname">Club Name</label>
-              <input type="text" selected disabled hidden name = "cname" placeholder = "BSA" class="form-control">
+              <input type="text" selected disabled hidden name = "cname" placeholder = "<?php echo $clubName ?>" class="form-control">
             </div>
           </div>
           <br><br>
@@ -347,8 +385,13 @@ desired effect
               <label for="building">Location</label>
               <select>
                 <option class ="form-control" value="" selected disabled hidden>Select Building</option>
-                <option class="form-control" value = "White Hall" required>White Hall</option>
-                <option class="form-control" value = "MSC" required>MSC</option>
+                <?php
+                  while ($row = mysqli_fetch_assoc($result2)) {
+                    foreach ($row as $key => $value) {
+                      print "<option class=\"form-control\" value = \'$value\' required>$value</option>";
+                    }
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -356,7 +399,7 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="room">Room #</label>
-              <input type="number" name = "room" class="form-control" placeholder="Room" required>
+              <input type="text" name = "room" class="form-control" placeholder="Room" required>
             </div>
           </div>
           <br><br>
@@ -365,9 +408,13 @@ desired effect
               <label for="type">Type of Event</label>
               <select>
                 <option class ="form-control" value="" selected disabled hidden>Select Type</option>
-                <option class="form-control" value = "social" required>Social</option>
-                <option class="form-control" value = "meeting" required>Meeting</option>
-                <option class="form-control" value = "service" required>Service</option>
+                <?php
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    foreach ($row as $key => $value) {
+                      print "<option class=\"form-control\" value = \'$value\' required>$value</option>";
+                    }
+                  }
+                ?>
               </select>
             </div>
           </div>

@@ -5,7 +5,7 @@ eedb = mysql.connector.connect(
     host = "localhost",
     database = "eagleEvents",
     user = "root",
-    passwd = ""
+    passwd = "Eagle123"
 )
 
 cursor = eedb.cursor()

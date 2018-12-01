@@ -16,9 +16,9 @@ $lname = $_SESSION['lname'];
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
-      longitude AS Longitude, latitude AS Latitude, (SELECT COUNT(*)
-                                                     FROM attendance
-                                                     WHERE event_id = e.event_id) AS \"People Interested\"
+      longitude AS Longitude, latitude AS Latitude, l.radius AS Radius, (SELECT COUNT(*)
+                                                                         FROM attendance
+                                                                         WHERE event_id = e.event_id) AS \"People Interested\"
       FROM attendance a, event e, location l, club c
       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
@@ -299,7 +299,7 @@ print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li class=\"active\"><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
 print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"AddEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -404,22 +404,25 @@ $myJson = json_encode($markers);
         function getLat(event){
           var min = event.radius * -1;
           var max = event.radius;
-          var delta = Math.random() * (max - min) + min;
-          return event.lat + delta;
+          var delta = Math.random() * (max - min) + min + event.lat;
+          return delta;
         }
         function getLng(event){
           var min = event.radius * -1;
           var max = event.radius;
-          var delta = Math.random() * (max - min) + min;
-          return event.lng + delta;
+          var delta = Math.random() * (max - min) + min + event.lng;
+          return delta;
         }
         function addMarker(event){
           var contentString = "Club: ".bold() + event.club +
-                              "<br/>" + "Event: ".bold() + event.name +
-                              "<br/>" + "Event Description: ".bold() + event.description +
-                              "<br/>" + "Day: ".bold() + event.day +
-                              "<br/>" + "Duration: ".bold() + event.starts + " - " + event.ends +
-                              "<br/>" + "Building: ".bold() + event.building + "<br/>";
+                              "<br/>" + "Event: ".bold() + event.name + "<br/>";
+            if(event.description) {
+              contentString += "Event Description: ".bold() + event.description
+                              + "<br/>";
+            }
+            contentString += "Day: ".bold() + event.day +
+              "<br/>" + "Duration: ".bold() + event.starts + " - " + event.ends +
+              "<br/>" + "Building: ".bold() + event.building + "<br/>";
             if (event.room) {
               contentString += "Room: ".bold() + event.room + "<br/>";
             }
@@ -428,7 +431,7 @@ $myJson = json_encode($markers);
                 map: map,
                 position: {lat: getLat(event),lng: getLng(event)}
             });
-            if(event.description){
+            if(event.name){
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
