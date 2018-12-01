@@ -338,6 +338,7 @@ desired effect
     <section class="content container-fluid">
           <form action = "AddAnEvent.php" method = "POST" name= "search-theme-form">
           <br><br>
+          <input type="hidden" id="cid" name="cid" value= "<?php echo $clubID ?>">
           <div class="form-row">
             <div class="col">
               <label for="cname">Club Name</label>
@@ -354,7 +355,7 @@ desired effect
           <br><br>
           <div class="form-row">
             <div class="col">
-              <label for="description">Description</label>
+              <label for="edescription">Description</label>
               <input type="text" name = "edescription" class="form-control" placeholder="Description">
             </div>
           </div>
@@ -368,27 +369,27 @@ desired effect
           <br><br>
           <div class="form-row">
             <div class="col">
-              <label for="start-time">Start Time</label>
+              <label for="startTime">Start Time</label>
               <input type="time" name = "startTime" class="form-control" placeholder="Starts" required>
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
-              <label for="end-time">End Time</label>
-              <input type="time" name = "startTime" class="form-control" placeholder="Ends" required>
+              <label for="endTime">End Time</label>
+              <input type="time" name = "endTime" class="form-control" placeholder="Ends" required>
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
-              <label for="building">Location</label>
-              <select>
+              <label for="building">Building</label>
+              <select name ="building">
                 <option class ="form-control" value="" selected disabled hidden>Select Building</option>
                 <?php
                   while ($row = mysqli_fetch_assoc($result2)) {
                     foreach ($row as $key => $value) {
-                      print "<option class=\"form-control\" value = \'$value\' required>$value</option>";
+                      print "<option class=\"form-control\" value = $value required>$value</option>";
                     }
                   }
                 ?>
@@ -398,20 +399,20 @@ desired effect
           <br><br>
           <div class="form-row">
             <div class="col">
-              <label for="room">Room #</label>
-              <input type="text" name = "room" class="form-control" placeholder="Room" required>
+              <label for="room">Room</label>
+              <input type="text" name = "room" class="form-control" placeholder="Room">
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="type">Type of Event</label>
-              <select>
+              <select name = "type">
                 <option class ="form-control" value="" selected disabled hidden>Select Type</option>
                 <?php
                   while ($row = mysqli_fetch_assoc($result)) {
                     foreach ($row as $key => $value) {
-                      print "<option class=\"form-control\" value = \'$value\' required>$value</option>";
+                      print "<option class=\"form-control\" value = $value required>$value</option>";
                     }
                   }
                 ?>

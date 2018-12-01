@@ -3,7 +3,6 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
-
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -12,56 +11,14 @@ if (mysqli_connect_errno()){
  exit(1);
 }
 
-if ($_POST != NULL) {
-  // create event here
+$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
+     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
+     FROM attendance a, event e, location l, club c
+     WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
+     AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
 
-  $cid = $_POST['cid'];
-  $ename = $_POST['ename'];
-  $edescription = $_POST['edescription'];
-  $edate = $_POST['edate'];
-  $startTime = $_POST['startTime'];
-  $endTime = $_POST['endTime'];
-  $building = $_POST['building'];
-  if ($_POST['room']) {
-    $room = $_POST['room'];
-  }
-  $type = $_POST['type'];
-
-  $getLocationId = "SELECT location_id FROM location WHERE building = '$building';";
-  if ( ! ( $result = mysqli_query($conn, $getLocationId)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
-  }
-  $getLocationId = mysqli_fetch_assoc($result);
-  $locID = $getLocationId['location_id'];
-  $getMaxEventId = "SELECT MAX(event_id) AS max FROM event;";
-  if ( ! ( $result = mysqli_query($conn, $getMaxEventId)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
-  }
-  $getMaxEventId = mysqli_fetch_assoc($result);
-  $maxEvent = $getMaxEventId['max'] + 1;
-
-  $queryInsert = "INSERT INTO event VALUES('$ename', '$edescription', '$edate', '$startTime',
-                          '$endTime', '$locID', '$room', '$maxEvent', '$type',
-                          1, '$uid', '$cid');";
-  if ( ! ( $result = mysqli_query($conn, $queryInsert)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
-  }
-
-  $attendanceInsert = "INSERT INTO attendance VALUES('$maxEvent','$uid');";
-  if ( ! ( $result2 = mysqli_query($conn, $attendanceInsert)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
-    exit(1);
-  }
-}
-
-$queryClubs = "SELECT c.club_id, cname AS Club FROM club c, clubMember m
-          WHERE m.uid = '$uid' AND owner = 1 AND m.club_id = c.club_id
-          ORDER BY cname ASC;";
-
-if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
@@ -334,8 +291,8 @@ print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
@@ -351,12 +308,13 @@ print "        </li>\n";
 print "      </ul>\n";
 print "    </section>\n";
 print "  </aside>\n";
-print "\n";
 print "  <div class=\"content-wrapper\">\n";
+print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
-print "              <h3 class=\"box-title\">Your Organizations</h3>\n";
+print "              <h3 class=\"box-title\">Your Events</h3>\n";
+print "\n";
 print "              <div class=\"box-tools pull-right\">\n";
 print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
 print "                </button>\n";
@@ -368,43 +326,49 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
-print "<form action = \"AddAnEvent2.php\" method = \"POST\">";
+$counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-       if ($key != 'club_id') {
+       if ($key != 'event_id') {
          print "<th>" . $key . "</th>";
        }
      }
-     print "<th>Create Event</th>";
+     print "<th>Checkbox</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-    if ($key != 'club_id') {
+    if ($key != 'event_id') {
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"radio\" name=\"cid\" value=" . $row['club_id'] . " required></td>");
+  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  $counter++;
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
 print "                </table>\n";
 print "              </div>\n";
-print "            </div>\n";
-print "            <div class=\"box-footer clearfix\">\n";
-print "   <input type=\"submit\" value=\"Add Event\" class=\"btn btn-sm btn-info btn-flat pull-right\">";
-print "</form>\n";
+print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "          </div>\n";
+print "          <!-- /.box -->\n";
 print "        </div>\n";
+print "        <!-- /.col -->";
 print "    </section>\n";
+print "    <!-- /.content -->\n";
 print "  </div>\n";
+print "  <!-- /.content-wrapper -->\n";
+print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
+print "    <!-- Default to the left -->\n";
 print "    <strong>Copyright © 2018 <a href=\"#\">EagleEvents</a>.</strong> All rights reserved.\n";
 print "  </footer>\n";
+print "\n";
+print "  <!-- Control Sidebar -->\n";
 print "  <aside class=\"control-sidebar control-sidebar-dark\">\n";
 print "    <!-- Create the tabs -->\n";
 print "    <ul class=\"nav nav-tabs nav-justified control-sidebar-tabs\">\n";
@@ -448,6 +412,8 @@ print "              </div>\n";
 print "            </a>\n";
 print "          </li>\n";
 print "        </ul>\n";
+print "        <!-- /.control-sidebar-menu -->\n";
+print "\n";
 print "      </div>\n";
 print "      <!-- /.tab-pane -->\n";
 print "      <!-- Stats tab content -->\n";
@@ -457,6 +423,7 @@ print "      <!-- Settings tab content -->\n";
 print "      <div class=\"tab-pane\" id=\"control-sidebar-settings-tab\">\n";
 print "        <form method=\"post\">\n";
 print "          <h3 class=\"control-sidebar-heading\">General Settings</h3>\n";
+print "\n";
 print "          <div class=\"form-group\">\n";
 print "            <label class=\"control-sidebar-subheading\">\n";
 print "              Report panel usage\n";
@@ -498,5 +465,8 @@ print "</script>\n";
 print "</body>\n";
 print "\n";
 print "</html>\n";
+
+//mysqli_free_result($result);
+mysqli_close($conn);
 
 ?>

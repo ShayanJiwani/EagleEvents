@@ -112,7 +112,7 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="password">Re-enter Password</label>
-              <input type="PASSWORD" name = "password" class="form-control" placeholder="Password" required>
+              <input type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required>
             </div>
           </div>
           <br><br>

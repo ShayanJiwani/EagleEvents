@@ -125,3 +125,13 @@ SELECT ename AS Name, edescription AS Description,
       FROM attendance a, event e, location l, club c
       WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;
+
+
+/* Insert into event table */
+
+/* get locID from location table using building */
+/* get eventID from max+1 */
+
+INSERT INTO event VALUES('$ename', '$edescription', '$edate', '$startTime',
+                        '$endTime', '$locID', '$room', '$eventID', '$type',
+                        1, '$uid', '$cid');
