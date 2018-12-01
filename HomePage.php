@@ -16,7 +16,9 @@ $lname = $_SESSION['lname'];
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
-      longitude AS Longitude, latitude AS Latitude
+      longitude AS Longitude, latitude AS Latitude, (SELECT COUNT(*)
+                                                     FROM attendance
+                                                     WHERE event_id = e.event_id) AS \"People Interested\"
       FROM attendance a, event e, location l, club c
       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
@@ -345,6 +347,7 @@ while ($row = mysqli_fetch_assoc($resultEvent)) {
   $jsonEvent['radius'] = $row['Radius'];
   $jsonEvent['room'] = $row['Room'];
   $jsonEvent['club'] = $row['Club'];
+  $jsonEvent['people'] = $row['People Interested'];
   $markers[$count] = $jsonEvent;
   $count++;
 }
@@ -411,19 +414,23 @@ $myJson = json_encode($markers);
           return event.lng + delta;
         }
         function addMarker(event){
+          var contentString = "Club: ".bold() + event.club +
+                              "<br/>" + "Event: ".bold() + event.name +
+                              "<br/>" + "Event Description: ".bold() + event.description +
+                              "<br/>" + "Day: ".bold() + event.day +
+                              "<br/>" + "Duration: ".bold() + event.starts + " - " + event.ends +
+                              "<br/>" + "Building: ".bold() + event.building + "<br/>";
+            if (event.room) {
+              contentString += "Room: ".bold() + event.room + "<br/>";
+            }
+            contentString += "People Interested: ".bold() + event.people;
             var marker = new google.maps.Marker({
                 map: map,
                 position: {lat: getLat(event),lng: getLng(event)}
             });
-            //window.alert(marker.position);
             if(event.description){
                 var infoWindow = new google.maps.InfoWindow({
-                    content: event.club +
-                            "<br/>" + event.name +
-                            "<br/>" + event.description +
-                            "<br/>" + event.day +
-                            "<br/>" + event.starts + " - " + event.ends +
-                            "<br/>" + event.building + "<br/>" + event.room
+                    content: contentString
                 });
                 marker.addListener('click', function(){
                     if(lastWindow){ lastWindow.close()};

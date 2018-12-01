@@ -105,4 +105,23 @@ WHERE cl.category NOT IN (SELECT category
                WHERE m.uid = 1009
                AND m.club_id = c.club_id
                GROUP BY category)
-GROUP BY cl.category;
+GROUP BY cl.category
+ORDER BY RAND()
+LIMIT 1;
+
+/* Get all students interested in this event */
+
+SELECT COUNT(*)
+FROM attendance
+WHERE event_id = '$event_id';
+
+
+SELECT ename AS Name, edescription AS Description,
+      DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
+      longitude AS Longitude, latitude AS Latitude, (SELECT COUNT(*)
+                                                     FROM attendance
+                                                     WHERE event_id = e.event_id) AS count
+      FROM attendance a, event e, location l, club c
+      WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
+      AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;

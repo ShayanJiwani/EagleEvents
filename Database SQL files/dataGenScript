@@ -1,0 +1,44 @@
+import mysql.connector
+import random
+
+eedb = mysql.connector.connect(
+    host = "localhost",
+    database = "eagleEvents",
+    user = "root",
+    passwd = ""
+)
+
+cursor = eedb.cursor()
+
+# Get current max event_ID from database
+cursor.execute("SELECT MAX(event_id) as maxEID from event")
+maxEID = cursor.fetchone()[0]
+
+sql = "INSERT INTO event (ename,edescription,edate,startTime,endTime,location_id,room,event_id,type,open,uid,club_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+clubID = 999
+uID = 9999
+
+enames = ["Prayer", "Open-Mic Night", "Research Symposium", "Guest Lecture", "Pre-Health Advising",
+            "Wonderful Wednesday After Dark", "Meditation", "Healthy Eating", "Stress Management",
+            "Investing 101", "VE Service Trip"]
+dates = ["2018-11-28", "2018-11-29", "2018-11-30", "2018-12-1", "2018-12-2", "2018-12-3"]
+startTimes = ["14:00:00", "15:00:00", "15:30:00", "16:00:00", "17:00:00"]
+endTimes = ["17:30:00", "18:00:00", "18:30:00", "19:00:00"]
+locIDs = [100, 101, 102, 103, 104, 105, 106, 107]
+types = ["meeting", "service", "social"]
+
+eventID = maxEID+1
+for x in range(200):
+    ename = enames[random.randint(0,len(enames)-1)]
+    date = dates[random.randint(0,len(dates)-1)]
+    startTime = startTimes[random.randint(0,len(startTimes)-1)]
+    endTime = endTimes[random.randint(0,len(endTimes)-1)]
+    locID = locIDs[random.randint(0,len(locIDs)-1)]
+    type = types[random.randint(0,len(types)-1)]
+
+    val = (ename,"",date,startTime,endTime,locID,"",eventID,type,1,uID,clubID)
+    cursor.execute(sql,val)
+    eventID += 1
+
+eedb.commit()
+print "records inserted."
