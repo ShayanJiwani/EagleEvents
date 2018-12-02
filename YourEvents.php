@@ -39,13 +39,14 @@ $conn = mysqli_connect("localhost","root",
      }
    }
  }
-
+ str
  $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
        DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
        TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
        FROM attendance a, event e, location l, club c
-       WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
-       AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
+       WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
+       AND c.club_id = e.club_id AND e.edate >= CURDATE() 
+       ORDER BY edate ASC, startTime ASC;";
 
  if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {
    printf("Error: %s\n", mysqli_error($conn));
@@ -339,28 +340,8 @@ print "      <!-- /.sidebar-menu -->\n";
 print "    </section>\n";
 print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
-print "\n";
-print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
-print "    <!-- Content Header (Page header) -->\n";
-/*
-print "    <section class=\"content-header\">\n";
-print "      <h1>\n";
-print "        Your Events\n";
-print "        <small>Events you are interested in or that are recommended for you</small>\n";
-print "      </h1>\n";
-print "    </section>\n";
-*/
-print "\n";
-print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
-print "\n";
-print "      <!--\n";
-print "        | Your Page Content Here | Chris Lew\n";
-print "        -->\n";
-print "\n";
-print "\n";
-print "                    <!-- TABLE: LATEST ORDERS -->\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
 print "              <h3 class=\"box-title\">Your Events</h3>\n";
@@ -416,9 +397,6 @@ print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";
 print "        </div>\n";
-print "        <!-- /.col -->";
-print "\n";
-print "\n";
 print "    </section>\n";
 print "\n";
 print "    <!-- /.content -->\n";

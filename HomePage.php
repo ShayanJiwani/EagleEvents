@@ -18,11 +18,14 @@ $queryEvents = "SELECT ename AS Name, edescription AS Description,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
       longitude AS Longitude, latitude AS Latitude, l.radius AS Radius, (SELECT COUNT(*)
                                                                          FROM attendance
-                                                                         WHERE event_id = e.event_id) AS \"People Interested\"
+                                                                         WHERE event_id = e.event_id) AS "People Interested"
       FROM attendance a, event e, location l, club c
-      WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
-      AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
+      WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
+      AND c.club_id = e.club_id AND e.edate >= CURDATE() AND e.endTime >= CURTIME()
+      AND DATE_ADD(CURTIME(), INTERVAL 1 hour) >= e.startTime
+      ORDER BY edate ASC, startTime ASC;";
 
+      AND CURTIME() >= (e.startTime - 1)
 if ( ! ( $resultEvent = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);

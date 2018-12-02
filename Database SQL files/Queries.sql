@@ -98,14 +98,13 @@ GROUP BY category;
 use this to show people random clubs from this list. For example: our
 "discover" clubs will select a random club from each of these categories
 */
-SELECT cl.category
+SELECT cl.club_id, cl.cname, cl.cdescription, cl.category
 FROM club cl
 WHERE cl.category NOT IN (SELECT category
                FROM club c, clubMember m
-               WHERE m.uid = 1009
+               WHERE m.uid = 1000
                AND m.club_id = c.club_id
                GROUP BY category)
-GROUP BY cl.category
 ORDER BY RAND()
 LIMIT 1;
 
