@@ -109,6 +109,17 @@ AND cl.club_id != 999
 ORDER BY RAND()
 LIMIT 1;
 
+/* This gets a random event that is hosted by a "suggested" club from the above query.
+It provides a "discover" event.
+*/
+SELECT e.event_id, ename AS Name, edescription AS Description,
+DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
+FROM event e, location l, club c
+WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.club_id = 102
+ORDER BY RAND()
+LIMIT 1;
+
 /* Get all students interested in this event */
 
 SELECT COUNT(*)
