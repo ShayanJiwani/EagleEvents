@@ -105,6 +105,7 @@ WHERE cl.category NOT IN (SELECT category
                WHERE m.uid = 1000
                AND m.club_id = c.club_id
                GROUP BY category)
+AND cl.club_id != 999
 ORDER BY RAND()
 LIMIT 1;
 
