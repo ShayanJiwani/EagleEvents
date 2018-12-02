@@ -4,6 +4,14 @@ $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
 
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
+
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -16,6 +24,7 @@ if ($_POST != NULL) {
   // create event here
 
   $cid = $_POST['cid'];
+  $cname = $_POST['cname'];
   $ename = $_POST['ename'];
   $edescription = $_POST['edescription'];
   $edate = $_POST['edate'];
@@ -26,7 +35,6 @@ if ($_POST != NULL) {
     $room = $_POST['room'];
   }
   $type = $_POST['type'];
-
   $getLocationId = "SELECT location_id FROM location WHERE building = '$building';";
   if ( ! ( $result = mysqli_query($conn, $getLocationId)) ) {
    printf("Error1: %s\n", mysqli_error($conn));
@@ -56,6 +64,10 @@ if ($_POST != NULL) {
     printf("Error4: %s\n", mysqli_error($conn));
     exit(1);
   }
+  $successString = "Event \"" . $ename . "\" created for " . $cname;
+}
+else {
+  $successString = "";
 }
 
 $queryClubs = "SELECT c.club_id, cname AS Club FROM club c, clubMember m
@@ -108,26 +120,6 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
 print "\n";
@@ -135,7 +127,7 @@ print "  <!-- Main Header -->\n";
 print "  <header class=\"main-header\">\n";
 print "\n";
 print "    <!-- Logo -->\n";
-print "    <a href=\"index2.html\" class=\"logo\">\n";
+print "    <a href=\"#\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
 print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
@@ -284,7 +276,7 @@ print "              </li>\n";
 print "              <!-- Menu Footer-->\n";
 print "              <li class=\"user-footer\">\n";
 print "                <div class=\"pull-left\">\n";
-print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profile</a>\n";
+print "                  <a href=\"Profile.php\" class=\"btn btn-default btn-flat\">Profile</a>\n";
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
@@ -339,6 +331,7 @@ print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <spa
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li class=\"active\"><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
+print "        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -346,8 +339,8 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
-print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
+print "            <li><a href=\"AllClubs.php\"><i class=\"fa fa-table\"></i> <span>All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\"><i class=\"fa fa-table\"></i> <span>All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -356,6 +349,9 @@ print "  </aside>\n";
 print "\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <section class=\"content container-fluid\">\n";
+if ($successString != "") {
+  printf("<p style=\"color:green;\">". $successString ."</p>\n");
+}
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
 print "              <h3 class=\"box-title\">Your Organizations</h3>\n";

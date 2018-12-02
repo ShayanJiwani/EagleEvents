@@ -3,7 +3,13 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
-
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -88,7 +94,7 @@ print "  <!-- Main Header -->\n";
 print "  <header class=\"main-header\">\n";
 print "\n";
 print "    <!-- Logo -->\n";
-print "    <a href=\"index2.html\" class=\"logo\">\n";
+print "    <a href=\"#\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
 print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
@@ -237,7 +243,7 @@ print "              </li>\n";
 print "              <!-- Menu Footer-->\n";
 print "              <li class=\"user-footer\">\n";
 print "                <div class=\"pull-left\">\n";
-print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profile</a>\n";
+print "                  <a href=\"Profile.php\" class=\"btn btn-default btn-flat\">Profile</a>\n";
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
@@ -292,15 +298,16 @@ print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <spa
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
-print "        <li class=\"treeview\">\n";
+print "        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>\n";
+print "        <li class=\"treeview active\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
 print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li class=\"active\"><a href=\"AllClubs.php\">All Clubs</a></li>\n";
-print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
+print "            <li class=\"active\"><a href=\"AllClubs.php\"><i class=\"fa fa-table\"></i> <span>All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\"><i class=\"fa fa-table\"></i> <span>All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";

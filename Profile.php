@@ -1,3 +1,42 @@
+<?php
+session_start();
+$uid = $_SESSION['uid'];
+$fname = $_SESSION['fname'];
+$lname = $_SESSION['lname'];
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
+
+$conn = mysqli_connect("localhost","root",
+"Eagle123", "eagleEvents");
+
+if (mysqli_connect_errno()){
+ printf("Connect failed: %s\n", mysqli_connect_error());
+ exit(1);
+}
+
+$queryUser = "SELECT CONCAT(fname,' ', lname) as Name, year as Year, email as Email
+              FROM student s WHERE uid = '$uid';";
+
+if ( ! ( $result = mysqli_query($conn, $queryUser)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+
+$usr = "SELECT username FROM user WHERE uid = '$uid';";
+
+if ( ! ( $result2 = mysqli_query($conn, $usr)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$usr = mysqli_fetch_assoc($result2);
+$usr = $usr['username'];
+
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -77,7 +116,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>E</b>E</span>
       <!-- logo for regular state and mobile devices -->
@@ -196,7 +235,7 @@ desired effect
               <!-- The user image in the navbar-->
               <img src="Images/profile.jpeg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Shayan Jiwani</span>
+              <span class="hidden-xs"><?php echo ($fname . " " . $lname)?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -204,8 +243,7 @@ desired effect
                 <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
 
                 <p>
-                  Shayan Jiwani - Software Engineer
-                  <small>Member since Sep 2018</small>
+                  <?php echo ($fname . " " . $lname)?>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -226,10 +264,10 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="Profile.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="Login.php" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -254,7 +292,7 @@ desired effect
           <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Shayan Jiwani</p>
+          <p><?php echo ($fname . " " . $lname)?></p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -276,12 +314,12 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>
-        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>
-        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>
-        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>
-        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>
-        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>
+        <li><a href="HomePage.php"><i class="fa fa-laptop"></i> <span>Home Page</span></a></li>
+        <li><a href="YourEvents.php"><i class="fa fa-table"></i> <span>Your Events</span></a></li>
+        <li><a href="YourClubs.php"><i class="fa fa-table"></i> <span>Your Clubs</span></a></li>
+        <li><a href="AddAnEvent.php"><i class="fa fa-edit"></i> <span>Add an Event</span></a></li>
+        <li><a href="Suggestions.php"><i class="fa fa-table"></i> <span>Suggestions</span></a></li>
+        <li><a href="Users.php"><i class="fa fa-users"></i> <span>Users</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-share"></i> <span>Emory University</span>
             <span class="pull-right-container">
@@ -289,8 +327,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">All Clubs</a></li>
-            <li><a href="#">All Events</a></li>
+            <li><a href="AllClubs.php"><i class="fa fa-table"></i> <span>All Clubs</a></li>
+            <li><a href="AllEvents.php"><i class="fa fa-table"></i> <span>All Events</a></li>
           </ul>
         </li>
       </ul>
@@ -315,23 +353,18 @@ desired effect
           <div class="box box-primary">
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" src="Images/profile.jpeg">
-
-              <h3 class="profile-username text-center">User Name</h3>
-
-              <p class="text-muted text-center">Software Engineer</p>
-
+              <h3 class="profile-username text-center"><?php echo ($usr)?></h3>
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Year</b> <a class="pull-right">Senior</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Email</b> <a class="pull-right">email@emory.edu</a>
-                </li>
-                <li class="list-group-item">
-                  <b>CLubs</b> <a class="pull-right">Clubs</a>
-                </li>
+              <?php
+                while($row = mysqli_fetch_assoc($result)) {
+                  foreach ($row as $key => $value) {
+                    print "<li class=\"list-group-item\">\n";
+                    print "<b>" . $key . "</b> <a class=\"pull-right\">" . $value . "</a>\n";
+                    print "</li>\n";
+                  }
+                }
+              ?>
               </ul>
-
               <a href="#" class="btn btn-primary btn-block"><b>idk if we want this but i'm leaving it </b></a>
             </div>
             <!-- /.box-body -->

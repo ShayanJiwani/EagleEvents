@@ -3,10 +3,16 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
 
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
-
 if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
@@ -25,12 +31,7 @@ if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
 print "<!DOCTYPE html>\n";
-print "<!--\n";
-print "This is a starter template page. Use this page to start your new project from\n";
-print "scratch. This page gets rid of all links and provides the needed markup only.\n";
-print "-->\n";
 print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
@@ -49,15 +50,8 @@ print "  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter\n";
 print "        page. However, you can choose any other skin. Make sure you\n";
 print "        apply the skin class to the body tag so the changes take effect. -->\n";
 print "  <link rel=\"stylesheet\" href=\"dist/css/skins/skin-blue.min.css\">\n";
-print "\n";
-print "  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n";
-print "  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n";
-print "  <!--[if lt IE 9]>\n";
 print "  <script src=\"https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>\n";
 print "  <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n";
-print "  <![endif]-->\n";
-print "\n";
-print "  <!-- Google Font -->\n";
 print "  <link rel=\"stylesheet\"\n";
 print "        href=\"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic\">\n";
 print "  <style>\n";
@@ -67,40 +61,15 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
-print "\n";
-print "  <!-- Main Header -->\n";
 print "  <header class=\"main-header\">\n";
-print "\n";
-print "    <!-- Logo -->\n";
-print "    <a href=\"index2.html\" class=\"logo\">\n";
+print "    <a href=\"#\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
 print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
 print "      <span class=\"logo-lg\"><b>Eagle</b>Events</span>\n";
 print "    </a>\n";
-print "\n";
 print "    <!-- Header Navbar -->\n";
 print "    <nav class=\"navbar navbar-static-top\" role=\"navigation\">\n";
 print "      <!-- Sidebar toggle button-->\n";
@@ -243,7 +212,7 @@ print "              </li>\n";
 print "              <!-- Menu Footer-->\n";
 print "              <li class=\"user-footer\">\n";
 print "                <div class=\"pull-left\">\n";
-print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profile</a>\n";
+print "                  <a href=\"Profile.php\" class=\"btn btn-default btn-flat\">Profile</a>\n";
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
@@ -298,6 +267,7 @@ print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <spa
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"active\"><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
+print "        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
 print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
@@ -305,8 +275,8 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li class=\"active\"><a href=\"AllClubs.php\">All Clubs</a></li>\n";
-print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
+print "            <li class=\"active\"><a href=\"AllClubs.php\"><i class=\"fa fa-table\"></i> <span>All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\"><i class=\"fa fa-table\"></i> <span>All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -398,7 +368,7 @@ print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
 print "<form action = \"YourEvents.php\" method = \"POST\">";
-$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
+/*$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
     FROM event e, location l, club c
@@ -406,6 +376,15 @@ $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
     AND e.event_id NOT IN (SELECT event_id FROM attendance WHERE uid = '$uid')
     ORDER BY RAND()
     LIMIT 1;";
+*/
+$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
+                DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+                TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
+                FROM event e, location l, club c
+                WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.edate >= CURDATE()
+                AND e.club_id NOT IN (SELECT club_id FROM clubMember WHERE uid = '$uid')
+                ORDER BY RAND()
+                LIMIT 3;";
 if ( ! ( $result2 = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);

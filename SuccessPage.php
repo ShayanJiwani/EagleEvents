@@ -1,3 +1,13 @@
+<?php
+if (!$_POST) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
+?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from

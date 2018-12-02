@@ -3,7 +3,13 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
-
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -104,7 +110,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>E</b>E</span>
       <!-- logo for regular state and mobile devices -->
@@ -253,7 +259,7 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="Profile.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="Login.php" class="btn btn-default btn-flat">Sign out</a>
@@ -308,6 +314,7 @@ desired effect
         <li><a href="YourClubs.php"><i class="fa fa-table"></i> <span>Your Clubs</span></a></li>
         <li class="active"><a href="AddAnEvent.php"><i class="fa fa-edit"></i> <span>Add an Event</span></a></li>
         <li><a href="Suggestions.php"><i class="fa fa-table"></i> <span>Suggestions</span></a></li>
+        <li><a href="Users.php"><i class="fa fa-users"></i> <span>Users</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-share"></i> <span>Emory University</span>
             <span class="pull-right-container">
@@ -315,8 +322,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="AllClubs.php">All Clubs</a></li>
-            <li><a href="AllEvents.php">All Events</a></li>
+            <li><a href="AllClubs.php"><i class="fa fa-table"></i> <span>All Clubs</a></li>
+            <li><a href="AllEvents.php"><i class="fa fa-table"></i> <span>All Events</a></li>
           </ul>
         </li>
       </ul>
@@ -334,7 +341,6 @@ desired effect
         <small>Use the form below to post an event!</small>
       </h1>
     </section>
-
     <!-- Main content -->
     <section class="content container-fluid">
           <form action = "AddAnEvent.php" method = "POST" name= "search-theme-form">
@@ -343,7 +349,7 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="cname">Club Name</label>
-              <input type="text" selected disabled hidden name = "cname" placeholder = "<?php echo $clubName ?>" class="form-control">
+              <input type="text" name = "cname" value = "<?php echo $clubName ?>" class="form-control" readonly>
             </div>
           </div>
           <br><br>
@@ -385,8 +391,8 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="building">Building</label>
-              <select name ="building">
-                <option class ="form-control" value="" selected disabled hidden>Select Building</option>
+              <select name ="building" required>
+                <option class ="form-control" value="" selected disabled hidden required>Select Building</option>
                 <?php
                   while ($row = mysqli_fetch_assoc($result2)) {
                     foreach ($row as $key => $value) {
@@ -408,7 +414,7 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="type">Type of Event</label>
-              <select name = "type">
+              <select name = "type" required>
                 <option class ="form-control" value="" selected disabled hidden>Select Type</option>
                 <?php
                   while ($row = mysqli_fetch_assoc($result)) {

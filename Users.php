@@ -3,6 +3,13 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+if (!$uid) {
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php'
+  </script>
+  <?php
+}
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -10,13 +17,8 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
-$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
-     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
-     FROM attendance a, event e, location l, club c
-     WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
-     AND c.club_id = e.club_id AND e.edate >= CURDATE()
-     ORDER BY edate ASC, startTime ASC;";
+$queryUsers = "SELECT CONCAT(fname,' ', lname) as Name, year as Year, email as Email
+              FROM student s WHERE uid != 9999 AND uid != '$uid';";
 
 if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
  printf("Error: %s\n", mysqli_error($conn));
@@ -91,7 +93,7 @@ print "  <!-- Main Header -->\n";
 print "  <header class=\"main-header\">\n";
 print "\n";
 print "    <!-- Logo -->\n";
-print "    <a href=\"index2.html\" class=\"logo\">\n";
+print "    <a href=\"#.html\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
 print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
@@ -240,7 +242,7 @@ print "              </li>\n";
 print "              <!-- Menu Footer-->\n";
 print "              <li class=\"user-footer\">\n";
 print "                <div class=\"pull-left\">\n";
-print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profile</a>\n";
+print "                  <a href=\"Profile.php\" class=\"btn btn-default btn-flat\">Profile</a>\n";
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
@@ -290,19 +292,21 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>\n";
+print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
-print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
+print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
 print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
-print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
+print "            <li><a href=\"AllClubs.php\"><i class=\"fa fa-table\"></i> <span>All Clubs</a></li>\n";
+print "            <li><a href=\"AllEvents.php\"><i class=\"fa fa-table\"></i> <span>All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
@@ -314,7 +318,7 @@ print "  <div class=\"content-wrapper\">\n";
 print "    <section class=\"content container-fluid\">\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
-print "              <h3 class=\"box-title\">Your Events</h3>\n";
+print "              <h3 class=\"box-title\">Users</h3>\n";
 print "\n";
 print "              <div class=\"box-tools pull-right\">\n";
 print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
@@ -327,7 +331,7 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
-print "<form action = \"YourEvents.php\" method = \"POST\">";
+//print "<form action = \"YourEvents.php\" method = \"POST\">";
 $counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
@@ -338,7 +342,7 @@ while ($row = mysqli_fetch_assoc($result)){
          print "<th>" . $key . "</th>";
        }
      }
-     print "<th>Checkbox</th>";
+     //print "<th>Checkbox</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
@@ -347,7 +351,7 @@ while ($row = mysqli_fetch_assoc($result)){
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  //print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
   $counter++;
   print ("</tr>\n");
 }
@@ -357,12 +361,12 @@ print "              </div>\n";
 print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "            <!-- /.box-body -->\n";
-print "            <div class=\"box-footer clearfix\">\n";
-//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
+/*print "            <div class=\"box-footer clearfix\">\n";
+print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
 print "   <input type=\"submit\" value=\"Remove Events\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
 print "</form>";
-print "              <a href=\"AllEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
 print "            </div>\n";
+*/
 print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";
