@@ -135,3 +135,5 @@ SELECT ename AS Name, edescription AS Description,
 INSERT INTO event VALUES('$ename', '$edescription', '$edate', '$startTime',
                         '$endTime', '$locID', '$room', '$eventID', '$type',
                         1, '$uid', '$cid');
+
+/* get student information to be able to add */

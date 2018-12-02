@@ -39,13 +39,12 @@ $conn = mysqli_connect("localhost","root",
      }
    }
  }
- str
  $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
        DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
        TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
        FROM attendance a, event e, location l, club c
        WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
-       AND c.club_id = e.club_id AND e.edate >= CURDATE() 
+       AND c.club_id = e.club_id AND e.edate >= CURDATE()
        ORDER BY edate ASC, startTime ASC;";
 
  if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {

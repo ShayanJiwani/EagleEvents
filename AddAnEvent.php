@@ -29,14 +29,15 @@ if ($_POST != NULL) {
 
   $getLocationId = "SELECT location_id FROM location WHERE building = '$building';";
   if ( ! ( $result = mysqli_query($conn, $getLocationId)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
+   printf("Error1: %s\n", mysqli_error($conn));
    exit(1);
   }
   $getLocationId = mysqli_fetch_assoc($result);
   $locID = $getLocationId['location_id'];
+
   $getMaxEventId = "SELECT MAX(event_id) AS max FROM event;";
   if ( ! ( $result = mysqli_query($conn, $getMaxEventId)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
+   printf("Error2: %s\n", mysqli_error($conn));
    exit(1);
   }
   $getMaxEventId = mysqli_fetch_assoc($result);
@@ -46,13 +47,13 @@ if ($_POST != NULL) {
                           '$endTime', '$locID', '$room', '$maxEvent', '$type',
                           1, '$uid', '$cid');";
   if ( ! ( $result = mysqli_query($conn, $queryInsert)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
+   printf("Error3: %s\n", mysqli_error($conn));
    exit(1);
   }
 
   $attendanceInsert = "INSERT INTO attendance VALUES('$maxEvent','$uid');";
   if ( ! ( $result2 = mysqli_query($conn, $attendanceInsert)) ) {
-    printf("Error: %s\n", mysqli_error($conn));
+    printf("Error4: %s\n", mysqli_error($conn));
     exit(1);
   }
 }

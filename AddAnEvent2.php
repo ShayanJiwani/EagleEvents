@@ -389,7 +389,7 @@ desired effect
                 <?php
                   while ($row = mysqli_fetch_assoc($result2)) {
                     foreach ($row as $key => $value) {
-                      print "<option class=\"form-control\" value = $value required>$value</option>";
+                      print "<option class=\"form-control\" value = \"$value\" required>$value</option>";
                     }
                   }
                 ?>

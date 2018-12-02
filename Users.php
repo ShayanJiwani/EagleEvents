@@ -1,6 +1,8 @@
 <?php
-/* This is the EagleEventsMainPage put into PHP*/
 session_start();
+$uid = $_SESSION['uid'];
+$fname = $_SESSION['fname'];
+$lname = $_SESSION['lname'];
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -8,26 +10,17 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
+$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
+     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
+     FROM attendance a, event e, location l, club c
+     WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
+     AND c.club_id = e.club_id AND e.edate >= CURDATE()
+     ORDER BY edate ASC, startTime ASC;";
 
-$uid = $_SESSION['uid'];
-$fname = $_SESSION['fname'];
-$lname = $_SESSION['lname'];
-
-$queryEvents = "SELECT ename AS Name, edescription AS Description,
-      DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
-      longitude AS Longitude, latitude AS Latitude, l.radius AS Radius, (SELECT COUNT(*)
-                                                                         FROM attendance
-                                                                         WHERE event_id = e.event_id) AS \"People Interested\"
-      FROM attendance a, event e, location l, club c
-      WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
-      AND c.club_id = e.club_id AND e.edate >= CURDATE() AND e.endTime >= CURTIME()
-      AND DATE_ADD(CURTIME(), INTERVAL 1 hour) >= e.startTime
-      ORDER BY edate ASC, startTime ASC;";
-      
-if ( ! ( $resultEvent = mysqli_query($conn, $queryEvents)) ) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit(1);
+if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
 }
 
 print "<!DOCTYPE html>\n";
@@ -39,7 +32,7 @@ print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
 print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <title>Eagle Events | Homepage</title>\n";
+print "  <title>Eagle Events | Your Events</title>\n";
 print "  <!-- Tell the browser to be responsive to screen width -->\n";
 print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
 print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
@@ -100,7 +93,7 @@ print "\n";
 print "    <!-- Logo -->\n";
 print "    <a href=\"index2.html\" class=\"logo\">\n";
 print "      <!-- mini logo for sidebar mini 50x50 pixels -->\n";
-print "      <span class=\"logo-mini\"><b>E</b>LE</span>\n";
+print "      <span class=\"logo-mini\"><b>E</b>E</span>\n";
 print "      <!-- logo for regular state and mobile devices -->\n";
 print "      <span class=\"logo-lg\"><b>Eagle</b>Events</span>\n";
 print "    </a>\n";
@@ -217,7 +210,6 @@ print "            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdow
 print "              <!-- The user image in the navbar-->\n";
 print "              <img src=\"Images/profile.jpeg\" class=\"user-image\" alt=\"User Image\">\n";
 print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";
-/* put in user information*/
 print "              <span class=\"hidden-xs\">$fname $lname</span>\n";
 print "            </a>\n";
 print "            <ul class=\"dropdown-menu\">\n";
@@ -252,7 +244,7 @@ print "                  <a href=\"#\" class=\"btn btn-default btn-flat\">Profil
 print "                </div>\n";
 print "                <div class=\"pull-right\">\n";
 print "                  <a href=\"Login.php\" class=\"btn btn-default btn-flat\">Sign out</a>\n";
-print "                </div>\n";
+print "                </div>";
 print "              </li>\n";
 print "            </ul>\n";
 print "          </li>\n";
@@ -298,8 +290,8 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li class=\"active\"><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
@@ -318,207 +310,68 @@ print "      <!-- /.sidebar-menu -->\n";
 print "    </section>\n";
 print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
+print "  <div class=\"content-wrapper\">\n";
+print "    <section class=\"content container-fluid\">\n";
+print "          <div class=\"box box-info\">\n";
+print "            <div class=\"box-header with-border\">\n";
+print "              <h3 class=\"box-title\">Your Events</h3>\n";
 print "\n";
-print "  <!-- Content Wrapper. Contains page content -->\n";
-print "<div class=\"content-wrapper\">\n";
-print "    <!-- Content Header (Page header) -->\n";
-print "    <section class=\"content-header\">\n";
-print "      <h1>\n";
-print "        Home\n";
-print "        <small>View Events Here!</small>\n";
-print "      </h1>\n";
+print "              <div class=\"box-tools pull-right\">\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
+print "                </button>\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n";
+print "              </div>\n";
+print "            </div>\n";
+print "            <!-- /.box-header -->\n";
+print "            <div class=\"box-body\">\n";
+print "              <div class=\"table-responsive\">\n";
+print "                <table class=\"table no-margin\">\n";
+$header = false;
+print "<form action = \"YourEvents.php\" method = \"POST\">";
+$counter = 0;
+while ($row = mysqli_fetch_assoc($result)){
+  if (!$header) {
+     $header = true;
+     print("<thead><tr>\n");
+     foreach ($row as $key => $value) {
+       if ($key != 'event_id') {
+         print "<th>" . $key . "</th>";
+       }
+     }
+     print "<th>Checkbox</th>";
+     print("</tr></thead><tbody>\n");
+  }
+  print("<tr>\n");
+  foreach ($row as $key => $value) {
+    if ($key != 'event_id') {
+      print ("<td>" . $value . "</td>");
+    }
+  }
+  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  $counter++;
+  print ("</tr>\n");
+}
+print "                  </tbody>\n";
+print "                </table>\n";
+print "              </div>\n";
+print "              <!-- /.table-responsive -->\n";
+print "            </div>\n";
+print "            <!-- /.box-body -->\n";
+print "            <div class=\"box-footer clearfix\">\n";
+//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
+print "   <input type=\"submit\" value=\"Remove Events\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
+print "</form>";
+print "              <a href=\"AllEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Events</a>\n";
+print "            </div>\n";
+print "            <!-- /.box-footer -->\n";
+print "          </div>\n";
+print "          <!-- /.box -->\n";
+print "        </div>\n";
 print "    </section>\n";
 print "\n";
-// gets header so we can skip it
-//$row = mysqli_fetch_assoc($resultEvent);
-// define array of markers
-$markers = array();
-$count = 0;
-// each object of array is a json object
-while ($row = mysqli_fetch_assoc($resultEvent)) {
-  //printf($row['Name'] . " \n\n\n");
-  $jsonEvent = array();
-  $jsonEvent['name'] = $row['Name'];
-  $jsonEvent['description'] = $row['Description'];
-  $jsonEvent['day'] = $row['Day'];
-  $jsonEvent['starts'] = $row['Starts'];
-  $jsonEvent['ends'] = $row['Ends'];
-  $jsonEvent['building'] = $row['Building'];
-  $jsonEvent['lat'] = $row['Latitude'];
-  $jsonEvent['lng'] = $row['Longitude'];
-  $jsonEvent['radius'] = $row['Radius'];
-  $jsonEvent['room'] = $row['Room'];
-  $jsonEvent['club'] = $row['Club'];
-  $jsonEvent['people'] = $row['People Interested'];
-  $markers[$count] = $jsonEvent;
-  $count++;
-}
-$myJson = json_encode($markers);
-//printf("<pre>%s</pre>", $myJson);
-?>
-<!-- Main content -->
-<section class="content container-fluid">
-
-  <!--
-    | Your Page Content Here | Chris Lew
-    -->
-  <div id = "map"></div>
-
-    <script>
-    //exchange this part of the code to database in order to actually connect to the real data
-    //just replace eventmap.
-    //test data
-    var markerObjects = <?php echo json_encode($markers, JSON_NUMERIC_CHECK) ?>;
-    lastWindow = null
-
-    function initMap(){
-        var options = {
-          zoom:16,
-          center:{lat: 33.7925,lng:-84.3240}
-        };
-        var map = new google.maps.Map(document.getElementById('map'),options);
-        var noPoi = [{
-            featureType: "poi",
-            stylers: [{
-                visibility: "off"
-            }]
-        }];
-
-        map.setOptions({ styles: noPoi });
-
-        var homeMarker = new google.maps.Marker({
-            map: map,
-            position:{lat: 33.7925,lng:-84.3240},
-            title:'Emory University'
-        });
-        var homeInfoWindow = new google.maps.InfoWindow({
-            content: homeMarker.title + "<br/>" +
-                     "Welcome to your Campus Map!"
-        });
-        homeMarker.addListener('click', function(){
-            if(lastWindow){ lastWindow.close()};
-            homeInfoWindow.open(map, homeMarker);
-            lastWindow = homeInfoWindow;
-        });
-        for (var event in markerObjects){
-            addMarker(markerObjects[event]);
-        }
-        function getLat(event){
-          var min = event.radius * -1;
-          var max = event.radius;
-          var delta = Math.random() * (max - min) + min + event.lat;
-          return delta;
-        }
-        function getLng(event){
-          var min = event.radius * -1;
-          var max = event.radius;
-          var delta = Math.random() * (max - min) + min + event.lng;
-          return delta;
-        }
-        function addMarker(event){
-          var contentString = "Club: ".bold() + event.club +
-                              "<br/>" + "Event: ".bold() + event.name + "<br/>";
-            if(event.description) {
-              contentString += "Event Description: ".bold() + event.description
-                              + "<br/>";
-            }
-            contentString += "Day: ".bold() + event.day +
-              "<br/>" + "Duration: ".bold() + event.starts + " - " + event.ends +
-              "<br/>" + "Building: ".bold() + event.building + "<br/>";
-            if (event.room) {
-              contentString += "Room: ".bold() + event.room + "<br/>";
-            }
-            contentString += "People Interested: ".bold() + event.people;
-            var marker = new google.maps.Marker({
-                map: map,
-                position: {lat: getLat(event),lng: getLng(event)}
-            });
-            if(event.name){
-                var infoWindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-                marker.addListener('click', function(){
-                    if(lastWindow){ lastWindow.close()};
-                    infoWindow.open(map, marker);
-                    lastWindow = infoWindow;
-                });
-            }
-        }
-        var infoWindow = new google.maps.InfoWindow;
-        var currentLocation = new google.maps.Marker()
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-                };
-
-                //customizing the dot
-                var innerMarker = new google.maps.Marker({
-                    clickable: false,
-                    position: pos,
-                    icon:{
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 8,
-                        fillColor: '#00BFFF',
-                        fillOpacity: 0.8,
-                        strokeColor:'white',
-                        StrokeWeight:0,
-                        strokeOpacity: 1
-                    },
-                    map: map
-                });
-                var outtermarker = new google.maps.Marker({
-                    clickable: false,
-                    position: pos,
-                    icon:{
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 100,
-                        fillColor: '#00BFFF',
-                        fillOpacity: 0.3,
-                        strokeColor:'blue',
-                        StrokeWeight:0,
-                        strokeOpacity: 0
-                    },
-                    map: map
-                });
-                /* this one does not increase and decrease according to zoom value
-                var myCircle = new google.maps.Marker({
-                    strokeColor:'#FF0000',
-                    strokeOpacity: 0.8,
-                    strokeWeight:2,
-                    fillColor:'#FF0000',
-                    fillOpacity:0.35,
-                    map: map,
-                    center: pos,
-                    radius: 1
-                });*/
-
-
-                map.setCenter(pos);
-            }, function() {
-                handleLocationError(true, infoWindow, map.getCenter());
-            });
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-
-  }
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-  }
-  </script>
-
-</section>
-
-<!-- /.content -->
-</div>
-<?php
+print "    <!-- /.content -->\n";
+print "  </div>\n";
+print "  <!-- /.content-wrapper -->\n";
 print "\n";
 print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
@@ -622,7 +475,9 @@ print "    src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyDbbe_X5CHSDXR
 print "</script>\n";
 print "</body>\n";
 print "\n";
-print "</html>";
+print "</html>\n";
 
+//mysqli_free_result($result);
 mysqli_close($conn);
+
 ?>
