@@ -3,25 +3,30 @@ session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
-if (mysqli_connect_errno()){
- printf("Connect failed: %s\n", mysqli_connect_error());
- exit(1);
-}
+ if (mysqli_connect_errno()){
+   printf("Connect failed: %s\n", mysqli_connect_error());
+   exit(1);
+ }
 
-$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
-     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
-     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
-     FROM attendance a, event e, location l, club c
-     WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
-     AND c.club_id = e.club_id ORDER BY edate ASC, startTime ASC;";
+ $queryClubs = "SELECT cl.club_id, cl.cname AS Club, cl.cdescription AS Description, cl.category AS Category
+                 FROM club cl
+                 WHERE cl.category NOT IN (SELECT category
+                                FROM club c, clubMember m
+                                WHERE m.uid = 1000
+                                AND m.club_id = c.club_id
+                                GROUP BY category)
+                 AND cl.club_id != 999
+                 ORDER BY RAND()
+                 LIMIT 1;";
 
-if ( ! ( $result = mysqli_query($conn, $queryEvents)) ) {
- printf("Error: %s\n", mysqli_error($conn));
- exit(1);
-}
+ if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+ }
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -291,7 +296,7 @@ print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
 print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
@@ -301,19 +306,27 @@ print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";
 print "          </a>\n";
 print "          <ul class=\"treeview-menu\">\n";
-print "            <li><a href=\"AllClubs.php\">All Clubs</a></li>\n";
+print "            <li class=\"active\"><a href=\"AllClubs.php\">All Clubs</a></li>\n";
 print "            <li><a href=\"AllEvents.php\">All Events</a></li>\n";
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
+print "      <!-- /.sidebar-menu -->\n";
 print "    </section>\n";
+print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
+print "\n";
+print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
+print "    <!-- Content Header (Page header) -->\n";
+print "\n";
 print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";
+print "\n";
+print "                    <!-- TABLE: Random Suggested Club -->\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
-print "              <h3 class=\"box-title\">Your Events</h3>\n";
+print "              <h3 class=\"box-title\">All Organizations</h3>\n";
 print "\n";
 print "              <div class=\"box-tools pull-right\">\n";
 print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
@@ -326,6 +339,86 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
+print "<form action = \"YourClubs.php\" method = \"POST\">";
+$randClub_id = "";
+$counter = 0;
+while ($row = mysqli_fetch_assoc($result)){
+  if (!$header) {
+     $header = true;
+     print("<thead><tr>\n");
+     foreach ($row as $key => $value) {
+       if ($key != 'club_id') {
+         print "<th>" . $key . "</th>";
+       }
+       else {
+         $randClub_id = $value
+       }
+     }
+     print "<th>Checkbox</th>";
+     print("</tr></thead><tbody>\n");
+  }
+  print("<tr>\n");
+  foreach ($row as $key => $value) {
+    if ($key != 'club_id') {
+      print ("<td>" . $value . "</td>");
+    }
+  }
+  print ("<td><input type=\"checkbox\" name=\"cid$counter\"  value=" . $row['club_id'] . "></td>");
+  $counter++;
+  print ("</tr>\n");
+}
+print "                  </tbody>\n";
+print "                </table>\n";
+print "              </div>\n";
+print "              <!-- /.table-responsive -->\n";
+print "            </div>\n";
+print "            <!-- /.box-body -->\n";
+print "            <div class=\"box-footer clearfix\">\n";
+//print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
+//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">Add Selected Events</a>\n";
+print "   <input type=\"submit\" value=\"Add Club\" class=\"btn btn-sm btn-default btn-flat pull-right\">";
+print "</form>";
+print "            <!-- /.box-footer -->\n";
+print "          </div>\n";
+print "          <!-- /.box -->\n";
+print "        </div>\n";
+print "        <!-- /.col -->";
+print "\n";
+print "\n";
+print "    </section>\n";
+
+
+print "    <section class=\"content container-fluid\">\n";
+print "\n";
+print "                    <!-- TABLE: Random Suggested Event based on club -->\n";
+print "          <div class=\"box box-info\">\n";
+print "            <div class=\"box-header with-border\">\n";
+print "              <h3 class=\"box-title\">All Organizations</h3>\n";
+print "\n";
+print "              <div class=\"box-tools pull-right\">\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
+print "                </button>\n";
+print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n";
+print "              </div>\n";
+print "            </div>\n";
+print "            <!-- /.box-header -->\n";
+print "            <div class=\"box-body\">\n";
+print "              <div class=\"table-responsive\">\n";
+print "                <table class=\"table no-margin\">\n";
+$header = false;
+print "<form action = \"YourEvents.php\" method = \"POST\">";
+$queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
+    DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
+    TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
+    FROM event e, location l, club c
+    WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.club_id = $randClub_id
+    ORDER BY RAND()
+    LIMIT 1;";
+
+if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+  printf("Error: %s\n", mysqli_error($conn));
+  exit(1);
+
 $counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
@@ -345,7 +438,7 @@ while ($row = mysqli_fetch_assoc($result)){
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  print ("<td><input type=\"checkbox\" name=\"cid$counter\"  value=" . $row['event_id'] . "></td>");
   $counter++;
   print ("</tr>\n");
 }
@@ -354,14 +447,25 @@ print "                </table>\n";
 print "              </div>\n";
 print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
+print "            <!-- /.box-body -->\n";
+print "            <div class=\"box-footer clearfix\">\n";
+//print "              <a href=\"javascript:void(0)\" class=\"btn btn-sm btn-info btn-flat pull-left\">Add to Events</a>\n";
+//print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">Add Selected Events</a>\n";
+print "   <input type=\"submit\" value=\"Add Event\" class=\"btn btn-sm btn-default btn-flat pull-right\">";
+print "</form>";
+print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";
 print "        </div>\n";
 print "        <!-- /.col -->";
+print "\n";
+print "\n";
 print "    </section>\n";
+print "\n";
 print "    <!-- /.content -->\n";
 print "  </div>\n";
 print "  <!-- /.content-wrapper -->\n";
+print "\n";
 print "  <!-- Main Footer -->\n";
 print "  <footer class=\"main-footer\">\n";
 print "    <!-- Default to the left -->\n";
@@ -465,8 +569,5 @@ print "</script>\n";
 print "</body>\n";
 print "\n";
 print "</html>\n";
-
-//mysqli_free_result($result);
-mysqli_close($conn);
 
 ?>
