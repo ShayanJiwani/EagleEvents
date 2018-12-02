@@ -367,6 +367,8 @@ while ($row = mysqli_fetch_assoc($result)){
   $counter++;
   print ("</tr>\n");
 }
+mysqli_free_result($result);
+
 print "                  </tbody>\n";
 print "                </table>\n";
 print "              </div>\n";
@@ -382,13 +384,10 @@ print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";
 print "        </div>\n";
-print "        <!-- /.col -->";
-print "\n";
-print "\n";
 print "    </section>\n";
 print "    <section class=\"content container-fluid\">\n";
 print "\n";
-print "                    <!-- TABLE: Random Suggested Event based on club -->\n";
+print "                    <!-- TABLE: Random suggested event based on club -->\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
 print "              <h3 class=\"box-title\">All Organizations</h3>\n";
@@ -409,16 +408,16 @@ $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
     DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
     TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
     FROM event e, location l, club c
-    WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.club_id = $randClub_id
+    WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.club_id = '$randClub_id'
     ORDER BY RAND()
     LIMIT 1;";
 
-if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
+if ( ! ( $result2 = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);
 
 $counter = 0;
-while ($row = mysqli_fetch_assoc($result)){
+while ($row = mysqli_fetch_assoc($result2)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
@@ -440,6 +439,8 @@ while ($row = mysqli_fetch_assoc($result)){
   $counter++;
   print ("</tr>\n");
 }
+mysqli_free_result($result2);
+
 print "                  </tbody>\n";
 print "                </table>\n";
 print "              </div>\n";
