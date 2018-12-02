@@ -18,7 +18,7 @@ CREATE TABLE user
 CREATE TABLE club
 (
   cname VARCHAR(80) NOT NULL,
-  logo LONGBLOB,
+  logo VARCHAR(1000),
   cdescription VARCHAR(1000) NOT NULL,
   club_id INT(4),
   category VARCHAR(30) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE student
   year VARCHAR(16) NOT NULL,
   email VARCHAR(30) NOT NULL,
   uid INT(5),
-  picture LONGBLOB,
+  picture VARCHAR(1000),
   CONSTRAINT userStudentFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
 

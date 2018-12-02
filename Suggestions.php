@@ -16,7 +16,7 @@ $conn = mysqli_connect("localhost","root",
                  FROM club cl
                  WHERE cl.category NOT IN (SELECT category
                                 FROM club c, clubMember m
-                                WHERE m.uid = 1000
+                                WHERE m.uid = '$uid'
                                 AND m.club_id = c.club_id
                                 GROUP BY category)
                  AND cl.club_id != 999
@@ -386,8 +386,6 @@ print "        <!-- /.col -->";
 print "\n";
 print "\n";
 print "    </section>\n";
-
-
 print "    <section class=\"content container-fluid\">\n";
 print "\n";
 print "                    <!-- TABLE: Random Suggested Event based on club -->\n";
