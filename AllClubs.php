@@ -13,7 +13,7 @@ $conn = mysqli_connect("localhost","root",
  }
 
  $queryClubs = "SELECT club_id, cname AS Name, cdescription AS Description, category AS Category
-        FROM club ORDER BY cname ASC;";
+        FROM club WHERE club_id != 999 ORDER BY cname ASC;";
 
  if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
    printf("Error: %s\n", mysqli_error($conn));
@@ -287,12 +287,13 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>\n";
+print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
-print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
+print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
 print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";

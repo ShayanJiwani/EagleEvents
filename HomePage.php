@@ -20,11 +20,11 @@ $queryEvents = "SELECT ename AS Name, edescription AS Description,
                                                                          FROM attendance
                                                                          WHERE event_id = e.event_id) AS \"People Interested\"
       FROM attendance a, event e, location l, club c
-      WHERE a.uid = 1000 AND a.event_id = e.event_id AND l.location_id = e.location_id
+      WHERE a.uid = '$uid' AND a.event_id = e.event_id AND l.location_id = e.location_id
       AND c.club_id = e.club_id AND e.edate >= CURDATE() AND e.endTime >= CURTIME()
       AND DATE_ADD(CURTIME(), INTERVAL 1 hour) >= e.startTime
       ORDER BY edate ASC, startTime ASC;";
-      
+
 if ( ! ( $resultEvent = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);
@@ -298,12 +298,13 @@ print "      <!-- Sidebar Menu -->\n";
 print "      <ul class=\"sidebar-menu\" data-widget=\"tree\">\n";
 print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
-print "        <li class=\"active\"><a href=\"HomePage.php\"><i class=\"fa fa-link\"></i> <span>Home Page</span></a></li>\n";
-print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-link\"></i> <span>Your Events</span></a></li>\n";
-print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-link\"></i> <span>Your Clubs</span></a></li>\n";
-print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-link\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li class=\"active\"><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>\n";
+print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
+print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
 print "        <li class=\"treeview\">\n";
-print "          <a href=\"#\"><i class=\"fa fa-link\"></i> <span>Emory University</span>\n";
+print "          <a href=\"#\"><i class=\"fa fa-share\"></i> <span>Emory University</span>\n";
 print "            <span class=\"pull-right-container\">\n";
 print "                <i class=\"fa fa-angle-left pull-right\"></i>\n";
 print "              </span>\n";

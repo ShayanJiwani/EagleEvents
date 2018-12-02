@@ -303,12 +303,13 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="HomePage.php"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
-        <li><a href="YourEvents.php"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
-        <li><a href="YourClubs.php"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
-        <li class="active"><a href="AddAnEvent.php"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
+        <li><a href="HomePage.php"><i class="fa fa-laptop"></i> <span>Home Page</span></a></li>
+        <li><a href="YourEvents.php"><i class="fa fa-table"></i> <span>Your Events</span></a></li>
+        <li><a href="YourClubs.php"><i class="fa fa-table"></i> <span>Your Clubs</span></a></li>
+        <li class="active"><a href="AddAnEvent.php"><i class="fa fa-edit"></i> <span>Add an Event</span></a></li>
+        <li><a href="Suggestions.php"><i class="fa fa-table"></i> <span>Suggestions</span></a></li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Emory University</span>
+          <a href="#"><i class="fa fa-share"></i> <span>Emory University</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
