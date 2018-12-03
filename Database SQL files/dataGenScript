@@ -14,8 +14,15 @@ cursor = eedb.cursor()
 cursor.execute("SELECT MAX(event_id) as maxEID from event")
 maxEID = cursor.fetchone()[0]
 
+# Get all club ids
+clubIDs = []
+cursor.execute("SELECT club_id FROM club")
+row = cursor.fetchone()
+while row is not None:
+    clubIDs.append(row[0])
+    row = cursor.fetchone()
+
 sql = "INSERT INTO event (ename,edescription,edate,startTime,endTime,location_id,room,event_id,type,open,uid,club_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-clubID = 999
 uID = 9999
 
 enames = ["Prayer", "Open-Mic Night", "Research Symposium", "Guest Lecture", "Pre-Health Advising",
@@ -35,6 +42,7 @@ for x in range(200):
     endTime = endTimes[random.randint(0,len(endTimes)-1)]
     locID = locIDs[random.randint(0,len(locIDs)-1)]
     type = types[random.randint(0,len(types)-1)]
+    clubID = clubIDs[random.randint(0,len(clubIDs)-1)]
 
     val = (ename,"",date,startTime,endTime,locID,"",eventID,type,1,uID,clubID)
     cursor.execute(sql,val)
