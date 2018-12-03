@@ -27,14 +27,13 @@ if ( ! ( $result = mysqli_query($conn, $queryUser)) ) {
  exit(1);
 }
 
-$usr = "SELECT username FROM user WHERE uid = '$uid';";
+$usr = "SELECT Username FROM user WHERE uid = '$uid';";
 
 if ( ! ( $result2 = mysqli_query($conn, $usr)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-$usr = mysqli_fetch_assoc($result2);
-$usr = $usr['username'];
+//$usr = mysqli_fetch_assoc($result2);
 
 ?>
 <!DOCTYPE html>
@@ -148,7 +147,7 @@ desired effect
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
+                        <img src="get.php" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -233,14 +232,14 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="Images/profile.jpeg" class="user-image" alt="User Image">
+              <img src="get.php" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs"><?php echo ($fname . " " . $lname)?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
+                <img src="get.php" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo ($fname . " " . $lname)?>
@@ -289,7 +288,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="Images/profile.jpeg" class="img-circle" alt="User Image">
+          <img src="get.php" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p><?php echo ($fname . " " . $lname)?></p>
@@ -352,10 +351,21 @@ desired effect
           <myMargin>
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="Images/profile.jpeg">
-              <h3 class="profile-username text-center"><?php echo ($usr)?></h3>
+              <img class="profile-user-img img-responsive img-circle" src="get.php">
+              <br>
+              <div align=center>
+                <?php include 'indexPic.php'; ?>
+              </div>
+              <br>
               <ul class="list-group list-group-unbordered">
               <?php
+                while($row = mysqli_fetch_assoc($result2)) {
+                  foreach ($row as $key => $value) {
+                    print "<li class=\"list-group-item\">\n";
+                    print "<b>" . $key . "</b> <a class=\"pull-right\">" . $value . "</a>\n";
+                    print "</li>\n";
+                  }
+                }
                 while($row = mysqli_fetch_assoc($result)) {
                   foreach ($row as $key => $value) {
                     print "<li class=\"list-group-item\">\n";
@@ -365,7 +375,7 @@ desired effect
                 }
               ?>
               </ul>
-              <a href="#" class="btn btn-primary btn-block"><b>idk if we want this but i'm leaving it </b></a>
+              <a href="#" class="btn btn-primary btn-block"><b>idk if we want this but i'm leaving it</b></a>
             </div>
             <!-- /.box-body -->
           </div>

@@ -71,7 +71,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="#.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>E</b>LE</span>
       <!-- logo for regular state and mobile devices -->
@@ -110,24 +110,33 @@ $conn = mysqli_connect("localhost","root",
  }
 
 // Check is username already exists
-$queryCheckUN = "SELECT uid FROM user WHERE username = $username";
-if(($result = mysqli_query($conn, $queryCheckUN)) != NULL) {
-  print "<br><h1>Username already exists</h1><br>";
+$queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
+$result = mysqli_query($conn, $queryCheckUN);
+$result = mysqli_fetch_assoc($result);
+if($result['uid'] != '') {
+  //print "user exists";
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/SignUp.php'
+    alert("Username already exists.");
+</script>
+  <?php
 }
 // Check if username is the correct length
 else if(strlen($username) < 5 || strlen($username) > 16) {
-    ?>
-    <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Username must be 6 characters");
+  //print "incorrect length for user";
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/SignUp.php'
+    alert("Username must be 6 characters");
   </script>
-
-    <?php
+  <?php
 }
 // Check if email is Emory official
 else if(!(preg_match("/@emory.edu/", $email) )) {
+  //print "use emory email";
   ?>
-     <script type = "text/javascript">
+  <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
       alert("Use Emory Email");
   </script>
@@ -136,15 +145,16 @@ else if(!(preg_match("/@emory.edu/", $email) )) {
 }
 // Check if password is at least 8 characters
 else if(strlen($password) < 8){
+  //print "too short password";
   ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
       alert("Password must be 8 characters");
   </script>
   <?php
-
 }
 else if(strlen($password) > 16) {
+  //print "too long password";
   ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
@@ -154,6 +164,7 @@ else if(strlen($password) > 16) {
 }
 // Check if password has lower and uppercase letters
 else if(!(preg_match("/[a-zA-Z]+/", $password))){
+  //print "upper lower case";
    ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
@@ -163,15 +174,18 @@ else if(!(preg_match("/[a-zA-Z]+/", $password))){
 }
 // Check if password has at least one special character
 else if(!(preg_match("/[^a-zA-Z0-9]/", $password))){
+  //print "special character";
  ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
       alert("Password must include a special character");
   </script>
   <?php
+
 }
 // Check if password has at least one number
 else if(!(preg_match("/\d+/", $password))){
+  //print "number";
   ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
@@ -180,17 +194,22 @@ else if(!(preg_match("/\d+/", $password))){
   <?php
 }
 // Check if inputed passwords match
-else if(!strcmp($password,$password2)){
-  print "<br><h1>Inputed passwords don't match</h1><br>";
+else if(strcmp($password,$password2) != 0){
+  //print (strcmp($password,$password2));
+  //print "<br><h1>Inputed passwords don't match</h1><br>";
+
   ?>
      <script type = "text/javascript">
       window.location.pathname = '/SignUp.php'
       alert("Passwords must match");
   </script>
   <?php
+
 }
 // No issues - create user account in database
 else {
+  //print "create";
+
    $query = "SELECT MAX(uid) AS max FROM user;";
    if ( ! ( $result = mysqli_query($conn, $query)) ) {
      printf("Error: %s\n", mysqli_error($conn));
@@ -205,14 +224,16 @@ else {
      exit(1);
    }
 
-   $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '');";
+   $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
    if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
      print("<h4> Error2. Signup Failed. </h4>\n");
      exit(1);
    }
+
    print "      <h1>\n";
    print "        Account Created. Welcome to Eagle Events!\n";
    print "      </h1>\n";
+
 }
 ?>
 </section>
@@ -247,7 +268,7 @@ else {
   Anything you want
 </div>
 <!-- Default to the left -->
-<strong>Copyright © 2016 <a href="#">Company</a>.</strong> All rights reserved.
+<strong>Copyright © 2018 <a href="#">EagleEvents</a>.</strong> All rights reserved.
 </footer>
 <!-- /.control-sidebar -->
 <!-- Add the sidebar's background. This div must be placed
