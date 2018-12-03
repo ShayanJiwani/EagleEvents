@@ -84,11 +84,6 @@ desired effect
 
     <!-- Main content -->
     <section class="content container-fluid">
-
-      <!--
-        | Your Page Content Here |
-        -------------------------->
-
         <div class="container">
      <h3>
 
@@ -140,23 +135,23 @@ desired effect
           <div class="form-row">
               <label class="custom-control-label" for="year">Year</label><br>
               <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Freshman" name="year" required>
+                <input type="radio" class="custom-control-input" id="Freshman" name="year" value = "Freshman" required>
                 <label class="custom-control-label" for="Freshman">Freshman</label>
               </div>
               <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Sophomore" name="year" required>
+                <input type="radio" class="custom-control-input" id="Sophomore" name="year" value = "Sophomore" required>
                 <label class="custom-control-label" for="Sophomore">Sophomore</label>
               </div>
               <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Junior" name="year" required>
+                <input type="radio" class="custom-control-input" id="Junior" name="year" value = "Junior" required>
                 <label class="custom-control-label" for="Junior">Junior</label>
               </div>
               <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Senior" name="year" required>
+                <input type="radio" class="custom-control-input" id="Senior" name="year" value = "Senior" required>
                 <label class="custom-control-label" for="Senior">Senior</label>
               </div>
               <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Graduate" name="year" required>
+                <input type="radio" class="custom-control-input" id="Graduate" name="year" value = "Graduate" required>
                 <label class="custom-control-label" for="Graduate">Graduate</label>
               </div>
           <br><br>
