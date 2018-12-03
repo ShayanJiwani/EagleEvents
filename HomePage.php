@@ -19,7 +19,6 @@ if (!$uid) {
   </script>
   <?php
 }
-
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
@@ -137,7 +136,7 @@ print "                  <li><!-- start message -->\n";
 print "                    <a href=\"#\">\n";
 print "                      <div class=\"pull-left\">\n";
 print "                        <!-- User Image -->\n";
-print "                        <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
+print "                        <img src= \"get.php\">class=\"img-circle\" alt=\"User Image\">\n";
 print "                      </div>\n";
 print "                      <!-- Message title and timestamp -->\n";
 print "                      <h4>\n";
@@ -222,7 +221,7 @@ print "          <li class=\"dropdown user user-menu\">\n";
 print "            <!-- Menu Toggle Button -->\n";
 print "            <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n";
 print "              <!-- The user image in the navbar-->\n";
-print "              <img src=\"Images/profile.jpeg\" class=\"user-image\" alt=\"User Image\">\n";
+print "              <img src= \"get.php\" class=\"user-image\" alt=\"User Image\">\n";
 print "              <!-- hidden-xs hides the username on small devices so only the image appears. -->\n";
 /* put in user information*/
 print "              <span class=\"hidden-xs\">$fname $lname</span>\n";
@@ -230,7 +229,7 @@ print "            </a>\n";
 print "            <ul class=\"dropdown-menu\">\n";
 print "              <!-- The user image in the menu -->\n";
 print "              <li class=\"user-header\">\n";
-print "                <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
+print "                <img src= \"get.php\" class=\"img-circle\" alt=\"User Image\">\n";
 print "\n";
 print "                <p>\n";
 print "                  $fname $lname - Software Engineer\n";
@@ -280,7 +279,7 @@ print "\n";
 print "      <!-- Sidebar user panel (optional) -->\n";
 print "      <div class=\"user-panel\">\n";
 print "        <div class=\"pull-left image\">\n";
-print "          <img src=\"Images/profile.jpeg\" class=\"img-circle\" alt=\"User Image\">\n";
+print "          <img src= \"get.php\" class=\"img-circle\" alt=\"User Image\">\n";
 print "        </div>\n";
 print "        <div class=\"pull-left info\">\n";
 print "          <p>$fname $lname</p>\n";
