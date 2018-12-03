@@ -48,7 +48,7 @@ CREATE TABLE event
   location_id INT(4),
   room VARCHAR(30),
   event_id INT(4),
-  type VARCHAR(25),
+  type VARCHAR(25) NOT NULL,
   open BOOLEAN NOT NULL,
   uid INT(5),
   club_id INT(4),
@@ -66,7 +66,7 @@ CREATE TABLE student
   year VARCHAR(16) NOT NULL,
   email VARCHAR(30) NOT NULL,
   uid INT(5),
-  picture VARCHAR(1000),
+  picture VARCHAR(1000) NOT NULL,
   CONSTRAINT userStudentFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
 

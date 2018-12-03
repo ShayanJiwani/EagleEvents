@@ -26,7 +26,7 @@ if ($_POST != NULL) {
     session_start();
     $uid = mysqli_fetch_assoc($result);
     $uid = $uid["uid"];
-    $queryInfo = "SELECT fname, lname FROM student WHERE uid = '$uid'";
+    $queryInfo = "SELECT fname, lname, picture FROM student WHERE uid = '$uid'";
     if ( ! ( $result2 = mysqli_query($conn, $queryInfo)) ) {
       printf("Error: %s\n", mysqli_error($conn));
       exit(1);
@@ -34,10 +34,12 @@ if ($_POST != NULL) {
     $name = mysqli_fetch_assoc($result2);
     $fname = $name['fname'];
     $lname = $name['lname'];
+    $picture = $name['picture'];
 
     $_SESSION['uid'] = $uid;
     $_SESSION['fname'] = $fname;
     $_SESSION['lname'] = $lname;
+    $_SESSION['picture'] = $picture;
     // add redirect here. POST array contains username + password
     ?>
     <script type = "text/javascript">
