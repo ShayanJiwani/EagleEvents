@@ -109,133 +109,31 @@ $conn = mysqli_connect("localhost","root",
    exit(1);
  }
 
-// Check is username already exists
-$queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
-$result = mysqli_query($conn, $queryCheckUN);
-$result = mysqli_fetch_assoc($result);
-if($result['uid'] != '') {
-  //print "user exists";
-  ?>
-  <script type = "text/javascript">
-    window.location.pathname = '/SignUp.php'
-    alert("Username already exists.");
-</script>
-  <?php
+$query = "SELECT MAX(uid) AS max FROM user;";
+if ( ! ( $result = mysqli_query($conn, $query)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
 }
-// Check if username is the correct length
-else if(strlen($username) < 5 || strlen($username) > 16) {
-  //print "incorrect length for user";
-  ?>
-  <script type = "text/javascript">
-    window.location.pathname = '/SignUp.php'
-    alert("Username must be 6 characters");
-  </script>
-  <?php
+$newUserId = mysqli_fetch_assoc($result);
+$newUserId = $newUserId['max'] + 1;
+
+$query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
+if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
+ print("<h4> Error1. Signup Failed. </h4>\n");
+ exit(1);
 }
-// Check if email is Emory official
-else if(!(preg_match("/@emory.edu/", $email) )) {
-  //print "use emory email";
-  ?>
-  <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Use Emory Email");
-  </script>
-  <?php
 
-}
-// Check if password is at least 8 characters
-else if(strlen($password) < 8){
-  //print "too short password";
-  ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Password must be 8 characters");
-  </script>
-  <?php
-}
-else if(strlen($password) > 16) {
-  //print "too long password";
-  ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Password cannot exceed 16 characters");
-  </script>
-  <?php
-}
-// Check if password has lower and uppercase letters
-else if(!(preg_match("/[a-zA-Z]+/", $password))){
-  //print "upper lower case";
-   ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Password must include lower and uppercase letters");
-  </script>
-  <?php
-}
-// Check if password has at least one special character
-else if(!(preg_match("/[^a-zA-Z0-9]/", $password))){
-  //print "special character";
- ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Password must include a special character");
-  </script>
-  <?php
-
-}
-// Check if password has at least one number
-else if(!(preg_match("/\d+/", $password))){
-  //print "number";
-  ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Password must include a number");
-  </script>
-  <?php
-}
-// Check if inputed passwords match
-else if(strcmp($password,$password2) != 0){
-  //print (strcmp($password,$password2));
-  //print "<br><h1>Inputed passwords don't match</h1><br>";
-
-  ?>
-     <script type = "text/javascript">
-      window.location.pathname = '/SignUp.php'
-      alert("Passwords must match");
-  </script>
-  <?php
-
-}
-// No issues - create user account in database
-else {
-  //print "create";
-
-   $query = "SELECT MAX(uid) AS max FROM user;";
-   if ( ! ( $result = mysqli_query($conn, $query)) ) {
-     printf("Error: %s\n", mysqli_error($conn));
-     exit(1);
-   }
-   $newUserId = mysqli_fetch_assoc($result);
-   $newUserId = $newUserId['max'] + 1;
-
-   $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
-   if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
-     print("<h4> Error1. Signup Failed. </h4>\n");
-     exit(1);
-   }
-
-   $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
-   if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
-     print("<h4> Error2. Signup Failed. </h4>\n");
-     exit(1);
-   }
-
-   print "      <h1>\n";
-   print "        Account Created. Welcome to Eagle Events!\n";
-   print "      </h1>\n";
-
+$query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
+if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
+ print("<h4> Error2. Signup Failed. </h4>\n");
+ exit(1);
 }
 ?>
+<script type = "text/javascript">
+  window.location.pathname = '/Login.php'
+  alert("Account created. Welcome to Eagle Events!");
+</script>
+
 </section>
 
 <!-- Main content -->
@@ -288,4 +186,4 @@ immediately after the control sidebar -->
  Both of these plugins are recommended to enhance the
  user experience. -->
 </body>
-</html>;
+</html>
