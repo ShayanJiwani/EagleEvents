@@ -1,3 +1,46 @@
+<?php
+if ($_POST != NULL) {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $password2 = $_POST['password2'];
+  $email = $_POST['email'];
+  $fname = $_POST['fname'];
+  $lname = $_POST['lname'];
+  $year = $_POST['year'];
+  $conn = mysqli_connect("localhost","root",
+  "Eagle123", "eagleEvents");
+   if (mysqli_connect_errno()){
+     printf("Connect failed: %s\n", mysqli_connect_error());
+     exit(1);
+   }
+
+  $query = "SELECT MAX(uid) AS max FROM user;";
+  if ( ! ( $result = mysqli_query($conn, $query)) ) {
+   printf("Error: %s\n", mysqli_error($conn));
+   exit(1);
+  }
+  $newUserId = mysqli_fetch_assoc($result);
+  $newUserId = $newUserId['max'] + 1;
+
+  $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
+  if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
+   print("<h4> Error1. Signup Failed. </h4>\n");
+   exit(1);
+  }
+
+  $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
+  if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
+   print("<h4> Error2. Signup Failed. </h4>\n");
+   exit(1);
+  }
+  mysqli_close($conn);
+  // User acount creation successful. Redirect to login page
+  ?>
+  <script type = "text/javascript">
+    window.location.pathname = '/Login.php';
+    alert("Account created. Welcome to Eagle Events!");
+  </script>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -88,7 +131,7 @@ desired effect
      <h3>
 
      </h5>
-        <form name = "signupForm" action = "LoginPage.php" onsubmit = "return validateForm()" method = "POST">
+        <form name = "signupForm" action = "SignUp.php" onsubmit = "return validateForm()" method = "POST">
           <br><br>
           <div class="form-row">
             <div class="col">
