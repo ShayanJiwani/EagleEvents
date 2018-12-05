@@ -35,19 +35,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <script>
-alert(getLat(33.790810, 0.000086));
-alert(getLng(-84.326006, 0.000086));
-function getLat(lat, radius){
-  var min = radius * -1;
-  var max = radius;
-  var newLat = Math.random() * (max - min) + min + lat;
-  return newLat;
-}
-function getLng(lng, radius){ 
-  var min = radius * -1;
-  var max = radius;
-  var newLong = Math.random() * (max - min) + min + lng;
-  return newLong;
-}
 </script>
 </html>

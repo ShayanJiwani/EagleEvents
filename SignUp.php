@@ -35,11 +35,15 @@ if ($_POST != NULL) {
   }
   mysqli_close($conn);
   // User acount creation successful. Redirect to login page
+
   ?>
   <script type = "text/javascript">
     window.location.pathname = '/Login.php';
     alert("Account created. Welcome to Eagle Events!");
   </script>
+  <?php
+}
+?>
 
 <!DOCTYPE html>
 <!--
@@ -247,14 +251,17 @@ desired effect
       return false;
     }
     else{
+      var username = String(document.forms["signupForm"]["username"].value);
+      var test = <?php echo (json_decode(username))?>;
+      alert(test);
       var userExists = <?php
-                          $conn = mysqli_connect("localhost","root",
-                          "Eagle123", "eagleEvents");
-                           if (mysqli_connect_errno()){
-                             printf("Connect failed: %s\n", mysqli_connect_error());
-                             exit(1);
-                           }
-
+                         $conn = mysqli_connect("localhost","root",
+                         "Eagle123", "eagleEvents");
+                          if (mysqli_connect_errno()){
+                            printf("Connect failed: %s\n", mysqli_connect_error());
+                            exit(1);
+                          }
+                          $username = json_decode(username);
                           // Check is username already exists
                           $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
                           $result = mysqli_query($conn, $queryCheckUN);
