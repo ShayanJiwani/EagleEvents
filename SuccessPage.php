@@ -163,7 +163,7 @@ else if(strlen($password) > 16) {
   <?php
 }
 // Check if password has lower and uppercase letters
-else if(!(preg_match("/[a-zA-Z]+/", $password))){
+else if(!(preg_match("/[a-z]+[A-Z]+/", $password))){
   //print "upper lower case";
    ?>
      <script type = "text/javascript">

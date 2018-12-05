@@ -88,7 +88,7 @@ desired effect
      <h3>
 
      </h5>
-        <form action = "SuccessPage.php" method = "POST">
+        <form name = "signupForm" action = "LoginPage.php" onsubmit = "return validateForm()" method = "POST">
           <br><br>
           <div class="form-row">
             <div class="col">
@@ -185,9 +185,87 @@ desired effect
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+<!-- Form validation -->
+<script>
+  function validateForm(){
+    // Setup regular expressions
+    var letters = /[A-Z]+[a-z]+/;
+    var specChar = /[^a-zA-Z0-9]/;
+    var num = /\d+/;
+    var email = /emory.edu/;
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
+    // Check if username is filled out or if it already exists
+    if(document.forms["signupForm"]["username"].value.length < 6){
+      alert("Username must be at least 6 characters long");
+      return false;
+    }
+    else if(document.forms["signupForm"]["username"].value.length > 16){
+      alert("Username cannot exceed 16 characters")
+      return false;
+    }
+    else{
+      var userExists = <?php
+                          $conn = mysqli_connect("localhost","root",
+                          "Eagle123", "eagleEvents");
+                           if (mysqli_connect_errno()){
+                             printf("Connect failed: %s\n", mysqli_connect_error());
+                             exit(1);
+                           }
+
+                          // Check is username already exists
+                          $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
+                          $result = mysqli_query($conn, $queryCheckUN);
+                          $result = mysqli_fetch_assoc($result);
+                          if($result['uid'] != ''){
+                            echo json_encode(true);
+                          }
+                          else{
+                            echo json_encode(false);
+                          }
+                       ?>;
+      if(userExists){
+        alert("Username is already taken");
+        return false;
+      }
+    }
+
+    var pw = document.forms["signupForm"]["password"].value;
+    var pw2 = document.forms["signupForm"]["password2"].value;
+    // Check if password meets requirements
+    if(pw.length > 16){
+      alert("Password cannot exceed 16 characters");
+      return false;
+    }
+    else if(pw.length < 8){
+      alert("Password must be at least 8 characters long");
+      return false;
+    }
+    else if(!letters.test(pw)){
+      alert("Password must have lowercase and uppercase letters");
+      return false;
+    }
+    else if(!specChar.test(pw)){
+      alert("Password must have at least one special character");
+      return false;
+    }
+    else if(!num.test(pw)){
+      alert("Password must have at least one number");
+      return false;
+    }
+    else if(pw.localeCompare(pw2) != 0){
+      alert("Passwords do not match");
+      return false;
+    }
+
+    // Check if Emory email was used
+    if(!email.test(document.forms["signupForm"]["email"].value)){
+      alert("Must use an Emory email to sign up")
+      return false;
+    }
+
+    // Everthing is fine, complete sign up
+    return true;
+  }
+</script>
 </body>
 </html>
