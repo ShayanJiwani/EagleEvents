@@ -80,6 +80,107 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <!-- Form validation -->
+  <script>
+    // Setup regular expressions
+    var letters = /[A-Z]+[a-z]+/;
+    var specChar = /[^a-zA-Z0-9]/;
+    var num = /\d+/;
+    var emailReq = /emory.edu/;
+
+    var username = document.forms["signupForm"]["username"];
+    // Append username to URL for PHP to retrieve later
+    window.location.href += "?un=" + username.value;
+
+    // Check if username is filled out or if it already exists
+    var timeout = null;
+    username.onkeyup = function(e){
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        if(username.value.length < 6){
+          alert("Username must be at least 6 characters long");
+        }
+        else if(username.value.length > 16){
+          alert("Username cannot exceed 16 characters")
+        }
+        else{
+          var userExists = <?php
+                             // Establish connection to database
+                             $conn = mysqli_connect("localhost","root",
+                             "Eagle123", "eagleEvents");
+                              if (mysqli_connect_errno()){
+                                printf("Connect failed: %s\n", mysqli_connect_error());
+                                exit(1);
+                              }
+                              // Get username value from URL
+                              $username = "";
+                              if(isset($_GET["un"])){
+                                $username = $_GET["un"];
+                              }
+                              // Check is username already exists
+                              $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
+                              $result = mysqli_query($conn, $queryCheckUN);
+                              $result = mysqli_fetch_assoc($result);
+                              if($result['uid'] != ''){
+                                echo json_encode(true);
+                              }
+                              else{
+                                echo json_encode(false);
+                              }
+                           ?>;
+          if(userExists){
+            alert("Username is already taken");
+            return false;
+          }
+        }
+      }, 800);
+    };
+
+    var pw = document.forms["signupForm"]["password"];
+    var pw2 = document.forms["signupForm"]["password2"];
+    // Check if password meets requirements
+    pw.onkeyup = function(e){
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        if(pw.value.length > 16){
+          alert("Password cannot exceed 16 characters");
+        }
+        else if(pw.value.length < 8){
+          alert("Password must be at least 8 characters long");
+        }
+        else if(!letters.test(pw.value)){
+          alert("Password must have lowercase and uppercase letters");
+        }
+        else if(!specChar.test(pw.value)){
+          alert("Password must have at least one special character");
+        }
+        else if(!num.test(pw.value)){
+          alert("Password must have at least one number");
+        }
+      }, 800);
+    };
+    // Check if passwords match
+    pw2.onkeyup = function(e){
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        if(pw.value.localeCompare(pw2.value) != 0){
+          alert("Passwords do not match");
+        }
+      }, 800);
+    };
+
+    // Check if Emory email was used
+    var email = document.forms["signupForm"]["email"];
+    email.onkeyup(function(e){
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        if(!emailReq.test(email.value)){
+          alert("Must use an Emory email to sign up")
+        }
+      }, 800);
+  };
+  </script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -140,28 +241,28 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="username">Username</label>
-              <input type="text" name = "username" class="form-control" placeholder="Username" required>
+              <input id = "username" type="text" name = "username" class="form-control" placeholder="Username" required>
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="password">Password</label>
-              <input type="PASSWORD" name = "password" class="form-control" placeholder="Password" required>
+              <input id = "password" type="PASSWORD" name = "password" class="form-control" placeholder="Password" required>
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="password">Re-enter Password</label>
-              <input type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required>
+              <input id = "password2" type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required>
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="email">Email</label>
-              <input type="text" name = "email" class="form-control" placeholder="Email" required>
+              <input id = "email" type="text" name = "email" class="form-control" placeholder="Email" required>
             </div>
           </div>
           <br><br>
@@ -232,90 +333,5 @@ desired effect
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- Form validation -->
-<script>
-  function validateForm(){
-    // Setup regular expressions
-    var letters = /[A-Z]+[a-z]+/;
-    var specChar = /[^a-zA-Z0-9]/;
-    var num = /\d+/;
-    var email = /emory.edu/;
-
-    // Check if username is filled out or if it already exists
-    if(document.forms["signupForm"]["username"].value.length < 6){
-      alert("Username must be at least 6 characters long");
-      return false;
-    }
-    else if(document.forms["signupForm"]["username"].value.length > 16){
-      alert("Username cannot exceed 16 characters")
-      return false;
-    }
-    else{
-      var username = String(document.forms["signupForm"]["username"].value);
-      var test = <?php echo (json_decode(username))?>;
-      alert(test);
-      var userExists = <?php
-                         $conn = mysqli_connect("localhost","root",
-                         "Eagle123", "eagleEvents");
-                          if (mysqli_connect_errno()){
-                            printf("Connect failed: %s\n", mysqli_connect_error());
-                            exit(1);
-                          }
-                          $username = json_decode(username);
-                          // Check is username already exists
-                          $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
-                          $result = mysqli_query($conn, $queryCheckUN);
-                          $result = mysqli_fetch_assoc($result);
-                          if($result['uid'] != ''){
-                            echo json_encode(true);
-                          }
-                          else{
-                            echo json_encode(false);
-                          }
-                       ?>;
-      if(userExists){
-        alert("Username is already taken");
-        return false;
-      }
-    }
-
-    var pw = document.forms["signupForm"]["password"].value;
-    var pw2 = document.forms["signupForm"]["password2"].value;
-    // Check if password meets requirements
-    if(pw.length > 16){
-      alert("Password cannot exceed 16 characters");
-      return false;
-    }
-    else if(pw.length < 8){
-      alert("Password must be at least 8 characters long");
-      return false;
-    }
-    else if(!letters.test(pw)){
-      alert("Password must have lowercase and uppercase letters");
-      return false;
-    }
-    else if(!specChar.test(pw)){
-      alert("Password must have at least one special character");
-      return false;
-    }
-    else if(!num.test(pw)){
-      alert("Password must have at least one number");
-      return false;
-    }
-    else if(pw.localeCompare(pw2) != 0){
-      alert("Passwords do not match");
-      return false;
-    }
-
-    // Check if Emory email was used
-    if(!email.test(document.forms["signupForm"]["email"].value)){
-      alert("Must use an Emory email to sign up")
-      return false;
-    }
-
-    // Everthing is fine, complete sign up
-    return true;
-  }
-</script>
 </body>
 </html>
