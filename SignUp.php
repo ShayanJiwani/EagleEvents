@@ -14,34 +14,48 @@ if ($_POST != NULL) {
      exit(1);
    }
 
-  $query = "SELECT MAX(uid) AS max FROM user;";
-  if ( ! ( $result = mysqli_query($conn, $query)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
-  }
-  $newUserId = mysqli_fetch_assoc($result);
-  $newUserId = $newUserId['max'] + 1;
+   // Check is username already exists
+   $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
+   $result = mysqli_query($conn, $queryCheckUN);
+   $result = mysqli_fetch_assoc($result);
+   if($result['uid'] != ''){ // UN exists, redirect with error message
+     ?>
+     <script>
+        window.location.pathname = "/SignUp.php";
+        alert("Username is already taken");
+     </script>
+     <?php
+   }
+   else{ // UN does not exist, create new account
+    $query = "SELECT MAX(uid) AS max FROM user WHERE uid != 9999;";
+    if ( ! ( $result = mysqli_query($conn, $query)) ) {
+     printf("Error: %s\n", mysqli_error($conn));
+     exit(1);
+    }
+    $newUserId = mysqli_fetch_assoc($result);
+    $newUserId = $newUserId['max'] + 1;
 
-  $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
-  if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
-   print("<h4> Error1. Signup Failed. </h4>\n");
-   exit(1);
-  }
+    $query2 = "INSERT INTO user VALUES('$newUserId', '$username', '$password');";
+    if ( ! ( $result2 = mysqli_query($conn, $query2)) ) {
+     print("<h4> Error1. Signup Failed. </h4>\n");
+     exit(1);
+    }
 
-  $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
-  if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
-   print("<h4> Error2. Signup Failed. </h4>\n");
-   exit(1);
-  }
-  mysqli_close($conn);
-  // User acount creation successful. Redirect to login page
+    $query3 = "INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', 'userprofilepictures/DefaultImage.png');";
+    if ( ! ( $result3 = mysqli_query($conn, $query3)) ) {
+     print("<h4> Error2. Signup Failed. </h4>\n");
+     exit(1);
+    }
+    mysqli_close($conn);
+    // User acount creation successful. Redirect to login page
 
-  ?>
-  <script type = "text/javascript">
-    window.location.pathname = '/Login.php';
-    alert("Account created. Welcome to Eagle Events!");
-  </script>
-  <?php
+    ?>
+    <script type = "text/javascript">
+      window.location.pathname = '/Login.php';
+      alert("Account created. Welcome to Eagle Events!");
+    </script>
+    <?php
+  }
 }
 ?>
 
@@ -241,10 +255,8 @@ desired effect
   var emailReq = /emory.edu/;
 
   var username = document.forms["signupForm"]["username"];
-  // Append username to URL for PHP to retrieve later
-  window.location.href += "?un=" + username.value;
 
-  // Check if username is filled out or if it already exists
+  // Check if username is filled out
   var timeout = null;
   username.onkeyup = function(e){
     clearTimeout(timeout);
@@ -255,36 +267,7 @@ desired effect
       else if(username.value.length > 16){
         alert("Username cannot exceed 16 characters");
       }
-      else{
-        var userExists = <?php
-                           // Establish connection to database
-                           $conn = mysqli_connect("localhost","root",
-                           "Eagle123", "eagleEvents");
-                            if (mysqli_connect_errno()){
-                              printf("Connect failed: %s\n", mysqli_connect_error());
-                              exit(1);
-                            }
-                            // Get username value from URL
-                            $username = "";
-                            if(isset($_GET["un"])){
-                              $username = $_GET["un"];
-                            }
-                            // Check is username already exists
-                            $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
-                            $result = mysqli_query($conn, $queryCheckUN);
-                            $result = mysqli_fetch_assoc($result);
-                            if($result['uid'] != ''){
-                              echo json_encode(true);
-                            }
-                            else{
-                              echo json_encode(false);
-                            }
-                         ?>;
-        if(userExists){
-          alert("Username is already taken");
-        }
-      }
-    }, 800);
+    }, 1000);
   };
 
   var pw = document.forms["signupForm"]["password"];
@@ -308,7 +291,7 @@ desired effect
       else if(!num.test(pw.value)){
         alert("Password must have at least one number");
       }
-    }, 800);
+    }, 1000);
   };
   // Check if passwords match
   pw2.onkeyup = function(e){
@@ -317,7 +300,7 @@ desired effect
       if(pw.value.localeCompare(pw2.value) != 0){
         alert("Passwords do not match");
       }
-    }, 800);
+    }, 1000);
   };
 
   // Check if Emory email was used
@@ -328,7 +311,7 @@ desired effect
       if(!emailReq.test(email.value)){
         alert("Must use an Emory email to sign up");
       }
-    }, 800);
+    }, 1400);
   };
 </script>
 </body>
