@@ -31,7 +31,7 @@ FROM club
 ORDER BY cname ASC;
 
 /* Insert new user information into database */
-SELECT MAX('$uid') FROM user;
+SELECT MAX('$uid') AS max FROM user WHERE uid != 9999;
 $newUserId = maxOfUserID + 1
 INSERT INTO user VALUES('$newUserId', '$username', '$password');
 INSERT INTO student VALUES('$fname', '$lname', '$year', '$email', '$newUserId', '$picture');
