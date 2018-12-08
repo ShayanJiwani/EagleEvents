@@ -17,13 +17,30 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
-$queryUsers = "SELECT CONCAT(fname,' ', lname) as Name, year as Year, email as Email
+$queryUsers = "SELECT uid, CONCAT(fname,' ', lname) as Name, year as Year, email as Email
               FROM student s WHERE uid != 9999 AND uid != '$uid';";
 
 if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
+
+$queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
+$queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
+
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowing)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowing = mysqli_fetch_assoc($result2);
+$following = $queryFollowing['following'];
+
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowers)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowers = mysqli_fetch_assoc($result2);
+$followers = $queryFollowers['followers'];
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -34,7 +51,7 @@ print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
 print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <title>Eagle Events | Your Events</title>\n";
+print "  <title>Eagle Events | Users</title>\n";
 print "  <!-- Tell the browser to be responsive to screen width -->\n";
 print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
 print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
@@ -219,22 +236,16 @@ print "              <!-- The user image in the menu -->\n";
 print "              <li class=\"user-header\">\n";
 print "                <img src=\"get.php\" class=\"img-circle\" alt=\"User Image\">\n";
 print "\n";
-print "                <p>\n";
-print "                  $fname $lname - Software Engineer\n";
-print "                  <small>Member since Sep 2018</small>\n";
-print "                </p>\n";
+print "                <p>$fname $lname</p>\n";
 print "              </li>\n";
 print "              <!-- Menu Body -->\n";
 print "              <li class=\"user-body\">\n";
 print "                <div class=\"row\">\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Followers</a>\n";
+print "                  <div class=\"col-xs-6 text-center\">\n";
+print "                    <a href=\"Followers.php\"><b>Followers($followers)</b></a>\n";
 print "                  </div>\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Sales</a>\n";
-print "                  </div>\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Friends</a>\n";
+print "                  <div class=\"col-xs-6 text-center\">\n";
+print "                    <a href=\"Following.php\"><b>Following($following)</b></a>\n";
 print "                  </div>\n";
 print "                </div>\n";
 print "                <!-- /.row -->\n";
@@ -331,27 +342,27 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
-//print "<form action = \"YourEvents.php\" method = \"POST\">";
+print "<form action = \"Following.php\" method = \"POST\">";
 $counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-       if ($key != 'event_id') {
+       if ($key != 'uid') {
          print "<th>" . $key . "</th>";
        }
      }
-     //print "<th>Checkbox</th>";
+     print "<th>Follow</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-    if ($key != 'event_id') {
+    if ($key != 'uid') {
       print ("<td>" . $value . "</td>");
     }
   }
-  //print ("<td><input type=\"checkbox\" name=\"yeid$counter\" value=" . $row['event_id'] . "></td>");
+  print ("<td><input type=\"checkbox\" name=\"uid$counter\" value=" . $row['uid'] . "></td>");
   $counter++;
   print ("</tr>\n");
 }
@@ -361,12 +372,10 @@ print "              </div>\n";
 print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
 print "            <!-- /.box-body -->\n";
-/*print "            <div class=\"box-footer clearfix\">\n";
-print "              <a href=\"YourEvents.php\" class=\"btn btn-sm btn-info btn-flat pull-left\">Remove Events</a>\n";
-print "   <input type=\"submit\" value=\"Remove Events\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
+print "            <div class=\"box-footer clearfix\">\n";
+print "   <input type=\"submit\" value=\"Follow Users\" class=\"btn btn-sm btn-info btn-flat pull-right\">";
 print "</form>";
 print "            </div>\n";
-*/
 print "            <!-- /.box-footer -->\n";
 print "          </div>\n";
 print "          <!-- /.box -->\n";

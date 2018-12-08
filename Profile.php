@@ -33,7 +33,23 @@ if ( ! ( $result2 = mysqli_query($conn, $usr)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-//$usr = mysqli_fetch_assoc($result2);
+
+$queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
+$queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
+
+if ( ! ( $resultf = mysqli_query($conn, $queryFollowing)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowing = mysqli_fetch_assoc($resultf);
+$following = $queryFollowing['following'];
+
+if ( ! ( $resultf = mysqli_query($conn, $queryFollowers)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowers = mysqli_fetch_assoc($resultf);
+$followers = $queryFollowers['followers'];
 
 ?>
 <!DOCTYPE html>
@@ -248,14 +264,11 @@ desired effect
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                  <div class="col-xs-6 text-center">
+                    <a href="Followers.php"><b>Followers(<?php echo $followers ?>)</b></a>
                   </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                  <div class="col-xs-6 text-center">
+                    <a href="Following.php"><b>Following(<?php echo $following ?>)</b></a>
                   </div>
                 </div>
                 <!-- /.row -->

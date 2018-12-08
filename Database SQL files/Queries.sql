@@ -166,4 +166,6 @@ WHERE l.location_id = e.location_id AND c.club_id = e.club_id AND e.club_id = 10
 ORDER BY RAND()
 LIMIT 1;
 
-/* get student information to be able to add */
+/* get following list */
+SELECT picture, fname, lname, year, email FROM student, following
+WHERE following.mainUser = 1000 AND student.uid = following.followingUser;

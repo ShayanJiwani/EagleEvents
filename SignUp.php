@@ -50,9 +50,12 @@ if ($_POST != NULL) {
     // User acount creation successful. Redirect to login page
 
     ?>
+    <form action = "Login.php" method = "POST" name = "logForm">
+      <input type="hidden" id="success" name="success" value="Account Created!">
+      <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+    </form>
     <script type = "text/javascript">
-      window.location.pathname = '/Login.php';
-      alert("Account created. Welcome to Eagle Events!");
+      document.getElementById("logForm").submit();
     </script>
     <?php
   }

@@ -26,6 +26,23 @@ $conn = mysqli_connect("localhost","root",
    exit(1);
  }
 
+ $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
+ $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
+
+ if ( ! ( $result2 = mysqli_query($conn, $queryFollowing)) ) {
+  printf("Error: %s\n", mysqli_error($conn));
+  exit(1);
+ }
+ $queryFollowing = mysqli_fetch_assoc($result2);
+ $following = $queryFollowing['following'];
+
+ if ( ! ( $result2 = mysqli_query($conn, $queryFollowers)) ) {
+  printf("Error: %s\n", mysqli_error($conn));
+  exit(1);
+ }
+ $queryFollowers = mysqli_fetch_assoc($result2);
+ $followers = $queryFollowers['followers'];
+
 print "<!DOCTYPE html>\n";
 print "<!--\n";
 print "This is a starter template page. Use this page to start your new project from\n";
@@ -35,7 +52,7 @@ print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
 print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <title>Eagle Events | Your Events</title>\n";
+print "  <title>Eagle Events | Emory Organizations</title>\n";
 print "  <!-- Tell the browser to be responsive to screen width -->\n";
 print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
 print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
@@ -220,22 +237,16 @@ print "              <!-- The user image in the menu -->\n";
 print "              <li class=\"user-header\">\n";
 print "                <img src=\"get.php\" class=\"img-circle\" alt=\"User Image\">\n";
 print "\n";
-print "                <p>\n";
-print "                  $fname $lname - Software Engineer\n";
-print "                  <small>Member since Sep 2018</small>\n";
-print "                </p>\n";
+print "                <p>$fname $lname</p>\n";
 print "              </li>\n";
 print "              <!-- Menu Body -->\n";
 print "              <li class=\"user-body\">\n";
 print "                <div class=\"row\">\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Followers</a>\n";
+print "                  <div class=\"col-xs-6 text-center\">\n";
+print "                    <a href=\"Followers.php\"><b>Followers($followers)</b></a>\n";
 print "                  </div>\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Sales</a>\n";
-print "                  </div>\n";
-print "                  <div class=\"col-xs-4 text-center\">\n";
-print "                    <a href=\"#\">Friends</a>\n";
+print "                  <div class=\"col-xs-6 text-center\">\n";
+print "                    <a href=\"Following.php\"><b>Following($following)</b></a>\n";
 print "                  </div>\n";
 print "                </div>\n";
 print "                <!-- /.row -->\n";

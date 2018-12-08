@@ -49,6 +49,9 @@ if ($_POST != NULL) {
     print("<p>user DOES exist</p>");
   }
   mysqli_close($conn);
+  if ($_POST['success']) {
+    print ($_POST['success']);
+  }
 }
 ?>
 <!DOCTYPE html>

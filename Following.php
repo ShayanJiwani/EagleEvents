@@ -13,63 +13,67 @@ if (!$uid) {
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
- if (mysqli_connect_errno()){
-   printf("Connect failed: %s\n", mysqli_connect_error());
-   exit(1);
- }
+if (mysqli_connect_errno()){
+ printf("Connect failed: %s\n", mysqli_connect_error());
+ exit(1);
+}
 
- if ($_POST != NULL) {
-   foreach($_POST as $key => $val) {
-     $queryGet = "SELECT * FROM clubMember WHERE club_id = '$val' AND uid = '$uid';";
-     if ( ! ( $result = mysqli_query($conn, $queryGet)) ) {
-       printf("Error1: %s\n", mysqli_error($conn));
-       exit(1);
-     }
-     if (strpos($key, "ycid") === 0) {
-       if (mysqli_num_rows($result) != 0) {
-         $queryRemove = "DELETE FROM clubMember WHERE club_id = '$val' AND uid = '$uid';";
-         if ( ! ( $result2 = mysqli_query($conn, $queryRemove)) ) {
-           printf("Error2: %s\n", mysqli_error($conn));
-           exit(1);
-         }
-       }
-     }
-     else {
-       if (mysqli_num_rows($result) == 0) {
-         $queryInsert = "INSERT INTO clubMember VALUES('$val','$uid', 0);";
-         if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
-           printf("Error2: %s\n", mysqli_error($conn));
-           exit(1);
-         }
-       }
-     }
-   }
- }
+if ($_POST != NULL) {
+  foreach($_POST as $key => $val) {
+    // check if its in the database
+    $queryGet = "SELECT * FROM following WHERE followingUser = '$val' AND mainUser = '$uid';";
+    if ( ! ( $result = mysqli_query($conn, $queryGet)) ) {
+      printf("Error1: %s\n", mysqli_error($conn));
+      exit(1);
+    }
+    if (strpos($key, "remove_uid") === 0) {
+      if (mysqli_num_rows($result) != 0) {
+        $queryRemove = "DELETE FROM following WHERE followingUser = '$val' AND mainUser = '$uid';";
+        if ( ! ( $result2 = mysqli_query($conn, $queryRemove)) ) {
+          printf("Error2: %s\n", mysqli_error($conn));
+          exit(1);
+        }
+      }
+    }
+    else {
+      if (mysqli_num_rows($result) == 0) {
+        $queryInsert = "INSERT INTO following VALUES('$uid','$val');";
+        if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
+          printf("Error2: %s\n", mysqli_error($conn));
+          exit(1);
+        }
+      }
+    }
+  }
+}
 
- $queryClubs = "SELECT c.club_id, cname AS Name, cdescription AS Description, category AS Category
-    FROM club c, clubMember m WHERE m.uid = '$uid' AND m.club_id = c.club_id ORDER BY cname ASC;";
 
- if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
-   printf("Error: %s\n", mysqli_error($conn));
-   exit(1);
- }
+$queryUsers = "SELECT student.uid, picture, CONCAT(fname,' ', lname) as Name,
+              year as Year, email as Email FROM student, following
+              WHERE following.mainUser = '$uid'
+              AND student.uid = following.followingUser;";
 
- $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
- $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
+if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
 
- if ( ! ( $result2 = mysqli_query($conn, $queryFollowing)) ) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit(1);
- }
- $queryFollowing = mysqli_fetch_assoc($result2);
- $following = $queryFollowing['following'];
+$queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
+$queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
- if ( ! ( $result2 = mysqli_query($conn, $queryFollowers)) ) {
-  printf("Error: %s\n", mysqli_error($conn));
-  exit(1);
- }
- $queryFollowers = mysqli_fetch_assoc($result2);
- $followers = $queryFollowers['followers'];
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowing)) ) {
+printf("Error: %s\n", mysqli_error($conn));
+exit(1);
+}
+$queryFollowing = mysqli_fetch_assoc($result2);
+$following = $queryFollowing['following'];
+
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowers)) ) {
+printf("Error: %s\n", mysqli_error($conn));
+exit(1);
+}
+$queryFollowers = mysqli_fetch_assoc($result2);
+$followers = $queryFollowers['followers'];
 
 print "<!DOCTYPE html>\n";
 print "<!--\n";
@@ -80,7 +84,7 @@ print "<html>\n";
 print "<head>\n";
 print "  <meta charset=\"utf-8\">\n";
 print "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-print "  <title>Eagle Events | Your Clubs</title>\n";
+print "  <title>Eagle Events | Following</title>\n";
 print "  <!-- Tell the browser to be responsive to screen width -->\n";
 print "  <meta content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" name=\"viewport\">\n";
 print "  <link rel=\"stylesheet\" href=\"bower_components/bootstrap/dist/css/bootstrap.min.css\">\n";
@@ -334,7 +338,7 @@ print "        <li class=\"header\">HEADER</li>\n";
 print "        <!-- Optionally, you can add icons to the links -->\n";
 print "        <li><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>\n";
 print "        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>\n";
-print "        <li class=\"active\"><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
+print "        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>\n";
 print "        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>\n";
 print "        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>\n";
 print "        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>\n";
@@ -350,14 +354,15 @@ print "            <li><a href=\"AllEvents.php\"><i class=\"fa fa-table\"></i> <
 print "          </ul>\n";
 print "        </li>\n";
 print "      </ul>\n";
+print "      <!-- /.sidebar-menu -->\n";
 print "    </section>\n";
+print "    <!-- /.sidebar -->\n";
 print "  </aside>\n";
-print "\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <section class=\"content container-fluid\">\n";
 print "          <div class=\"box box-info\">\n";
 print "            <div class=\"box-header with-border\">\n";
-print "              <h3 class=\"box-title\">Your Organizations</h3>\n";
+print "              <h3 class=\"box-title\">Following</h3>\n";
 print "              <div class=\"box-tools pull-right\">\n";
 print "                <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n";
 print "                </button>\n";
@@ -369,46 +374,49 @@ print "            <div class=\"box-body\">\n";
 print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
-print "<form action = \"YourClubs.php\" method = \"POST\">";
+print "<form action = \"Following.php\" method = \"POST\">";
 $counter = 0;
 while ($row = mysqli_fetch_assoc($result)){
   if (!$header) {
      $header = true;
      print("<thead><tr>\n");
      foreach ($row as $key => $value) {
-       if ($key != 'club_id') {
+       if ($key != 'uid') {
          print "<th>" . $key . "</th>";
        }
      }
-     print "<th>Checkbox</th>";
+     print "<th>Unfollow?</th>";
      print("</tr></thead><tbody>\n");
   }
   print("<tr>\n");
   foreach ($row as $key => $value) {
-    if ($key != 'club_id') {
+    if ($key != 'uid') {
       print ("<td>" . $value . "</td>");
     }
   }
-  print ("<td><input type=\"checkbox\" name=\"ycid$counter\" value=" . $row['club_id'] . "></td>");
+  print ("<td><input type=\"checkbox\" name=\"uid$counter\"  value=" . $row['uid'] . "></td>");
   $counter++;
   print ("</tr>\n");
 }
 print "                  </tbody>\n";
 print "                </table>\n";
 print "              </div>\n";
+print "              <!-- /.table-responsive -->\n";
 print "            </div>\n";
+print "            <!-- /.box-body -->\n";
 print "            <div class=\"box-footer clearfix\">\n";
-print "   <input type=\"submit\" value=\"Remove Clubs\" class=\"btn btn-sm btn-info btn-flat pull-left\">";
-print "</form>\n";
-print "              <a href=\"AllClubs.php\" class=\"btn btn-sm btn-default btn-flat pull-right\">View All Clubs</a>\n";
-print "            </div>\n";
+print "   <input type=\"submit\" value=\"Unfollow Users\" class=\"btn btn-sm btn-default btn-flat pull-right\">";
+print "</form>";
 print "          </div>\n";
 print "        </div>\n";
 print "    </section>\n";
 print "  </div>\n";
 print "  <footer class=\"main-footer\">\n";
+print "    <!-- Default to the left -->\n";
 print "    <strong>Copyright © 2018 <a href=\"#\">EagleEvents</a>.</strong> All rights reserved.\n";
 print "  </footer>\n";
+print "\n";
+print "  <!-- Control Sidebar -->\n";
 print "  <aside class=\"control-sidebar control-sidebar-dark\">\n";
 print "    <!-- Create the tabs -->\n";
 print "    <ul class=\"nav nav-tabs nav-justified control-sidebar-tabs\">\n";
@@ -452,6 +460,8 @@ print "              </div>\n";
 print "            </a>\n";
 print "          </li>\n";
 print "        </ul>\n";
+print "        <!-- /.control-sidebar-menu -->\n";
+print "\n";
 print "      </div>\n";
 print "      <!-- /.tab-pane -->\n";
 print "      <!-- Stats tab content -->\n";
@@ -461,6 +471,7 @@ print "      <!-- Settings tab content -->\n";
 print "      <div class=\"tab-pane\" id=\"control-sidebar-settings-tab\">\n";
 print "        <form method=\"post\">\n";
 print "          <h3 class=\"control-sidebar-heading\">General Settings</h3>\n";
+print "\n";
 print "          <div class=\"form-group\">\n";
 print "            <label class=\"control-sidebar-subheading\">\n";
 print "              Report panel usage\n";

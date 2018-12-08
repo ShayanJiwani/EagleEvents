@@ -40,6 +40,24 @@ if ($_POST['cid']) {
    exit(1);
   }
 }
+
+$queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
+$queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
+
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowing)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowing = mysqli_fetch_assoc($result2);
+$following = $queryFollowing['following'];
+
+if ( ! ( $result2 = mysqli_query($conn, $queryFollowers)) ) {
+ printf("Error: %s\n", mysqli_error($conn));
+ exit(1);
+}
+$queryFollowers = mysqli_fetch_assoc($result2);
+$followers = $queryFollowers['followers'];
+
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Eagle Events | Your Events</title>
+  <title>Eagle Events | Add an Event</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -236,22 +254,16 @@ desired effect
               <li class="user-header">
                 <img src="get.php" class="img-circle" alt="User Image">
 
-                <p>
-                  <?php echo ($fname . " " . $lname)?> - Software Engineer
-                  <small>Member since Sep 2018</small>
-                </p>
+                <p><?php echo ($fname . " " . $lname)?></p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                  <div class="col-xs-6 text-center">
+                    <a href="Followers.php"><b>Followers(<?php echo $followers ?>)</b></a>
                   </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                  <div class="col-xs-6 text-center">
+                    <a href="Following.php"><b>Following(<?php echo $following ?>)</b></a>
                   </div>
                 </div>
                 <!-- /.row -->

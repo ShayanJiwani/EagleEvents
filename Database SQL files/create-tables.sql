@@ -90,3 +90,13 @@ CREATE TABLE clubMember
   CONSTRAINT clubIDFK FOREIGN KEY(club_id) REFERENCES club(club_id),
   CONSTRAINT userIdFK FOREIGN KEY(uid) REFERENCES user(uid)
 );
+
+/* Create Following/Followers table */
+CREATE TABLE following
+(
+  mainUser INT(5),
+  followingUser INT(5),
+  CONSTRAINT followingRelationshipPK PRIMARY KEY (mainUser, followingUser),
+  CONSTRAINT mainUserFK FOREIGN KEY(mainUser) REFERENCES user(uid),
+  CONSTRAINT followingUserFK FOREIGN KEY(followingUser) REFERENCES user(uid)
+);
