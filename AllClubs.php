@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,7 +19,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
  }
-
+ // get list of all clubs except admin club
  $queryClubs = "SELECT club_id, cname AS Name, cdescription AS Description, category AS Category
         FROM club WHERE club_id != 999 ORDER BY cname ASC;";
 
@@ -25,7 +27,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Error: %s\n", mysqli_error($conn));
    exit(1);
  }
-
+ // get follower/following count
  $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
  $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -85,26 +87,6 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
 print "\n";
@@ -216,14 +198,6 @@ print "\n";
 print "  <!-- Content Wrapper. Contains page content -->\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <!-- Content Header (Page header) -->\n";
-/*
-print "    <section class=\"content-header\">\n";
-print "      <h1>\n";
-print "        Your Organizations\n";
-print "        <small>Organizations you are a part of </small>\n";
-print "      </h1>\n";
-print "    </section>\n";
-*/
 print "\n";
 print "    <!-- Main content -->\n";
 print "    <section class=\"content container-fluid\">\n";

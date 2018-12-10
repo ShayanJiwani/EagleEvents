@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,6 +19,7 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
+// get a random club that isn't in your list of clubs. can change limit to get more
 $queryClubs = "SELECT cl.club_id, cl.cname AS Club, cl.cdescription AS Description, cl.category AS Category
                FROM club cl
                WHERE cl.club_id NOT IN (SELECT c.club_id
@@ -31,7 +34,7 @@ if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+// get followers/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -253,6 +256,7 @@ print "              <div class=\"table-responsive\">\n";
 print "                <table class=\"table no-margin\">\n";
 $header = false;
 print "<form action = \"YourEvents.php\" method = \"POST\">";
+// get random events not in your list of events
 $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
                 DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
                 TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club

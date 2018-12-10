@@ -1,5 +1,5 @@
 <?php
-
+// get post information after hitting submit
 if ($_POST != NULL) {
   $username = $_POST['username'];
   $password = $_POST['password'];
@@ -14,7 +14,6 @@ if ($_POST != NULL) {
      printf("Connect failed: %s\n", mysqli_connect_error());
      exit(1);
    }
-
    // Check is username already exists
    $queryCheckUN = "SELECT uid FROM user WHERE username = '$username'";
    $result = mysqli_query($conn, $queryCheckUN);

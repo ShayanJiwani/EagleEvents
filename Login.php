@@ -1,7 +1,10 @@
 <?php
+// start session and get rid of any information that was in our session
+// essentially a log out any time you get to this page
 session_start();
 $_SESSION = array();
 session_destroy();
+// post data from same page on login
 if ($_POST != NULL) {
   $conn = mysqli_connect("localhost","root",
   "Eagle123", "eagleEvents");
@@ -12,16 +15,19 @@ if ($_POST != NULL) {
   $username = $_POST['username'];
   $password = $_POST['password'];
   $errString = "";
-
+  // check if user exists
   $queryUID = "SELECT uid FROM user WHERE username = '$username' AND password = '$password'";
   if ( ! ( $result = mysqli_query($conn, $queryUID)) ) {
    printf("Error: %s\n", mysqli_error($conn));
    exit(1);
   }
+  // if it doesn't, we will need to tell them they made an error
   if (mysqli_num_rows($result) == 0) {
     // write errors
     $errString = "*Username or password incorrect. Please try again.";
   }
+  // otherwise we get their information, store it in session vars, and then
+  // redirect to the Home Page
   else {
     session_start();
     $uid = mysqli_fetch_assoc($result);

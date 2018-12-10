@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -18,7 +20,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
  }
-
+ // get all events whose start date is today or in the future (eliminates past events)
  $queryEvents = "SELECT e.event_id, ename AS Name, edescription AS Description,
      DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
      TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club
@@ -30,7 +32,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Error: %s\n", mysqli_error($conn));
    exit(1);
  }
-
+ // get follower/following count
  $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
  $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 

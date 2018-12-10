@@ -1,9 +1,11 @@
 <?php
+// start session and store vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
 
+// redirect to login page if person's session has ended
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -12,6 +14,7 @@ if (!$uid) {
   <?php
 }
 
+// connect to sql backend
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
 
@@ -20,9 +23,9 @@ if (mysqli_connect_errno()){
  exit(1);
 }
 
+// receiving post information from AddAnEvent2
 if ($_POST != NULL) {
-  // create event here
-
+  // create event from post data and insert into DB
   $cid = $_POST['cid'];
   $cname = $_POST['cname'];
   $ename = $_POST['ename'];
@@ -48,9 +51,11 @@ if ($_POST != NULL) {
    printf("Error2: %s\n", mysqli_error($conn));
    exit(1);
   }
+  // increase unique event ID to put in DB
   $getMaxEventId = mysqli_fetch_assoc($result);
   $maxEvent = $getMaxEventId['max'] + 1;
 
+  // insert into event table and throw error if something comes up
   $queryInsert = "INSERT INTO event VALUES('$ename', '$edescription', '$edate', '$startTime',
                           '$endTime', '$locID', '$room', '$maxEvent', '$type',
                           1, '$uid', '$cid');";
@@ -58,7 +63,7 @@ if ($_POST != NULL) {
    printf("Error3: %s\n", mysqli_error($conn));
    exit(1);
   }
-
+  // add the created event to the owner's list of events
   $attendanceInsert = "INSERT INTO attendance VALUES('$maxEvent','$uid');";
   if ( ! ( $result2 = mysqli_query($conn, $attendanceInsert)) ) {
     printf("Error4: %s\n", mysqli_error($conn));
@@ -69,7 +74,7 @@ if ($_POST != NULL) {
 else {
   $successString = "";
 }
-
+// get list of all clubs they are an owner of
 $queryClubs = "SELECT c.club_id, cname AS Club FROM club c, clubMember m
           WHERE m.uid = '$uid' AND owner = 1 AND m.club_id = c.club_id
           ORDER BY cname ASC;";
@@ -78,7 +83,7 @@ if ( ! ( $result = mysqli_query($conn, $queryClubs)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+// get follower/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -245,6 +250,7 @@ print "  </aside>\n";
 print "\n";
 print "  <div class=\"content-wrapper\">\n";
 print "    <section class=\"content container-fluid\">\n";
+// display what event was just created
 if ($successString != "") {
   printf("<p style=\"color:green;\">". $successString ."</p>\n");
 }

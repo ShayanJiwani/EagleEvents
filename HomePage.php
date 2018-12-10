@@ -1,5 +1,5 @@
 <?php
-/* This is the EagleEventsMainPage put into PHP*/
+// start session and store session vars for later
 session_start();
 $conn = mysqli_connect("localhost","root",
 "Eagle123", "eagleEvents");
@@ -12,6 +12,7 @@ if (mysqli_connect_errno()){
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -19,6 +20,7 @@ if (!$uid) {
   </script>
   <?php
 }
+// get the events happening today, within an hour, and whose end time has not been reached
 $queryEvents = "SELECT ename AS Name, edescription AS Description,
       DATE_FORMAT(e.edate, '%b %e, %Y') AS Day, TIME_FORMAT(e.startTime, '%l:%i %p') AS Starts,
       TIME_FORMAT(e.endTime, '%l:%i %p') AS Ends, l.building AS Building, e.room AS Room,c.cname AS Club,
@@ -35,7 +37,7 @@ if ( ! ( $resultEvent = mysqli_query($conn, $queryEvents)) ) {
   printf("Error: %s\n", mysqli_error($conn));
   exit(1);
 }
-
+// get followers/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -94,26 +96,6 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
 print "\n";
@@ -239,7 +221,7 @@ $markers = array();
 $count = 0;
 // each object of array is a json object
 while ($row = mysqli_fetch_assoc($resultEvent)) {
-  //printf($row['Name'] . " \n\n\n");
+  //create a json object to encode and send to the map
   $jsonEvent = array();
   $jsonEvent['name'] = $row['Name'];
   $jsonEvent['description'] = $row['Description'];
@@ -257,7 +239,6 @@ while ($row = mysqli_fetch_assoc($resultEvent)) {
   $count++;
 }
 $myJson = json_encode($markers);
-//printf("<pre>%s</pre>", $myJson);
 ?>
 <!-- Main content -->
 <section class="content container-fluid">
@@ -268,7 +249,7 @@ $myJson = json_encode($markers);
     //test data
     var markerObjects = <?php echo json_encode($markers, JSON_NUMERIC_CHECK) ?>;
     lastWindow = null
-
+    // form map
     function initMap(){
         var options = {
           zoom:16,
@@ -283,7 +264,7 @@ $myJson = json_encode($markers);
         }];
 
         map.setOptions({ styles: noPoi });
-
+        // center on emory university
         var homeMarker = new google.maps.Marker({
             map: map,
             position:{lat: 33.7925,lng:-84.3240},
@@ -301,6 +282,7 @@ $myJson = json_encode($markers);
         for (var event in markerObjects){
             addMarker(markerObjects[event]);
         }
+        // random latitude and longitude calculator functions
         function getLat(event){
           var min = event.radius * -1;
           var max = event.radius;
@@ -313,6 +295,7 @@ $myJson = json_encode($markers);
           var delta = Math.random() * (max - min) + min + event.lng;
           return delta;
         }
+        // add marker at a certain position w/ content from encoded json object
         function addMarker(event){
           var contentString = "Club: ".bold() + event.club +
                               "<br/>" + "Event: ".bold() + event.name + "<br/>";
@@ -342,6 +325,7 @@ $myJson = json_encode($markers);
                 });
             }
         }
+        // geo location that will work with HTTPS not HTTP
         var infoWindow = new google.maps.InfoWindow;
         var currentLocation = new google.maps.Marker()
         if (navigator.geolocation) {

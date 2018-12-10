@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,7 +19,7 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
-
+// get your followers' information
 $queryUsers = "SELECT student.uid, CONCAT(fname,' ', lname) as Name,
               year as Year, email as Email FROM student, following
               WHERE following.followingUser = '$uid'
@@ -27,7 +29,7 @@ if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+// get followers/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -86,26 +88,6 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
 print "\n";

@@ -1,8 +1,10 @@
 <?php
+// start session and store vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,7 +19,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
  }
-
+ // getting POST data from AllEvents, YourEvents, Suggestions
  if ($_POST != NULL) {
    foreach($_POST as $key => $val) {
      // check if its in the database
@@ -26,6 +28,7 @@ $conn = mysqli_connect("localhost","root",
        printf("Error1: %s\n", mysqli_error($conn));
        exit(1);
      }
+     // deleting from your list of events
      if (strpos($key, "yeid") === 0) {
        if (mysqli_num_rows($result) != 0) {
          $queryRemove = "DELETE FROM attendance where event_id = '$val' AND uid = '$uid';";
@@ -35,6 +38,7 @@ $conn = mysqli_connect("localhost","root",
          }
        }
      }
+     // adding to your list of events
      else {
        if (mysqli_num_rows($result) == 0 && $key != "example1_length") {
          $queryInsert = "INSERT INTO attendance VALUES('$val','$uid');";

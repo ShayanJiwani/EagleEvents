@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,7 +19,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Connect failed: %s\n", mysqli_connect_error());
    exit(1);
  }
-
+ // getting post information from AllClubs, YourClubs, Suggestions
  if ($_POST != NULL) {
    foreach($_POST as $key => $val) {
      $queryGet = "SELECT * FROM clubMember WHERE club_id = '$val' AND uid = '$uid';";
@@ -25,6 +27,7 @@ $conn = mysqli_connect("localhost","root",
        printf("Error1: %s\n", mysqli_error($conn));
        exit(1);
      }
+     // deleting clubs from your list
      if (strpos($key, "ycid") === 0) {
        if (mysqli_num_rows($result) != 0) {
          $queryRemove = "DELETE FROM clubMember WHERE club_id = '$val' AND uid = '$uid';";
@@ -34,6 +37,7 @@ $conn = mysqli_connect("localhost","root",
          }
        }
      }
+     // adding clubs to the list of clubs
      else {
        if (mysqli_num_rows($result) == 0 && $key != "example1_length") {
          //printf("key is " . $key . ", val is " . $val . "<br>");
@@ -46,7 +50,7 @@ $conn = mysqli_connect("localhost","root",
      }
    }
  }
-
+ // get club info for user
  $queryClubs = "SELECT c.club_id, cname AS Name, cdescription AS Description, category AS Category
     FROM club c, clubMember m WHERE m.uid = '$uid' AND m.club_id = c.club_id ORDER BY cname ASC;";
 
@@ -54,7 +58,7 @@ $conn = mysqli_connect("localhost","root",
    printf("Error: %s\n", mysqli_error($conn));
    exit(1);
  }
-
+ // get followers/following count
  $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
  $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 

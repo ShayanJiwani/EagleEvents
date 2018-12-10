@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -18,7 +20,7 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
-
+// get user info
 $queryUser = "SELECT CONCAT(fname,' ', lname) as Name, year as Year, email as Email
               FROM student s WHERE uid = '$uid';";
 
@@ -33,7 +35,7 @@ if ( ! ( $result2 = mysqli_query($conn, $usr)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+//get follower/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -104,26 +106,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   </style>
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 

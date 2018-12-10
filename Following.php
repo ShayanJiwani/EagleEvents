@@ -1,8 +1,10 @@
 <?php
+// session start and store session vars
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,7 +19,8 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
-
+// gets post data from users page when you follow people, and from same page
+// if you unfollow users
 if ($_POST != NULL) {
   foreach($_POST as $key => $val) {
     // check if its in the database
@@ -26,6 +29,7 @@ if ($_POST != NULL) {
       printf("Error1: %s\n", mysqli_error($conn));
       exit(1);
     }
+    // check if the key is for removing a user
     if (strpos($key, "ruid") === 0) {
       if (mysqli_num_rows($result) != 0) {
         $queryRemove = "DELETE FROM following WHERE followingUser = '$val' AND mainUser = '$uid';";
@@ -35,7 +39,9 @@ if ($_POST != NULL) {
         }
       }
     }
+    // else we are adding a user
     else {
+      // DataTable sending size as post data so skip it
       if (mysqli_num_rows($result) == 0 && $key != "example1_length") {
         $queryInsert = "INSERT INTO following VALUES('$uid','$val');";
         if ( ! ( $result2 = mysqli_query($conn, $queryInsert)) ) {
@@ -47,7 +53,7 @@ if ($_POST != NULL) {
   }
 }
 
-
+// get information for people that you are following
 $queryUsers = "SELECT student.uid, CONCAT(fname,' ', lname) as Name,
               year as Year, email as Email FROM student, following
               WHERE following.mainUser = '$uid'
@@ -57,7 +63,7 @@ if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+// get followers/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
@@ -116,26 +122,6 @@ print "      width: 100%;\n";
 print "    }\n";
 print "  </style>\n";
 print "</head>\n";
-print "<!--\n";
-print "BODY TAG OPTIONS:\n";
-print "=================\n";
-print "Apply one or more of the following classes to get the\n";
-print "desired effect\n";
-print "|---------------------------------------------------------|\n";
-print "| SKINS         | skin-blue                               |\n";
-print "|               | skin-black                              |\n";
-print "|               | skin-purple                             |\n";
-print "|               | skin-yellow                             |\n";
-print "|               | skin-red                                |\n";
-print "|               | skin-green                              |\n";
-print "|---------------------------------------------------------|\n";
-print "|LAYOUT OPTIONS | fixed                                   |\n";
-print "|               | layout-boxed                            |\n";
-print "|               | layout-top-nav                          |\n";
-print "|               | sidebar-collapse                        |\n";
-print "|               | sidebar-mini                            |\n";
-print "|---------------------------------------------------------|\n";
-print "-->\n";
 print "<body class=\"hold-transition skin-blue sidebar-mini\">\n";
 print "<div class=\"wrapper\">\n";
 print "\n";

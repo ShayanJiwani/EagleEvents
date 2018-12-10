@@ -1,8 +1,10 @@
 <?php
+// start session and store session vars for later
 session_start();
 $uid = $_SESSION['uid'];
 $fname = $_SESSION['fname'];
 $lname = $_SESSION['lname'];
+// redirect to login page if session is over
 if (!$uid) {
   ?>
   <script type = "text/javascript">
@@ -17,6 +19,7 @@ if (mysqli_connect_errno()){
  printf("Connect failed: %s\n", mysqli_connect_error());
  exit(1);
 }
+// get user info for all users except admin and your own
 $queryUsers = "SELECT uid, CONCAT(fname,' ', lname) as Name, year as Year, email as Email
               FROM student s WHERE uid != 9999 AND uid != '$uid';";
 
@@ -24,7 +27,7 @@ if ( ! ( $result = mysqli_query($conn, $queryUsers)) ) {
  printf("Error: %s\n", mysqli_error($conn));
  exit(1);
 }
-
+// get follower/following count
 $queryFollowing = "SELECT COUNT(*) AS following FROM following WHERE mainUser = '$uid';";
 $queryFollowers = "SELECT COUNT(*) AS followers FROM following WHERE followingUser = '$uid';";
 
