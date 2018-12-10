@@ -1,4 +1,5 @@
 <?php
+
 if ($_POST != NULL) {
   $username = $_POST['username'];
   $password = $_POST['password'];
@@ -60,18 +61,14 @@ if ($_POST != NULL) {
 ?>
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Eagle Events | Sign Up</title>
+  <title>EagleEvents | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -79,10 +76,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -92,155 +87,96 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <![endif]-->
 
   <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-
-  <!-- Main Header -->
-  <header class="main-header">
-
-    <!-- Logo -->
-    <a href="#" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>E</b>LE</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Eagle</b>Events</span>
-    </a>
-
-    <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
-  </header>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Welcome to Eagle Events! Please sign up below.
-        <small>Get notified about Emory events!</small>
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content container-fluid">
-        <div class="container">
-     <h3>
-
-     </h5>
-        <form name = "signupForm" action = "SignUp.php" onsubmit = "return validateForm()" method = "POST">
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="username">Username</label>
-              <input id = "username" type="text" name = "username" class="form-control" placeholder="Username" required>
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="password">Password</label>
-              <input id = "password" type="PASSWORD" name = "password" class="form-control" placeholder="Password" required
-                                                                                                minlength="8" maxlength="16">
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="password">Re-enter Password</label>
-              <input id = "password2" type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required
-                                                                                                  minlength="8" maxlength="16">
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="email">Email</label>
-              <input id = "email" type="text" name = "email" class="form-control" placeholder="Email" required>
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="fname">First Name</label>
-              <input type="text" name = "fname" class="form-control" placeholder="First Name" required>
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-            <div class="col">
-              <label for="lname">Last Name</label>
-              <input type="text" name = "lname" class="form-control" placeholder="Last Name" required>
-            </div>
-          </div>
-          <br><br>
-          <div class="form-row">
-              <label class="custom-control-label" for="year">Year</label><br>
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Freshman" name="year" value = "Freshman" required>
-                <label class="custom-control-label" for="Freshman">Freshman</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Sophomore" name="year" value = "Sophomore" required>
-                <label class="custom-control-label" for="Sophomore">Sophomore</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Junior" name="year" value = "Junior" required>
-                <label class="custom-control-label" for="Junior">Junior</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Senior" name="year" value = "Senior" required>
-                <label class="custom-control-label" for="Senior">Senior</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="Graduate" name="year" value = "Graduate" required>
-                <label class="custom-control-label" for="Graduate">Graduate</label>
-              </div>
-          <br><br>
-          <button type = "submit" class = "btn btn-primary"> Submit </button>
-        </form>
-     </h5>
-   </div>
-
-    </section>
-    <!-- /.content -->
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="#"><b>Eagle</b>Events</a>
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Register for an Account</p>
+    <?php
+    if ($errString != "") {
+      printf("<p style=\"color:red;\">". $errString ."</p>\n");
+    }
+    ?>
+    <form name = "signupForm" action = "SignUp.php" method = "POST">
+      <div class="form-group has-feedback">
+        <input type="text" id = "username" name = "username" class="form-control" placeholder="Username" required
+                                                                                    minlength = "6" maxlength="16">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" id = "password" name = "password" class="form-control" placeholder="Password" required
+                                                                                    minlength = "8" maxlength="16">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" id = "password2" name = "password2" class="form-control" placeholder="Re-enter Password" required
+                                                                                        minlength = "8" maxlength="16">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" id = "email" name = "email" class="form-control" placeholder="Email" required>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" id = "fname" name = "fname" class="form-control" placeholder="First Name" required>
+        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" id = "lname" name = "lname" class="form-control" placeholder="Last Name" required>
+        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+          <label class="custom-control-label" for="year">Year</label><br>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="Freshman" name="year" value = "Freshman" required>
+            <label class="custom-control-label" for="Freshman">Freshman</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="Sophomore" name="year" value = "Sophomore" required>
+            <label class="custom-control-label" for="Sophomore">Sophomore</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="Junior" name="year" value = "Junior" required>
+            <label class="custom-control-label" for="Junior">Junior</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="Senior" name="year" value = "Senior" required>
+            <label class="custom-control-label" for="Senior">Senior</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="Graduate" name="year" value = "Graduate" required>
+            <label class="custom-control-label" for="Graduate">Graduate</label>
+          </div>
+        <span class="glyphicon glyphicon-education form-control-feedback"></span>
+      </div>
 
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2018 <a href="#">EagleEvents</a>.</strong> All rights reserved.
-  </footer>
+        <!-- /.col -->
+        <div class="row">
+          <div class="col-xs-8">
+            <div>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-xs-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">
+              Sign Up</button>
+          </div>
+          <!-- /.col -->
+        </div>
+    </form>
 
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-  immediately after the control sidebar -->
-<!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
+    <a href="Login.php" class="text-center">Already have an account?</a>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -250,21 +186,27 @@ desired effect
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Form validation -->
 <script>
+
   // Setup regular expressions
   var letters = /[A-Z]+[a-z]+/;
   var specChar = /[^a-zA-Z0-9]/;
   var num = /\d+/;
   var emailReq = /emory.edu/;
-
+  var valid = true;
   var username = document.forms["signupForm"]["username"];
 
   // Check if username is filled out
   username.onchange = function(e){
     if(username.value.length < 6){
       alert("Username must be at least 6 characters long");
+      valid = false;
     }
     else if(username.value.length > 16){
       alert("Username cannot exceed 16 characters");
+      valid = false;
+    }
+    else {
+      valid = true;
     }
   };
 
@@ -272,26 +214,30 @@ desired effect
   var pw2 = document.forms["signupForm"]["password2"];
   // Check if password meets requirements
   pw.onchange = function(e){
-    if(pw.value.length > 16){
-      alert("Password cannot exceed 16 characters");
-    }
-    else if(pw.value.length < 8){
-      alert("Password must be at least 8 characters long");
-    }
-    else if(!letters.test(pw.value)){
+    if(!letters.test(pw.value)){
       alert("Password must have lowercase and uppercase letters");
+      valid = false;
     }
     else if(!specChar.test(pw.value)){
       alert("Password must have at least one special character");
+      valid = false;
     }
     else if(!num.test(pw.value)){
       alert("Password must have at least one number");
+      valid = false;
+    }
+    else {
+      valid = true;
     }
   };
   // Check if passwords match
   pw2.onchange = function(e){
     if(pw.value.localeCompare(pw2.value) != 0){
       alert("Passwords do not match");
+      valid = false;
+    }
+    else {
+      valid = true;
     }
   };
 
@@ -300,6 +246,10 @@ desired effect
   email.onchange = function(e){
     if(!emailReq.test(email.value)){
       alert("Must use an Emory email to sign up");
+      valid = false;
+    }
+    else {
+      valid = true;
     }
   };
 </script>
