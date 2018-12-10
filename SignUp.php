@@ -186,7 +186,6 @@ if ($_POST != NULL) {
 <script src="dist/js/adminlte.min.js"></script>
 <!-- Form validation -->
 <script>
-
   // Setup regular expressions
   var letters = /[A-Z]+[a-z]+/;
   var specChar = /[^a-zA-Z0-9]/;
@@ -194,7 +193,6 @@ if ($_POST != NULL) {
   var emailReq = /emory.edu/;
   var valid = true;
   var username = document.forms["signupForm"]["username"];
-
   // Check if username is filled out
   username.onchange = function(e){
     if(username.value.length < 6){
