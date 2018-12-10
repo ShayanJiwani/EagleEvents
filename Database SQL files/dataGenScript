@@ -28,11 +28,11 @@ uID = 9999
 enames = ["Prayer", "Open-Mic Night", "Research Symposium", "Guest Lecture", "Pre-Health Advising",
             "Wonderful Wednesday After Dark", "Meditation", "Healthy Eating", "Stress Management",
             "Investing 101", "VE Service Trip"]
-dates = ["2018-12-7", "2018-12-8", "2018-12-9", "2018-12-10"]
+dates = ["2018-12-8", "2018-12-9", "2018-12-10", "2018-12-11"]
 startTimes = ["09:00:00", "10:00:00", "10:30:00", "12:00:00"]
-endTimes = ["17:30:00", "18:00:00", "18:30:00", "19:00:00"]
+endTimes = ["21:30:00", "22:00:00", "23:30:00", "23:00:00"]
 locIDs = [100, 101, 102, 103, 104, 105, 106, 107]
-types = ["meeting", "service", "social"]
+types = ["meeting", "service", "social", "sport", "outreach"]
 
 eventID = maxEID+1
 for x in range(200):
