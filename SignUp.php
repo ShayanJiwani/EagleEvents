@@ -261,7 +261,7 @@ if ($_POST != NULL) {
       return false;
     }
     else if(document.forms["signupForm"]["username"].value.length > 16){
-      alert("Username cannot exceed 16 characters")
+      alert("Username cannot exceed 16 characters");
       return false;
     }
 
@@ -295,7 +295,7 @@ if ($_POST != NULL) {
 
     // Check if Emory email was used
     if(!emailReq.test(document.forms["signupForm"]["email"].value)){
-      alert("Must use an Emory email to sign up")
+      alert("Must use an Emory email to sign up");
       return false;
     }
 
