@@ -47,7 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       margin-left: 1000px;
       margin-right: 1000px;
     }
-
+   
   </style>
 </head>
 <!--
@@ -276,14 +276,12 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href=\"HomePage.php\"><i class=\"fa fa-laptop\"></i> <span>Home Page</span></a></li>
-        <li><a href=\"YourEvents.php\"><i class=\"fa fa-table\"></i> <span>Your Events</span></a></li>
-        <li><a href=\"YourClubs.php\"><i class=\"fa fa-table\"></i> <span>Your Clubs</span></a></li>
-        <li><a href=\"AddAnEvent.php\"><i class=\"fa fa-edit\"></i> <span>Add an Event</span></a></li>
-        <li><a href=\"Suggestions.php\"><i class=\"fa fa-table\"></i> <span>Suggestions</span></a></li>
-        <li><a href=\"Users.php\"><i class=\"fa fa-users\"></i> <span>Users</span></a></li>
+        <li><a href="EagleEventsMainPage.html"><i class="fa fa-link"></i> <span>Home Page</span></a></li>
+        <li class="active"><a href="YourEvents.html"><i class="fa fa-link"></i> <span>Your Events</span></a></li>
+        <li><a href="YourClubs.html"><i class="fa fa-link"></i> <span>Your Clubs</span></a></li>
+        <li><a href="AddAnEvent.html"><i class="fa fa-link"></i> <span>Add an Event</span></a></li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-share"></i> <span>Emory University</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Emory University</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -311,6 +309,10 @@ desired effect
 
     <!-- Main content -->
     <section class="content container-fluid">
+
+    <p>Your information</p>
+
+              <!-- Profile Image -->
           <myMargin>
           <div class="box box-primary">
             <div class="box-body box-profile">
@@ -332,15 +334,136 @@ desired effect
                 </li>
               </ul>
 
-              <a href="#" class="btn btn-primary btn-block"><b>idk if we want this but i'm leaving it </b></a>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </myMargin>
 
+        <!--followers -->
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Condensed Full Width Table</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-condensed">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>User</th>
+                  <th>Followers</th>
+                  <th style="width: 40px"></th>
+                </tr>
+                <tr>
+                  <td>1.</td>
+                  <td>Update software</td>
+                  <td>
+                    <!-- SHAYAN PUT THE BUTTON HERE -->
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                    </div>
+                  </td>
+                 <td></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Clean database</td>
+                  <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
+                    </div>
+                  </td>
+                  <td></span></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Cron job running</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Fix and squish bugs</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+        <!--following-->
+                  <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Condensed Full Width Table</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-condensed">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>User</th>
+                  <th>Following</th>
+                  <th style="width: 40px"></th>
+                </tr>
+                <tr>
+                  <td>1.</td>
+                  <td>Update software</td>
+                  <td>
+                    <!-- SHAYAN PUT THE BUTTON HERE -->
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                    </div>
+                  </td>
+                 <td></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Clean database</td>
+                  <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
+                    </div>
+                  </td>
+                  <td></span></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Cron job running</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Fix and squish bugs</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
 
 
+        
       </section>
 
     <!-- /.content -->
