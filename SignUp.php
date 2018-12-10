@@ -50,12 +50,9 @@ if ($_POST != NULL) {
     // User acount creation successful. Redirect to login page
 
     ?>
-    <form action = "Login.php" method = "POST" name = "logForm">
-      <input type="hidden" id="success" name="success" value="Account Created!">
-      <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-    </form>
     <script type = "text/javascript">
-      document.getElementById("logForm").submit();
+      window.location.pathname = "/Login.php";
+      alert("Account Successfully Created!")
     </script>
     <?php
   }
@@ -164,14 +161,16 @@ desired effect
           <div class="form-row">
             <div class="col">
               <label for="password">Password</label>
-              <input id = "password" type="PASSWORD" name = "password" class="form-control" placeholder="Password" required>
+              <input id = "password" type="PASSWORD" name = "password" class="form-control" placeholder="Password" required
+                                                                                                minlength="8" maxlength="16">
             </div>
           </div>
           <br><br>
           <div class="form-row">
             <div class="col">
               <label for="password">Re-enter Password</label>
-              <input id = "password2" type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required>
+              <input id = "password2" type="PASSWORD" name = "password2" class="form-control" placeholder="Password" required
+                                                                                                  minlength="8" maxlength="16">
             </div>
           </div>
           <br><br>
@@ -260,61 +259,48 @@ desired effect
   var username = document.forms["signupForm"]["username"];
 
   // Check if username is filled out
-  var timeout = null;
-  username.onkeyup = function(e){
-    clearTimeout(timeout);
-    timeout = setTimeout(function(){
-      if(username.value.length < 6){
-        alert("Username must be at least 6 characters long");
-      }
-      else if(username.value.length > 16){
-        alert("Username cannot exceed 16 characters");
-      }
-    }, 1000);
+  username.onchange = function(e){
+    if(username.value.length < 6){
+      alert("Username must be at least 6 characters long");
+    }
+    else if(username.value.length > 16){
+      alert("Username cannot exceed 16 characters");
+    }
   };
 
   var pw = document.forms["signupForm"]["password"];
   var pw2 = document.forms["signupForm"]["password2"];
   // Check if password meets requirements
-  pw.onkeyup = function(e){
-    clearTimeout(timeout);
-    timeout = setTimeout(function(){
-      if(pw.value.length > 16){
-        alert("Password cannot exceed 16 characters");
-      }
-      else if(pw.value.length < 8){
-        alert("Password must be at least 8 characters long");
-      }
-      else if(!letters.test(pw.value)){
-        alert("Password must have lowercase and uppercase letters");
-      }
-      else if(!specChar.test(pw.value)){
-        alert("Password must have at least one special character");
-      }
-      else if(!num.test(pw.value)){
-        alert("Password must have at least one number");
-      }
-    }, 1000);
+  pw.onchange = function(e){
+    if(pw.value.length > 16){
+      alert("Password cannot exceed 16 characters");
+    }
+    else if(pw.value.length < 8){
+      alert("Password must be at least 8 characters long");
+    }
+    else if(!letters.test(pw.value)){
+      alert("Password must have lowercase and uppercase letters");
+    }
+    else if(!specChar.test(pw.value)){
+      alert("Password must have at least one special character");
+    }
+    else if(!num.test(pw.value)){
+      alert("Password must have at least one number");
+    }
   };
   // Check if passwords match
-  pw2.onkeyup = function(e){
-    clearTimeout(timeout);
-    timeout = setTimeout(function(){
-      if(pw.value.localeCompare(pw2.value) != 0){
-        alert("Passwords do not match");
-      }
-    }, 1000);
+  pw2.onchange = function(e){
+    if(pw.value.localeCompare(pw2.value) != 0){
+      alert("Passwords do not match");
+    }
   };
 
   // Check if Emory email was used
   var email = document.forms["signupForm"]["email"];
-  email.onkeyup = function(e){
-    clearTimeout(timeout);
-    timeout = setTimeout(function(){
-      if(!emailReq.test(email.value)){
-        alert("Must use an Emory email to sign up");
-      }
-    }, 1400);
+  email.onchange = function(e){
+    if(!emailReq.test(email.value)){
+      alert("Must use an Emory email to sign up");
+    }
   };
 </script>
 </body>
